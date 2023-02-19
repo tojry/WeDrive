@@ -60,6 +60,9 @@ class Trajet
     #[ORM\OneToOne(mappedBy: 'trajetConcerne', cascade: ['persist', 'remove'])]
     private ?NotifAnnulation $notifAnnulation = null;
 
+    #[ORM\ManyToOne(inversedBy: 'trajets')]
+    private ?GroupeAmis $groupeAmi = null;
+
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
@@ -292,6 +295,18 @@ class Trajet
         }
 
         $this->notifAnnulation = $notifAnnulation;
+
+        return $this;
+    }
+
+    public function getGroupeAmi(): ?GroupeAmis
+    {
+        return $this->groupeAmi;
+    }
+
+    public function setGroupeAmi(?GroupeAmis $groupeAmi): self
+    {
+        $this->groupeAmi = $groupeAmi;
 
         return $this;
     }

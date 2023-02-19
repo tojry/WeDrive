@@ -22,9 +22,13 @@ class GroupeAmis
     #[ORM\ManyToMany(targetEntity: Utilisateur::class, mappedBy: 'Amis')]
     private Collection $utilisateurs;
 
+    #[ORM\OneToMany(mappedBy: 'groupeAmi', targetEntity: Trajet::class)]
+    private Collection $trajets;
+
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
+        $this->trajets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,6 +70,36 @@ class GroupeAmis
     {
         if ($this->utilisateurs->removeElement($utilisateur)) {
             $utilisateur->removeAmi($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trajet>
+     */
+    public function getTrajets(): Collection
+    {
+        return $this->trajets;
+    }
+
+    public function addTrajet(Trajet $trajet): self
+    {
+        if (!$this->trajets->contains($trajet)) {
+            $this->trajets->add($trajet);
+            $trajet->setGroupeAmi($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrajet(Trajet $trajet): self
+    {
+        if ($this->trajets->removeElement($trajet)) {
+            // set the owning side to null (unless already changed)
+            if ($trajet->getGroupeAmi() === $this) {
+                $trajet->setGroupeAmi(null);
+            }
         }
 
         return $this;
