@@ -54,6 +54,7 @@ class TrajetRepository extends ServiceEntityRepository
             ->andWhere('t.dateHeureDepart BETWEEN :from AND :to')
             ->setParameter('from', $from )
             ->setParameter('to', $to)
+            ->orderBy('t.dateHeureDepart', 'ASC')
         ;
         $query  = $qb->getQuery();
 

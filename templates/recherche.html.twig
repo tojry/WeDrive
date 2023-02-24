@@ -5,10 +5,8 @@
 {% endif %}
 
 {% if res|length > 0 %}
-    <ul>
-        {% for r in res %}
-            <li>{{ r.dateHeureDepart|date("d/m/Y") }} {{ r.prix }}</li>
-        {% endfor %}
-    </ul>
+    {% for r in res %}
+        {{ include('_trajet_element_liste.html.twig', {trajet: r}) }}
+    {% endfor %}
 {% endif %}
 
