@@ -1,1 +1,14 @@
-{{ form(form) }}
+{{ include('_champs_recherche.html.twig', {form: form}) }}
+
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+
+{% if res|length > 0 %}
+    <ul>
+        {% for r in res %}
+            <li>{{ r.dateHeureDepart|date("d/m/Y") }} {{ r.prix }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+

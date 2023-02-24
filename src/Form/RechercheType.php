@@ -15,15 +15,12 @@ class RechercheType extends AbstractType
     {
         $builder
             ->add('lieuDepart', TextType::class, [
-                'required' => false,
                 'label' => 'Départ',
             ])
             ->add('lieuArrivee', TextType::class, [
-                'required' => false,
                 'label' => 'Arrivée',
             ])
             ->add('dateDepart', DateType::class, [
-                'required' => false,
                 'label' => 'Date',
             ])
             ->add('rechercher', SubmitType::class)
