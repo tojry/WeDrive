@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Entity;
-
 use App\Repository\TrajetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TrajetRepository::class)]
 class Trajet
@@ -24,12 +25,15 @@ class Trajet
     private ?string $lieuArrive = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThan('+24 hours')]
     private ?\DateTimeInterface $dateHeureDepart = null;
 
     #[ORM\Column]
+    #[Assert\PositiveOrZero]
     private ?int $prix = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?int $capaciteMax = null;
 
     #[ORM\Column(length: 1024)]

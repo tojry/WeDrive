@@ -38,6 +38,16 @@ class UtilisateurRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function rechercher(String $uId) : array
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.id LIKE :idUser')
+            ->setParameter('idUser', '%'.$uId.'%')
+        ;
+        $query  = $qb->getQuery();
+
+        return $query->getResult();
+    }
 
 //    /**
 //     * @return Utilisateur[] Returns an array of Utilisateur objects
