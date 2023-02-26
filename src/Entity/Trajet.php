@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TrajetRepository::class)]
@@ -39,7 +38,7 @@ class Trajet
     #[ORM\Column(length: 1024)]
     private ?string $precisionLieuRdv = null;
 
-    #[ORM\Column(length: 1024)]
+    #[ORM\Column(length: 1024, nullable:true)]
     private ?string $commentaire = null;
 
     #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'trajets')]
