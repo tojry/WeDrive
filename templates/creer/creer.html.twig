@@ -14,11 +14,24 @@
 
                 $('#creer_form_ptIntermediaire').keyup( function(){
                     let texte = $(this).val();
+                              
+                });
+
                     
                 });
 
                 $(document).on('click', '#creer_form_addPtIntermediaire', function(){
-                    
+                    let texte =  $('#creer_form_ptIntermediaire').val();
+                    $.ajax({
+                        url: '{{ path('creerPointIntermediaire') }}', 
+                        data: JSON.stringify({texte: texte}),
+                        method: 'POST',
+                        contentType: 'application/json',
+                        headers: {'X-Requested-With': 'XMLHttpRequest'},
+                        success: function (response) 
+                        {    
+                            console.log(response)
+                        }      
                 });
 
                 $(document).on('click', '#creer_form_rmPtIntermediaire', function(){

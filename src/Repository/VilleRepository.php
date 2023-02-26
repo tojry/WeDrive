@@ -39,6 +39,30 @@ class VilleRepository extends ServiceEntityRepository
         }
     }
 
+    public function rechercher(String $debutNom) : array
+    {
+        $debutNomLower = strtolower($debutNom);
+        $qb = $this->createQueryBuilder('v')
+            ->where('LOWER(v.ville) LIKE :debutNomVille')
+            ->setParameter('debutNomVille', '%'.$debutNomLower.'%')
+        ;
+        $query  = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function rechercherApprox(String $debutNom) : array
+    {
+        $debutNomLower = strtolower($debutNom);
+        $qb = $this->createQueryBuilder('v')
+            ->where('LOWER(v.ville) LIKE %:debutNomVille%')
+            ->setParameter('debutNomVille', '%'.$debutNomLower.'%')
+        ;
+        $query  = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return Ville[] Returns an array of Ville objects
 //     */

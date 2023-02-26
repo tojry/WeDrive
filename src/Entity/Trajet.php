@@ -47,8 +47,8 @@ class Trajet
     #[ORM\InverseJoinColumn(name: 'id_utilisateur', referencedColumnName: "id")]
     private Collection $utilisateurs;
 
-    #[ORM\OneToMany(mappedBy: 'trajet', targetEntity: PointIntermediare::class)]
-    private Collection $pointIntermediares;
+    #[ORM\OneToMany(mappedBy: 'trajet', targetEntity: PointIntermediaire::class)]
+    private Collection $PointIntermediaires;
 
     #[ORM\ManyToOne(inversedBy: 'trajetProposés')]
     #[ORM\JoinColumn(nullable: false)]
@@ -69,7 +69,7 @@ class Trajet
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
-        $this->pointIntermediares = new ArrayCollection();
+        $this->PointIntermediaires = new ArrayCollection();
         $this->reponses = new ArrayCollection();
     }
 
@@ -187,29 +187,29 @@ class Trajet
     }
 
     /**
-     * @return Collection<int, PointIntermediare>
+     * @return Collection<int, PointIntermediaire>
      */
-    public function getPointIntermediares(): Collection
+    public function getPointIntermediaires(): Collection
     {
-        return $this->pointIntermediares;
+        return $this->PointIntermediaires;
     }
 
-    public function addPointIntermediare(PointIntermediare $pointIntermediare): self
+    public function addPointIntermediaire(PointIntermediaire $PointIntermediaire): self
     {
-        if (!$this->pointIntermediares->contains($pointIntermediare)) {
-            $this->pointIntermediares->add($pointIntermediare);
-            $pointIntermediare->setTrajet($this);
+        if (!$this->PointIntermediaires->contains($PointIntermediaire)) {
+            $this->PointIntermediaires->add($PointIntermediaire);
+            $PointIntermediaire->setTrajet($this);
         }
 
         return $this;
     }
 
-    public function removePointIntermediare(PointIntermediare $pointIntermediare): self
+    public function removePointIntermediaire(PointIntermediaire $PointIntermediaire): self
     {
-        if ($this->pointIntermediares->removeElement($pointIntermediare)) {
+        if ($this->PointIntermediaires->removeElement($PointIntermediaire)) {
             // set the owning side to null (unless already changed)
-            if ($pointIntermediare->getTrajet() === $this) {
-                $pointIntermediare->setTrajet(null);
+            if ($PointIntermediaire->getTrajet() === $this) {
+                $PointIntermediaire->setTrajet(null);
             }
         }
 
