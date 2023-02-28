@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Ville;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @extends ServiceEntityRepository<Ville>
@@ -39,23 +40,61 @@ class VilleRepository extends ServiceEntityRepository
         }
     }
 
-    public function rechercher(String $debutNom) : array
+    public function getByID(String $id)
     {
-        $debutNomLower = strtolower($debutNom);
-        $qb = $this->createQueryBuilder('v')
-            ->where('LOWER(v.ville) LIKE :debutNomVille')
-            ->setParameter('debutNomVille', '%'.$debutNomLower.'%')
-        ;
-        $query  = $qb->getQuery();
+        return $this->createQueryBuilder('v')
+                ->where('v.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getOneOrNullResult();
+    }
 
-        return $query->getResult();
+    /**
+     * @return array<int, Ville>
+     */
+    public function rechercher(String $texte) : array|null
+    {
+        // Rien à chercher ...
+        if($texte == "") return null;
+
+        $postal = "";
+        $nom = "";
+
+        // GRP 1 : Ville
+        // GRP 2 : Code Postal
+        preg_match_all('/([a-zA-ZàâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý]+\.?(?:[- ][a-zA-ZàâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý]+\.?)*)/i', $texte, $matches_villes);
+        preg_match_all('/([0-9]{1,5})/', $texte, $matches_postals);
+
+        $nbMatchsVille = count($matches_villes[1]);
+        $nbMatchsPostal = count($matches_postals[1]);
+
+        // On a plusieurs matchs pour la ville ou pour le code postal ou on ne match rien, on ne sait pas quoi traiter => invalide
+        if($nbMatchsVille > 1 || $nbMatchsPostal > 1 || ($nbMatchsVille == 0 && $nbMatchsPostal == 0)) return null;
+
+        if($nbMatchsVille == 1) $nom = $matches_villes[1][0];
+        if($nbMatchsPostal == 1) $postal = $matches_postals[1][0];
+
+        $nomLower = strtolower($nom);
+
+        $qb = $this->createQueryBuilder('v');
+        if($nom != ""){
+            $qb ->where('LOWER(v.ville) LIKE :nomVillePartiel')
+                ->setParameter('nomVillePartiel', $nomLower.'%');
+        }
+        if($postal != ""){
+            $qb -> andwhere('v.code_postal LIKE :postal')
+                -> setParameter('postal', $postal.'%');
+        }
+        return $qb -> setMaxResults(5)
+                   -> getQuery()
+                   -> getResult();
     }
 
     public function rechercherApprox(String $debutNom) : array
     {
         $debutNomLower = strtolower($debutNom);
         $qb = $this->createQueryBuilder('v')
-            ->where('LOWER(v.ville) LIKE %:debutNomVille%')
+            ->where('LOWER(v.ville) LIKE :debutNomVille')
             ->setParameter('debutNomVille', '%'.$debutNomLower.'%')
         ;
         $query  = $qb->getQuery();

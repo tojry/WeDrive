@@ -8,6 +8,28 @@
                 $('#creer_form_lieuDepart').keyup( function(){
                     let texte = $(this).val();
                     $("#prevDepart").text("Départ : " + texte);
+
+                    $.ajax({
+                        url: '{{ path('rechercherVille') }}', 
+                        data: JSON.stringify({texte: texte}),
+                        method: 'POST',
+                        contentType: 'application/json',
+                        headers: {'X-Requested-With': 'XMLHttpRequest'},
+                        success: function (response) 
+                        {    
+                            $(".autocomplete-items").remove();
+
+                            $('#autocomplete_lieuDepart').append(response);
+                        },
+                        statusCode: {
+                            300: function(response) {
+                                console.log(response.responseText);
+                            },
+                            400: function(response) {
+                                console.log(response.responseText)
+                            }
+                        }
+                    });
                 });
 
 
@@ -17,8 +39,6 @@
                               
                 });
 
-                    
-                });
 
                 $(document).on('click', '#creer_form_addPtIntermediaire', function(){
                     let texte =  $('#creer_form_ptIntermediaire').val();
@@ -32,6 +52,7 @@
                         {    
                             console.log(response)
                         }      
+                    });
                 });
 
                 $(document).on('click', '#creer_form_rmPtIntermediaire', function(){
@@ -63,6 +84,8 @@
 
 <div class="right">
 </br></br>
+    <div id="autocomplete_lieuDepart">
+    </div>
     <h2>Prévisualisation du trajet</h2>
 
      <p id="prevDepart"></p>

@@ -60,15 +60,15 @@ class CreerController extends AbstractController {
     }
 
 
-    #[Route('/Controller', name: 'creerPointIntermediaire', methods: ["POST"])]
+    #[Route('/Controller/CreerController.php', name: 'creerPointIntermediaire', methods: ["POST"])]
     public function ajouterPointIntermediaire(Request $request, VilleRepository $villes, PointIntermediaireRepository $points) : Response {
-        
+        /*
         if ($request->isXMLHttpRequest()) {       
             $data = json_decode($request->getContent(), true);
 
             $res = $villes->rechercher($data['texte']);
 
-            if(count($res) === 1)
+            if(count($res) > 0)
             {
                 $pt = new PointIntermediaire();
                 $points->ajouterPointIntermediaire($pt);
@@ -80,7 +80,7 @@ class CreerController extends AbstractController {
             return new Response("Ville non trouvée.");
         }
     
-        return new Response("Ce n'est pas un requête AJAX !", 400);
+        return new Response("Ce n'est pas un requête AJAX !", 400);*/ return new Response("La fonction n'est pas opérationelle");
     }
 }
 ?>
