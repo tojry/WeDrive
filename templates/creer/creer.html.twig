@@ -3,42 +3,84 @@
 {% block javascripts %}
 <script>
 
+    function suggestionVille(texte, divName){
+        $.ajax({
+            url: '{{ path('rechercherVille') }}', 
+            data: JSON.stringify({texte: texte}),
+            method: 'POST',
+            contentType: 'application/json',
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            success: function (response) 
+            {    
+                $(".autocomplete-items").remove();
+                $(('#autocomplete_'+divName)).append(response);
+            },
+            statusCode: {
+                300: function(response) {
+                    console.log(response.responseText);
+                    $(".autocomplete-items").remove();
+                },
+                400: function(response) {
+                    console.log(response.responseText)
+                }
+            }
+        });
+    }
+
     $(document).ready(function(){
 
-                $('#creer_form_lieuDepart').keyup( function(){
-                    let texte = $(this).val();
-                    $("#prevDepart").text("Départ : " + texte);
+                /* Suggestion des villes */
 
-                    $.ajax({
-                        url: '{{ path('rechercherVille') }}', 
-                        data: JSON.stringify({texte: texte}),
-                        method: 'POST',
-                        contentType: 'application/json',
-                        headers: {'X-Requested-With': 'XMLHttpRequest'},
-                        success: function (response) 
-                        {    
-                            $(".autocomplete-items").remove();
-
-                            $('#autocomplete_lieuDepart').append(response);
-                        },
-                        statusCode: {
-                            300: function(response) {
-                                console.log(response.responseText);
-                            },
-                            400: function(response) {
-                                console.log(response.responseText)
-                            }
-                        }
-                    });
+                $('#creer_form_lieuDepart').focusout(function () {
+                    $(".autocomplete-items").remove();
                 });
 
+                $('#creer_form_ptIntermediaire').focusout(function () {
+                    $(".autocomplete-items").remove();
+                });
 
+                $('#creer_form_lieuArrive').focusout(function () {
+                    $(".autocomplete-items").remove();
+                });
+
+                $('#creer_form_lieuDepart').focus(function () {
+                    let texte = $(this).val();
+                    suggestionVille(texte, "lieuDepart");
+                });
+
+                $('#creer_form_ptIntermediaire').focus(function () {
+                    let texte = $(this).val();
+                    suggestionVille(texte, "pointIntermediaire");
+                });
+
+                $('#creer_form_lieuArrive').focus(function () {
+                    let texte = $(this).val();
+                    suggestionVille(texte, "lieuArrive");
+                });
+
+                $('#creer_form_lieuDepart').keyup( function() {
+                    let texte = $(this).val();
+                    $("#prevDepart").text("Départ : " + texte);
+                    
+                    suggestionVille(texte, "lieuDepart");
+                   
+                });
 
                 $('#creer_form_ptIntermediaire').keyup( function(){
                     let texte = $(this).val();
-                              
+                    
+                    suggestionVille(texte, "pointIntermediaire");
                 });
 
+
+                $('#creer_form_lieuArrive').keyup( function(){
+                    let texte = $(this).val();
+                    $("#prevArrive").text("Arrivé : " + texte);
+
+                    suggestionVille(texte, "lieuArrive");
+                });
+
+                /* Ajouter point intermédiaire */
 
                 $(document).on('click', '#creer_form_addPtIntermediaire', function(){
                     let texte =  $('#creer_form_ptIntermediaire').val();
@@ -59,15 +101,11 @@
                    
                 });
 
+                /* */
 
 
-                $('#creer_form_lieuArrive').keyup( function(){
-                    let texte = $(this).val();
-                    $("#prevArrive").text("Arrivé : " + texte);
-                });
 
-               
-
+                /* Chargement de la page */
 
                $("#prevDepart").text("Départ : " + $('#creer_form_lieuDepart').val());
                $("#prevArrive").text("Arrivé : " + $('#creer_form_lieuArrive').val());
@@ -86,6 +124,11 @@
 </br></br>
     <div id="autocomplete_lieuDepart">
     </div>
+    <div id="autocomplete_lieuArrive">
+    </div>
+    <div id="autocomplete_pointIntermediaire">
+    </div>
+
     <h2>Prévisualisation du trajet</h2>
 
      <p id="prevDepart"></p>

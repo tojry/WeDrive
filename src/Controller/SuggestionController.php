@@ -18,14 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SuggestionController extends AbstractController
 {
-    #[Route('/suggestion', name: 'app_suggestion')]
-    public function index(): Response
-    {
-        return $this->render('suggestion/index.html.twig', [
-            'controller_name' => 'SuggestionController',
-        ]);
-    }
-
     #[Route('/Controller/SuggestionController.php', name: 'rechercherVille', methods: ["POST"])]
     public function rechercherVille(Request $request, VilleRepository $villes) : Response {
         
