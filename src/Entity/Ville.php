@@ -21,6 +21,9 @@ class Ville
     #[ORM\OneToMany(mappedBy: 'ville', targetEntity: PointIntermediare::class)]
     private Collection $pointIntermediaires;
 
+    #[ORM\Column(length: 5)]
+    private ?string $code_postal = null;
+
     public function __construct()
     {
         $this->pointIntermediaires = new ArrayCollection();
@@ -34,12 +37,12 @@ class Ville
 
     public function getIdVille(): ?int
     {
-        return $this->idVille;
+        return $this->ville;
     }
 
     public function setIdVille(int $idVille): self
     {
-        $this->idVille = $idVille;
+        $this->ville = $idVille;
 
         return $this;
     }
@@ -82,6 +85,18 @@ class Ville
                 $pointIntermediaire->setVille(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?string
+    {
+        return $this->code_postal;
+    }
+
+    public function setCodePostal(string $code_postal): self
+    {
+        $this->code_postal = $code_postal;
 
         return $this;
     }

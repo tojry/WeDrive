@@ -1,12 +1,22 @@
-{{ include('_champs_recherche.html.twig', {form: form}) }}
+{% extends 'base.html.twig' %}
 
-{% if message %}
-    <p>{{ message }}</p>
-{% endif %}
+{% block javascripts %}
 
-{% if res|length > 0 %}
-    {% for r in res %}
-        {{ include('_trajet_element_liste.html.twig', {trajet: r}) }}
-    {% endfor %}
-{% endif %}
+    <script type="text/javascript" src="recherche.js"></script>
+
+{% endblock %}
+
+{% block body %}
+    {{ include('_champs_recherche.html.twig', {form: form}) }}
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    {% if res|length > 0 %}
+        {% for r in res %}
+            {{ include('_trajet_element_liste.html.twig', {trajet: r}) }}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
 

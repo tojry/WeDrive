@@ -42,20 +42,30 @@ class TrajetRepository extends ServiceEntityRepository
 
     public function rechercher(Recherche $r) : array
     {
-        $date = $r->getDateDepart();
-        $from = new \DateTime($date->format("Y-m-d")." 00:00:00");
-        $to   = new \DateTime($date->format("Y-m-d")." 23:59:59");
+        $depart  = $r->getLieuDepart();
+        $arrivee = $r->getLieuArrivee();
+        $date    = $r->getDateDepart();
+        
 
-        $qb = $this->createQueryBuilder('t')
-            ->where('t.lieuDepart LIKE :depart')
-            ->setParameter('depart', '%'.$r->getLieuDepart().'%')
-            ->andWhere('t.lieuArrive LIKE :arrivee')
-            ->setParameter('arrivee', '%'.$r->getLieuArrivee().'%')
-            ->andWhere('t.dateHeureDepart BETWEEN :from AND :to')
+        $qb = $this->createQueryBuilder('t');
+
+        if($depart){
+            $qb->andWhere('t.lieuDepart LIKE :depart')
+            ->setParameter('depart', '%'.$depart.'%');
+        }
+        if($arrivee){
+            $qb->andWhere('t.lieuArrive LIKE :arrivee')
+            ->setParameter('arrivee', '%'.$arrivee.'%');
+        }
+        if($date){
+            $from = new \DateTime($date->format("Y-m-d")." 00:00:00");
+            $to   = new \DateTime($date->format("Y-m-d")." 23:59:59");
+            $qb->andWhere('t.dateHeureDepart BETWEEN :from AND :to')
             ->setParameter('from', $from )
-            ->setParameter('to', $to)
-            ->orderBy('t.dateHeureDepart', 'ASC')
-        ;
+            ->setParameter('to', $to);
+        }
+        $qb->orderBy('t.dateHeureDepart', 'ASC');
+
         $query  = $qb->getQuery();
 
         return $query->execute();

@@ -7,12 +7,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Recherche
 {
-    private ?string $lieuDepart;
+    private ?string $lieuDepart = null;
 
-    private ?string $lieuArrivee;
+    private ?string $lieuArrivee = null;
 
     #[Assert\Type(\DateTime::class)]
-    private ?DateTimeInterface $dateDepart;
+    private ?DateTimeInterface $dateDepart = null;
 
     public function getLieuDepart(): ?string
     {

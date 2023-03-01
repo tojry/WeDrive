@@ -31,8 +31,6 @@ class RechercheController extends AbstractController {
             if (count($res) === 0) {
                 $message = 'Aucune offre trouvée.';
             }
-
-            //return $this->redirectToRoute($request->attributes->get('_route'));
         }
 
         return $this->render('recherche.html.twig', [
