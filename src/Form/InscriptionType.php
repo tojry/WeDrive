@@ -20,8 +20,6 @@ class InscriptionType extends AbstractType
             ->add('voiture')
             ->add('noTel')
             ->add('mailNotif')
-            ->add('trajets')
-            ->add('Amis')
         ;
     }
 
