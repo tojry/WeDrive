@@ -28,7 +28,7 @@ class Trajet
     private ?\DateTimeInterface $dateHeureDepart = null;
 
     #[ORM\Column]
-    #[Assert\PositiveOrZero]
+    #[Assert\Positive]
     private ?int $prix = null;
 
     #[ORM\Column]
