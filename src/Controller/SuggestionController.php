@@ -35,7 +35,7 @@ class SuggestionController extends AbstractController
                 return new Response($response, 200);
             }
 
-            return new Response("Aucune ville trouvée.", 300);
+            return new Response("Aucune ville trouvée.", 100);
         }
     
         return new Response("Ce n'est pas un requête AJAX !", 400);

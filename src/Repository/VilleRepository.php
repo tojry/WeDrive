@@ -10,8 +10,7 @@ use Symfony\Component\Validator\Constraints\Length;
 /**
  * @extends ServiceEntityRepository<Ville>
  *
- * @method Ville|null find($id, $lockMode = null, $lockVersion = null)
- * @method Ville|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Ville|null getByID($id)
  * @method Ville[]    findAll()
  * @method Ville[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -40,7 +39,10 @@ class VilleRepository extends ServiceEntityRepository
         }
     }
 
-    public function getByID(String $id)
+    /**
+     * @return Ville|null
+     */
+    public function getByID($id) : Ville|null
     {
         return $this->createQueryBuilder('v')
                 ->where('v.id = :id')
@@ -62,7 +64,7 @@ class VilleRepository extends ServiceEntityRepository
 
         // GRP 1 : Ville
         // GRP 2 : Code Postal
-        preg_match_all('/([a-zA-ZàâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý]+\.?(?:[- ][a-zA-ZàâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý]+\.?)*)/i', $texte, $matches_villes);
+        preg_match_all("/([a-zA-ZàâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý]+\.?(?:[- '][a-zA-ZàâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý]+\.?)*)/i", $texte, $matches_villes);
         preg_match_all('/([0-9]{1,5})/', $texte, $matches_postals);
 
         $nbMatchsVille = count($matches_villes[1]);
@@ -78,7 +80,7 @@ class VilleRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('v');
         if($nom != ""){
-            $qb ->where('LOWER(v.ville) LIKE :nomVillePartiel')
+            $qb ->where("LOWER(v.ville) LIKE :nomVillePartiel")
                 ->setParameter('nomVillePartiel', $nomLower.'%');
         }
         if($postal != ""){
@@ -89,29 +91,4 @@ class VilleRepository extends ServiceEntityRepository
                    -> getQuery()
                    -> getResult();
     }
-
-//    /**
-//     * @return Ville[] Returns an array of Ville objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Ville
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

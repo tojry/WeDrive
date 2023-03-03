@@ -2,6 +2,10 @@
 
 {% block javascripts %}
 <script>
+    var lieuDepart = "";
+    var lieuArrive = "";
+    var pointIntermediaireSave = "";
+    var pointIntermediaireList = [];
 
     function suggestionVille(texte, divName){
         $.ajax({
@@ -16,13 +20,13 @@
                 $(('#autocomplete_'+divName)).append(response);
             },
             statusCode: {
-                300: function(response) {
+                100: function(response) {
                     console.log(response.responseText);
                     $(".autocomplete-items").remove();
                 },
                 400: function(response) {
-                    console.log(response.responseText)
-                }
+                        console.log(response.responseText)
+                    }   
             }
         });
     }
@@ -45,70 +49,156 @@
 
                 $('#creer_form_lieuDepart').focus(function () {
                     let texte = $(this).val();
-                    suggestionVille(texte, "lieuDepart");
+                    if(texte != "")
+                        suggestionVille(texte, "lieuDepart");
                 });
 
                 $('#creer_form_ptIntermediaire').focus(function () {
                     let texte = $(this).val();
-                    suggestionVille(texte, "pointIntermediaire");
+                    if(texte != "")
+                        suggestionVille(texte, "pointIntermediaire");
                 });
 
                 $('#creer_form_lieuArrive').focus(function () {
                     let texte = $(this).val();
-                    suggestionVille(texte, "lieuArrive");
+                    if(texte != "")
+                        suggestionVille(texte, "lieuArrive");
                 });
 
                 $('#creer_form_lieuDepart').keyup( function() {
                     let texte = $(this).val();
-                    $("#prevDepart").text("Départ : " + texte);
-                    
+                    ($(this)[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
                     suggestionVille(texte, "lieuDepart");
+                    lieuDepart = "";
+                    $("#prevDepart").text("Départ : ");
                    
                 });
 
                 $('#creer_form_ptIntermediaire').keyup( function(){
                     let texte = $(this).val();
-                    
                     suggestionVille(texte, "pointIntermediaire");
+                    pointIntermediaireSave = "";
                 });
 
 
                 $('#creer_form_lieuArrive').keyup( function(){
                     let texte = $(this).val();
-                    $("#prevArrive").text("Arrivé : " + texte);
-
+                    ($(this)[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
                     suggestionVille(texte, "lieuArrive");
+                    lieuArrive = "";
+                    $("#prevArrive").text("Arrivé : ");  
                 });
 
-                /* Ajouter point intermédiaire */
+                $(document).on('mousedown', '.autocomplete-items', function(){
+                    switch($(this).parent().attr('id')){
+                        case "autocomplete_lieuDepart":
+                            $('#creer_form_lieuDepart').prop('value', $(this).text());
+                            ($('#creer_form_lieuDepart')[0]).setCustomValidity("");
+                            lieuDepart = $(this).attr('id');
+                            $("#prevDepart").text("Départ : " + $(this).text());
+                            break;
+                        case "autocomplete_lieuArrive":
+                            $('#creer_form_lieuArrive').prop('value', $(this).text());
+                            ($('#creer_form_lieuArrive')[0]).setCustomValidity("");
+                            lieuArrive = $(this).attr('id');
+                            $("#prevArrive").text("Arrivé : " + $(this).text());
+                            break;
+                        case "autocomplete_pointIntermediaire":
+                        $('#creer_form_ptIntermediaire').prop('value', $(this).text());
+                            pointIntermediaireSave = $(this).attr('id');
+                            break;
+                        default: break;
+                    }
+                });
+                
 
-                $(document).on('click', '#creer_form_addPtIntermediaire', function(){
-                    let texte =  $('#creer_form_ptIntermediaire').val();
+                /* Ajouter/Retirer point intermédiaire */
+
+                $('#creer_form_addPtIntermediaire').click(function(){
+                    if(pointIntermediaireSave != ""){
+                        pointIntermediaireList.push(pointIntermediaireSave);
+                        $('#prevListePtIntermediaires').append('<li id="prev_'+ pointIntermediaireSave +'">' + $('#creer_form_ptIntermediaire').val() + '</li>')
+                        $('#creer_form_ptIntermediaire').prop('value', "");
+                        $('#prevPointsIntermediaires').removeAttr('hidden')
+                        pointIntermediaireSave = "";
+                    }
+                    else{
+                        $('#creer_form_ptIntermediaire').focus();
+                        ($('#creer_form_ptIntermediaire')[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
+                        suggestionVille($('#creer_form_ptIntermediaire').val(), "pointIntermediaire");
+                    }
+                });
+
+                $('#creer_form_rmPtIntermediaire').click(function(){
+                    var index = pointIntermediaireList.indexOf(pointIntermediaireSave);
+                    if(pointIntermediaireSave != "" && index != -1){
+                        pointIntermediaireList.splice(index, 1);
+                        console.log(pointIntermediaireSave);
+                        $('#prev_' +  pointIntermediaireSave).remove();
+                        if(pointIntermediaireList.length == 0) $('#prevPointsIntermediaires').attr('hidden', true);
+                       
+                        pointIntermediaireSave = "";
+                        $('#creer_form_ptIntermediaire').prop('value', "");
+                    } else if (index != -1) {
+                        $('#creer_form_ptIntermediaire').focus();
+                        ($('#creer_form_ptIntermediaire')[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
+                        suggestionVille($('#creer_form_ptIntermediaire').val(), "pointIntermediaire");
+                    }
+                });
+
+                $('form').submit(function(event){
+                    event.preventDefault();
+                    ($('#creer_form_ptIntermediaire')[0]).setCustomValidity("");
+
                     $.ajax({
-                        url: '{{ path('creerPointIntermediaire') }}', 
-                        data: JSON.stringify({texte: texte}),
+                        url: '{{ path('preValidationForm') }}', 
+                        data: JSON.stringify({lieuDepart: lieuDepart,
+                                              pointIntermediaireList: pointIntermediaireList, 
+                                              lieuArrive: lieuArrive }),
                         method: 'POST',
                         contentType: 'application/json',
                         headers: {'X-Requested-With': 'XMLHttpRequest'},
                         success: function (response) 
                         {    
-                            console.log(response)
-                        }      
+                            console.log(response);
+                            ($('form')[0]).submit();
+                        },
+                        500: function(response) {
+                            console.log(response.responseText)
+                        },
+                        501: function(response) {
+                            console.log(response.responseText)
+                        },
+                        400: function(response) {
+                            console.log(response.responseText)
+                        }    
                     });
                 });
 
-                $(document).on('click', '#creer_form_rmPtIntermediaire', function(){
-                   
+        
+                /* Reset */
+
+                $('#creer_form_rmPtIntermediaire').click(function(){
+                    var index = pointIntermediaireList.indexOf(pointIntermediaireSave);
+                    lieuArrive = "";
+                    lieuDepart = "";
+                    pointIntermediaireSave = "";
+                    pointIntermediaireList = [];
+                    $('#prevPointsIntermediaires').attr('hidden', true);
+                    $('#prevListePtIntermediaires').empty();
+                    $("#prevDepart").text("Départ : ");
+                    $("#prevArrive").text("Arrivé : ");
                 });
-
-                /* */
-
-
 
                 /* Chargement de la page */
 
-               $("#prevDepart").text("Départ : " + $('#creer_form_lieuDepart').val());
-               $("#prevArrive").text("Arrivé : " + $('#creer_form_lieuArrive').val());
+                var currentDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000); // Demain même heure
+                $("#creer_form_dateHeureDepart").attr('min', currentDate.toISOString().slice(0, currentDate.toISOString().lastIndexOf(":"))); 
+                
+                if($('#creer_form_lieuDepart').val() != "") ($('#creer_form_lieuDepart')[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
+                if($('#creer_form_lieuArrive').val() != "") ($('#creer_form_lieuArrive')[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
+                $("#prevDepart").text("Départ : ");
+                $("#prevArrive").text("Arrivé : ");
             });
 </script>
 {% endblock %}
@@ -131,11 +221,10 @@
 
     <h2>Prévisualisation du trajet</h2>
 
-     <p id="prevDepart"></p>
-
+    <p id="prevDepart"></p>
+    <p hidden id="prevPointsIntermediaires">Etape(s) intermédiaire(s) : </p>
     <ol>
-        <div class="prevListePtIntermediaires">
-        </div>
+        <div id="prevListePtIntermediaires"></div>
     </ol>
 
     <p id="prevArrive"></p>

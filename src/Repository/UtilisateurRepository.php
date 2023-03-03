@@ -38,15 +38,13 @@ class UtilisateurRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    public function rechercher(String $uId) : array
+    public function rechercher(String $uId) : Utilisateur|null
     {
-        $qb = $this->createQueryBuilder('u')
-            ->where('u.id LIKE :idUser')
-            ->setParameter('idUser', '%'.$uId.'%')
-        ;
-        $query  = $qb->getQuery();
-
-        return $query->getResult();
+        return $this->createQueryBuilder('u')
+                ->where('u.id LIKE :idUser')
+                ->setParameter('idUser', '%'.$uId.'%')
+                ->getQuery()
+                ->getOneOrNullResult();
     }
 
 //    /**

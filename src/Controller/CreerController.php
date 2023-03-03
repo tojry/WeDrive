@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\PointIntermediaire;
 use App\Entity\Trajet;
 use App\Entity\Utilisateur;
+use App\Entity\Ville;
 use App\Form\CreerFormType;
-use App\Repository\PointIntermediaireRepository;
 use App\Repository\UtilisateurRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,71 +16,89 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CreerController extends AbstractController {
-
-    private Trajet $trajet;
  
     #[Route('/creer', name: 'creer')]
-    public function creer(Request $request, UtilisateurRepository $utilisateurs, EntityManagerInterface $entityManager) : Response {
-
-        $this->trajet = new Trajet();
+    public function creer(Request $request, UtilisateurRepository $utilisateurs, EntityManagerInterface $entityManager) : Response { 
 
         $session = $request->getSession();
         $uId = "1"; //$session->get('user-id');
-        $res = $utilisateurs->rechercher($uId);
+        $utilisateur = $utilisateurs->rechercher($uId);
         
-        if(count($res) === 1)
+        if($utilisateur != null)
         {
-            $this->trajet->setCovoitureur(array_values($res)[0]); 
-            $form = $this->createForm(CreerFormType::class, $this->trajet);
+            $trajet = $session->get('trajet', new Trajet());
+            if($trajet != null)
+            {
+                $trajet->setCovoitureur($utilisateur); 
+                $form = $this->createForm(CreerFormType::class, $trajet);
+                $session->set('trajet', $trajet);
 
-            $form->handleRequest($request);
-            $res = [];
-            $message = '';
+                $form->handleRequest($request);
+                $res = [];
+                $message = '';
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                // Sauvegarde de l'objet dans la DB
-                $entityManager->persist($this->trajet); 
-                $entityManager->flush();
+                if ($form->isSubmitted() && $form->isValid()) {
+                    // Sauvegarde de l'objet dans la DB
+                    $entityManager->persist($trajet); 
+                    $entityManager->flush();
 
-                // Réponse
-                return new Response('Trajet ' . $this->trajet->getId() . ' crée');
-            }
+                    // Réponse
+                    return new Response('Trajet ' . $trajet->getId() . ' crée', 200);
+                }
 
-            return $this->render('creer/creer.html.twig', [
-                'creer_form' => $form->createView(),
-                'res' => $res,
-                'message' => $message,
-            ]);
+                return $this->render('creer/creer.html.twig', [
+                    'creer_form' => $form->createView(),
+                    'res' => $res,
+                    'message' => $message,
+                ]);
+            } else return new Response('Trajet non récupéré/crée', 503);
         }
-        else
-        {
-            return new Response('Utilisateur actuel non trouvé');
-        }
+        else return new Response('Utilisateur actuel non trouvé', 502);
         
     }
 
 
-    #[Route('/Controller/CreerController.php', name: 'creerPointIntermediaire', methods: ["POST"])]
-    public function ajouterPointIntermediaire(Request $request, VilleRepository $villes, PointIntermediaireRepository $points) : Response {
-        /*
+    #[Route('/Controller/CreerController.php', name: 'preValidationForm', methods: ["POST"])]
+    public function preValidationForm(Request $request, VilleRepository $villes, EntityManagerInterface $entityManager) : Response {
         if ($request->isXMLHttpRequest()) {       
             $data = json_decode($request->getContent(), true);
 
-            $res = $villes->rechercher($data['texte']);
+            $lieuDepart = $villes->getByID($data['lieuDepart']);
+            $lieuArrive = $villes->getByID($data['lieuArrive']);
+            $pointIntermediaireList = array_values($data['pointIntermediaireList']);
 
-            if(count($res) > 0)
+            $session = $request->getSession();
+            if($session != null && $lieuArrive != null && $lieuDepart != null)
             {
-                $pt = new PointIntermediaire();
-                $points->ajouterPointIntermediaire($pt);
-                $pt->setVille(array_values($res)[0]);
-                $pt->setTrajet($this->trajet);
-                $this->trajet->addPointIntermediaire($pt);
-                return new Response("Point intermédiaire ajouté.");
+                $trajet = $session->get('trajet');
+                if($trajet != null)
+                {
+                    $trajet->setLieuDepart($data['lieuDepart']);//$lieuDepart);
+                    $i = 0;
+                    foreach($pointIntermediaireList as $idVille){    
+
+                        $ville = $villes->getByID($idVille);
+                        if($ville != null){
+                            $pt = new PointIntermediaire();
+                            $pt->setVille($ville);
+                            $pt->setTrajet($trajet);
+                            $trajet->addPointIntermediaire($pt);
+
+                            // Sauvegarde du point dans la BDD
+                            $entityManager->persist($pt); 
+                            $entityManager->flush();
+                        } else return new Response("Ville non trouvée (pointIntermediaire)", 500);
+                    }
+                    $trajet->setLieuArrive($data['lieuArrive']);//$lieuArrive);
+
+                    $session->set('trajet', $trajet);
+
+                    return new Response("Tout s'est bien passé.", 200);
+                }
             }
-            return new Response("Ville non trouvée.");
+            else return new Response("Ville non trouvée (lieuDepart ou lieuArrive)", 501);
         }
-    
-        return new Response("Ce n'est pas un requête AJAX !", 400);*/ return new Response("La fonction n'est pas opérationelle");
+        return new Response("Ce n'est pas un requête AJAX !", 400);
     }
 }
 ?>

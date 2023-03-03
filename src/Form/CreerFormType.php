@@ -20,18 +20,18 @@ class CreerFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('lieuDepart', TextType::class, ['label' => 'Lieu de départ* : ',
-                                                  'attr' => ['pattern' => "^[a-zA-ZàâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý]+\.?(?:[- ][a-zA-ZàâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý]+\.?)*$"]])
+            ->add('lieuDepart', TextType::class, ['label' => 'Lieu de départ* : ', 'mapped' => false, 'required' => false])
             ->add('ptIntermediaire', TextType::class, ['label' => 'Point intermédiaire : ', 'mapped' => false, 'required' => false])
             ->add('addPtIntermediaire', ButtonType::class, ['label' => '+'])
             ->add('rmPtIntermediaire', ButtonType::class, ['label' => '-'])
-            ->add('lieuArrive', TextType::class, ['label' => 'Lieu d\'arrivée* : ',
-                                                  'attr' => ['pattern' => "^[a-zA-ZàâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý]+\.?(?:[- ][a-zA-ZàâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý]+\.?)*$"]])
-            ->add('dateHeureDepart', DateTimeType::class, ['label' => 'Date de départ* : '])
+            ->add('lieuArrive', TextType::class, ['label' => 'Lieu d\'arrivée* : ', 'mapped' => false, 'required' => false])
+            ->add('dateHeureDepart', DateTimeType::class, ['label' => 'Date de départ* : ', 'widget' => 'single_text',])
             ->add('precisionLieuRdv', TextareaType::class, ['label' => 'Lieu du rendez-vous* : '])
-            ->add('prix', IntegerType::class, ['label' => 'Prix du trajet* : '])
+            ->add('prix', IntegerType::class, ['label' => 'Prix du trajet* : ',
+            'attr' => ['min' => "1"]])
             ->add('commentaire', TextareaType::class, ['label' => 'Commentaires : ', 'required' => false])
-            ->add('capaciteMax', IntegerType::class, ['label' => 'Nombre de places disponibles* : '])
+            ->add('capaciteMax', IntegerType::class, ['label' => 'Nombre de places disponibles* : ',
+            'attr' => ['min' => "1"]])
 
             ->add('annuler', ResetType::class, ['label' => 'Annuler'])
             ->add('creer', SubmitType::class, ['label' => 'Soumettre'])
