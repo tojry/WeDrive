@@ -6,9 +6,13 @@ use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @method string getUserIdentifier()
+ */
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-class Utilisateur
+class Utilisateur implements \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
 {
 
     #[ORM\Id]
@@ -16,7 +20,7 @@ class Utilisateur
     #[ORM\Column()]
     private ?int $id = null;
 
-    #[ORM\Column(length: 320,unique: true)]
+    #[ORM\Column(length: 320, unique: true)]
     private ?string $adresseMail = null;
 
     #[ORM\Column(length: 128)]
@@ -375,5 +379,9 @@ class Utilisateur
         return $this;
     }
 
-    
+
+    public function getPassword(): ?string
+    {
+        return $this->getMdp() ;
+    }
 }
