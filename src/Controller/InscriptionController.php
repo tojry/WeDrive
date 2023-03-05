@@ -31,12 +31,11 @@ class InscriptionController extends AbstractController
 
             // hash the password (based on the security.yaml config for the $user class)
             $motdePasseSaisi = $utilisateur->getPassword();
-        $hashedPassword = $passwordHasher->hashPassword(
-            $utilisateur,
-            $motdePasseSaisi
-        );
+            $hashedPassword = $passwordHasher->hashPassword(
+                $utilisateur,
+                $motdePasseSaisi
+            );
             $utilisateur->setMdp($hashedPassword);
-
 
 
             $entityManager->persist($utilisateur);
@@ -47,9 +46,10 @@ class InscriptionController extends AbstractController
             return new Response('Utilisateur ajouté ' . $utilisateur->getId() . ' ajouté au site');
         }
 
-        return $this->render('inscription.html.twig', [
-               'inscription_form' => $form->createView(),
+        return $this->render('inscription/inscription.html.twig', [
+            'inscription_form' => $form->createView(),
         ]);
     }
 }
+
 ?>
