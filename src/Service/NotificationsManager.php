@@ -2,6 +2,9 @@
 
 namespace App\Service;
 
+use App\Entity\NotifReponse;
+use App\Entity\NotifAnnulation;
+use App\Entity\NotifTrajetPrive;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\NotifReponseRepository;
 use App\Repository\NotifAnnulationRepository;
@@ -23,6 +26,18 @@ class NotificationsManager
         $this->notifsReponse = $notifsReponse;
         $this->notifsTrajetPrive = $notifsTrajetPrive;
         $this->entityManager = $entityManager;
+    }
+
+    public function envoyerNotifAnnulation(NotifAnnulation $notif){
+        
+    }
+
+    public function envoyerNotifReponse(NotifReponse $notif){
+        
+    }
+
+    public function envoyerNotifTrajetPrive(NotifTrajetPrive $notif){
+        
     }
     
 }
