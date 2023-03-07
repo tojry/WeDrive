@@ -17,12 +17,6 @@ class Trajet
     #[ORM\Column()]
     private ?int $id = null;
 
-    #[ORM\Column(length: 500)]
-    private ?string $lieuDepart = null;
-
-    #[ORM\Column(length: 500)]
-    private ?string $lieuArrive = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\GreaterThan('+24 hours')]
     private ?\DateTimeInterface $dateHeureDepart = null;
@@ -47,10 +41,10 @@ class Trajet
     #[ORM\InverseJoinColumn(name: 'id_utilisateur', referencedColumnName: "id")]
     private Collection $utilisateurs;
 
-    #[ORM\OneToMany(mappedBy: 'trajet', targetEntity: PointIntermediaire::class)]
+    #[ORM\OneToMany(mappedBy: 'trajet', targetEntity: PointIntermediaire::class, cascade:["persist"])]
     private Collection $PointIntermediaires;
 
-    #[ORM\ManyToOne(inversedBy: 'trajetProposés')]
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class,inversedBy: 'trajetProposés')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $Covoitureur = null;
 
@@ -66,6 +60,14 @@ class Trajet
     #[ORM\ManyToOne(inversedBy: 'trajets')]
     private ?GroupeAmis $groupeAmi = null;
 
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Ville $lieuDepart = null;
+
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Ville $lieuArrive = null;
+
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
@@ -78,24 +80,24 @@ class Trajet
         return $this->id;
     }
 
-    public function getLieuDepart(): ?string
+    public function getLieuDepart(): ?Ville
     {
         return $this->lieuDepart;
     }
 
-    public function setLieuDepart(string $lieuDepart): self
+    public function setLieuDepart(Ville $lieuDepart): self
     {
         $this->lieuDepart = $lieuDepart;
 
         return $this;
     }
 
-    public function getLieuArrive(): ?string
+    public function getLieuArrive(): ?Ville
     {
         return $this->lieuArrive;
     }
 
-    public function setLieuArrive(string $lieuArrive): self
+    public function setLieuArrive(Ville $lieuArrive): self
     {
         $this->lieuArrive = $lieuArrive;
 
@@ -216,6 +218,7 @@ class Trajet
         return $this;
     }
 
+
     public function getCovoitureur(): ?Utilisateur
     {
         return $this->Covoitureur;
@@ -314,5 +317,12 @@ class Trajet
         return $this;
     }
 
+    public function newArrayPointIntermediaires(): self
+    {
+
+        $this->PointIntermediaires = new ArrayCollection();
+
+        return $this;
+    }
 
 }

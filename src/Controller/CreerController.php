@@ -19,9 +19,9 @@ class CreerController extends AbstractController {
  
     #[Route('/creer', name: 'creer')]
     public function creer(Request $request, UtilisateurRepository $utilisateurs, EntityManagerInterface $entityManager) : Response { 
-
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $session = $request->getSession();
-        $uId = "1"; //$session->get('user-id');
+        $uId =  $this->getUser()->getUserIdentifier();
         $utilisateur = $utilisateurs->rechercher($uId);
         
         if($utilisateur != null)
@@ -38,6 +38,11 @@ class CreerController extends AbstractController {
                 $message = '';
 
                 if ($form->isSubmitted() && $form->isValid()) {
+
+                    // Persist sur tous les nouveaux points
+                    foreach($trajet->getPointIntermediaires() as $point)
+                        $entityManager->persist($point); 
+
                     // Sauvegarde de l'objet dans la DB
                     $entityManager->persist($trajet); 
                     $entityManager->flush();
@@ -60,6 +65,7 @@ class CreerController extends AbstractController {
 
     #[Route('/Controller/CreerController.php', name: 'preValidationForm', methods: ["POST"])]
     public function preValidationForm(Request $request, VilleRepository $villes, EntityManagerInterface $entityManager) : Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if ($request->isXMLHttpRequest()) {       
             $data = json_decode($request->getContent(), true);
 
@@ -73,7 +79,8 @@ class CreerController extends AbstractController {
                 $trajet = $session->get('trajet');
                 if($trajet != null)
                 {
-                    $trajet->setLieuDepart($data['lieuDepart']);//$lieuDepart);
+                    $trajet->setLieuDepart($lieuDepart);
+                    $trajet->newArrayPointIntermediaires();
                     $i = 0;
                     foreach($pointIntermediaireList as $idVille){    
 
@@ -83,14 +90,9 @@ class CreerController extends AbstractController {
                             $pt->setVille($ville);
                             $pt->setTrajet($trajet);
                             $trajet->addPointIntermediaire($pt);
-
-                            // Sauvegarde du point dans la BDD
-                            $entityManager->persist($pt); 
-                            $entityManager->flush();
                         } else return new Response("Ville non trouvée (pointIntermediaire)", 500);
                     }
-                    $trajet->setLieuArrive($data['lieuArrive']);//$lieuArrive);
-
+                    $trajet->setLieuArrive($lieuArrive);
                     $session->set('trajet', $trajet);
 
                     return new Response("Tout s'est bien passé.", 200);

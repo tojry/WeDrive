@@ -18,7 +18,7 @@ class Ville
     #[ORM\Column(length: 500)]
     private ?string $ville = null;
 
-    #[ORM\OneToMany(mappedBy: 'ville', targetEntity: PointIntermediaire::class)]
+    #[ORM\OneToMany(mappedBy: 'ville', targetEntity: PointIntermediaire::class, cascade:["persist"])]
     private Collection $pointIntermediaires;
 
     #[ORM\Column]
