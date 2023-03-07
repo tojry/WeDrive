@@ -13,10 +13,6 @@ class IndexController extends AbstractController
     public function number(RequestStack $requestStack): Response
     {
 
-        $session = $requestStack->getSession();
-
-
-
 
         return $this->render('index.html.twig');
     }

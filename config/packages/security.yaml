@@ -18,16 +18,17 @@ security:
       security: false
 
     main:
-      custom_authenticator: App\Security\CustomAuthenticator
       lazy: true
       provider: app_user_provider
 
+      form_login:
+        login_path: app_login
+        check_path: app_login
+      logout:
+        path: app_logout
 
-
-
-        # where to redirect after logout
-        # target: app_any_route
-
+        #parge redirigé apres logout
+        target: app_home
 
 
     #protection crsf attack
@@ -40,11 +41,7 @@ security:
   role_hierarchy:
     ROLE_1: ROLE_USER
     ROLE_SUPER_ADMIN: ROLE_ADMIN
-      # activate different ways to authenticate
-      # https://symfony.com/doc/current/security.html#the-firewall
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
