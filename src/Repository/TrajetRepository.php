@@ -54,13 +54,13 @@ class TrajetRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Trajet
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function getByID(String $id): ?Trajet
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id = :idTrajet')
+            ->setParameter('idTrajet', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
