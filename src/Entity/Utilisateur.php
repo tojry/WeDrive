@@ -2,13 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\UtilisateurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
+/**
+ * @method string getUserIdentifier()
+ */
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-class Utilisateur
+#[UniqueEntity('adresseMail')]
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
 
     #[ORM\Id]
@@ -16,8 +24,9 @@ class Utilisateur
     #[ORM\Column()]
     private ?int $id = null;
 
-    #[ORM\Column(length: 320,unique: true)]
+    #[ORM\Column(length: 320, unique: true)]
     private ?string $adresseMail = null;
+
 
     #[ORM\Column(length: 128)]
     private ?string $mdp = null;
@@ -375,5 +384,58 @@ class Utilisateur
         return $this;
     }
 
-    
+
+    public function getPassword(): ?string
+    {
+        return $this->getMdp();
+    }
+
+
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        $this->mdp = null;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->getAdresseMail();
+    }
+
+
+    public function getRoles()
+    {
+        //$roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+
+
+    public
+    function isEqualTo(UserInterface $user): bool
+    {
+        {
+            if (!$user instanceof Utilisateur) {
+                return true;
+            }
+
+            if ($this->mdp !== $user->getPassword()) {
+                return true;
+            }
+
+
+            if ($this->adresseMail !== $user->getUsername()) {
+                return false;
+            }
+
+            return true;
+        }
+    }
 }
