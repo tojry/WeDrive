@@ -13,7 +13,7 @@
 			<nav class="navbar has-background-primary" role="navigation" aria-label="main navigation">
 				<div class="navbar-brand">
 					<a class="navbar-item" href="../">
-						<- Retour à l'accueil
+						{#<- Retour à l'accueil#}
 					</a>
 				</div>
 			</nav>
@@ -23,14 +23,14 @@
                 <h1 class="title">Formulaire de connexion</h1>
                 <form action="{{ path('app_login') }}" method="post">
 					<div class="field">
-						<label class="label" for="username">Email:</label>
+						<label class="label" for="username">Adresse mail</label>
 						<div class="control">
 							<input class="input" type="text" id="username" name="_username" value="{{ last_username }}">
 						</div>
 					</div>
 
 					<div class="field">
-						<label class="label" for="password">Password:</label>
+						<label class="label" for="password">Mot de passe</label>
 						<div class="control">
 							<input class="input" type="password" id="password" name="_password">
 						</div>

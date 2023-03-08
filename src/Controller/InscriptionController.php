@@ -26,8 +26,6 @@ class InscriptionController extends AbstractController
         $message = '';
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Sauvegarde de l'objet dans la DB
-
 
             // hash the password (based on the security.yaml config for the $user class)
             $motdePasseSaisi = $utilisateur->getPassword();
