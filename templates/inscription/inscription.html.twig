@@ -2,6 +2,13 @@
 
 {% block body %}
 
-    {{ form(inscription_form) }}
+    <div class="hero is-fullheight">
+        <div class="hero-body is-centered">
+            <div class="column is-4 m-auto">
+                <h1 class="title">Formulaire d'inscription</h1>
+                {{ form(inscription_form) }}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
