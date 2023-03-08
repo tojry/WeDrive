@@ -205,10 +205,16 @@
 
 {% block body %}
 
-<h2>Créer un trajet (publique)</h2>
 
+<div class="hero is-fullheight">
+    <div class="hero-body is-centered">
+        <div class="column is-4 m-auto">
+            <h1 class="title">Créer un trajet (publique)</h1>
+            {{ form(creer_form) }}
+        </div>
+    </div>
+</div>
 
-{{ form(creer_form) }}
 
 <div class="right">
 </br></br>
