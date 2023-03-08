@@ -38,11 +38,11 @@ class UtilisateurRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    public function rechercher(String $uId) : Utilisateur|null
+    public function rechercher(String $mail) : Utilisateur|null
     {
         return $this->createQueryBuilder('u')
-                ->where('u.id LIKE :idUser')
-                ->setParameter('idUser', '%'.$uId.'%')
+                ->where('u.adresse_mail = :mailUser')
+                ->setParameter('mailUser', $mail)
                 ->getQuery()
                 ->getOneOrNullResult();
     }

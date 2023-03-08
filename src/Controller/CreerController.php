@@ -21,8 +21,8 @@ class CreerController extends AbstractController {
     public function creer(Request $request, UtilisateurRepository $utilisateurs, EntityManagerInterface $entityManager) : Response { 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $session = $request->getSession();
-        $uId =  $this->getUser()->getUserIdentifier();
-        $utilisateur = $utilisateurs->rechercher($uId);
+        $mail =  $this->getUser()->getUserIdentifier();
+        $utilisateur = $utilisateurs->rechercher($mail);
         
         if($utilisateur != null)
         {
