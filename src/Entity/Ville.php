@@ -18,7 +18,7 @@ class Ville
     #[ORM\Column(length: 500)]
     private ?string $ville = null;
 
-    #[ORM\OneToMany(mappedBy: 'ville', targetEntity: PointIntermediare::class)]
+    #[ORM\OneToMany(mappedBy: 'ville', targetEntity: PointIntermediaire::class, cascade:["persist"])]
     private Collection $pointIntermediaires;
 
     #[ORM\Column]
@@ -35,18 +35,6 @@ class Ville
         return $this->id;
     }
 
-    public function getIdVille(): ?int
-    {
-        return $this->idVille;
-    }
-
-    public function setIdVille(int $idVille): self
-    {
-        $this->idVille = $idVille;
-
-        return $this;
-    }
-
     public function getVille(): ?string
     {
         return $this->ville;
@@ -60,14 +48,14 @@ class Ville
     }
 
     /**
-     * @return Collection<int, PointIntermediare>
+     * @return Collection<int, PointIntermediaire>
      */
     public function getPointIntermediaires(): Collection
     {
         return $this->pointIntermediaires;
     }
 
-    public function addPointIntermediaire(PointIntermediare $pointIntermediaire): self
+    public function addPointIntermediaire(PointIntermediaire $pointIntermediaire): self
     {
         if (!$this->pointIntermediaires->contains($pointIntermediaire)) {
             $this->pointIntermediaires->add($pointIntermediaire);
@@ -77,7 +65,7 @@ class Ville
         return $this;
     }
 
-    public function removePointIntermediaire(PointIntermediare $pointIntermediaire): self
+    public function removePointIntermediaire(PointIntermediaire $pointIntermediaire): self
     {
         if ($this->pointIntermediaires->removeElement($pointIntermediaire)) {
             // set the owning side to null (unless already changed)
@@ -100,5 +88,7 @@ class Ville
 
         return $this;
     }
+
+
 
 }
