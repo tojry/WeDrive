@@ -386,6 +386,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     }
 
 
+    public function getUserIdentifier(){
+        return $this->getAdresseMail();
+    }
+
+
     public function getPassword(): ?string
     {
         return $this->getMdp();
@@ -439,4 +444,5 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
             return true;
         }
     }
+
 }
