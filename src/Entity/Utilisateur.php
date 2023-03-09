@@ -12,9 +12,6 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-/**
- * @method string getUserIdentifier()
- */
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[UniqueEntity('adresseMail')]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
