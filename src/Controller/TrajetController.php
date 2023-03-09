@@ -12,7 +12,7 @@ use function PHPUnit\Framework\isEmpty;
 
 class TrajetController extends AbstractController
 {
-    #[Route('/trajet', name: 'app_trajet')]
+    #[Route('/trajet/{id}', name: 'app_trajet')]
     public function detailsTrajet(Trajet $trajet): Response
     {
         if($trajet != null){

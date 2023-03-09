@@ -376,5 +376,9 @@ class Utilisateur
         return $this;
     }
 
+    public function getUserIdentifier(){
+        return $this->getAdresseMail();
+    }
+
     
 }
