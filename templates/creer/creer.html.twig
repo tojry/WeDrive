@@ -68,7 +68,8 @@
                 $('#creer_form_lieuDepart').keyup( function() {
                     let texte = $(this).val();
                     ($(this)[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
-                    suggestionVille(texte, "lieuDepart");
+                    if(texte != "")
+                        suggestionVille(texte, "lieuDepart");
                     lieuDepart = "";
                     $("#prevDepart").text("Départ : ");
                    
@@ -76,7 +77,8 @@
 
                 $('#creer_form_ptIntermediaire').keyup( function(){
                     let texte = $(this).val();
-                    suggestionVille(texte, "pointIntermediaire");
+                    if(texte != "")
+                        suggestionVille(texte, "pointIntermediaire");
                     pointIntermediaireSave = "";
                 });
 
@@ -84,7 +86,8 @@
                 $('#creer_form_lieuArrive').keyup( function(){
                     let texte = $(this).val();
                     ($(this)[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
-                    suggestionVille(texte, "lieuArrive");
+                    if(texte != "")
+                        suggestionVille(texte, "lieuArrive");
                     lieuArrive = "";
                     $("#prevArrive").text("Arrivé : ");  
                 });
