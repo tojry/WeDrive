@@ -1,0 +1,50 @@
+{# templates/login/login.html.twig #}
+{% extends 'base.html.twig' %}
+
+{# ... #}
+
+{% block body %}
+	{% if error %}
+		<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+	{% endif %}
+
+	<div class="hero is-fullheight">
+		<div class="hero-head">
+			<nav class="navbar has-background-primary" role="navigation" aria-label="main navigation">
+				<div class="navbar-brand">
+					<a class="navbar-item" href="../">
+						{#<- Retour à l'accueil#}
+					</a>
+				</div>
+			</nav>
+		</div>
+        <div class="hero-body is-centered">
+            <div class="column is-4 m-auto">
+                <h1 class="title">Formulaire de connexion</h1>
+                <form action="{{ path('app_login') }}" method="post">
+					<div class="field">
+						<label class="label" for="username">Adresse mail</label>
+						<div class="control">
+							<input class="input" type="text" id="username" name="_username" value="{{ last_username }}">
+						</div>
+					</div>
+
+					<div class="field">
+						<label class="label" for="password">Mot de passe</label>
+						<div class="control">
+							<input class="input" type="password" id="password" name="_password">
+						</div>
+					</div>
+
+					{# If you want to control the URL the user is redirected to on success
+					<input type="hidden" name="_target_path" value="/account"> #}
+					<div class="field">
+						<button class="button is-primary" type="submit">login</button>
+					</div>
+				</form>
+            </div>
+        </div>
+    </div>
+	
+	
+{% endblock %}
