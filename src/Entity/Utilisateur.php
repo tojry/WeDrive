@@ -24,6 +24,10 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     private ?int $id = null;
 
     #[ORM\Column(length: 320, unique: true)]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+        message: 'adresse email incorrect  ',
+    )]
     private ?string $adresseMail = null;
 
 
