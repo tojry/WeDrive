@@ -9,14 +9,14 @@
         <nav class="navbar has-background-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item" href="../">
-                    {#<- Retour à l'accueil#}
+                    {# <- Retour à l'accueil #}
                 </a>
             </div>
         </nav>
     </div>
     <div class="hero-body is-centered">
         <div class="column is-4 m-auto">
-            <h1 class="title">Mon compte</h1>
+            <h1 class="title">Mes Informations Personnelles</h1>
 
             <ul>
                 <li>Adresse mail : {{ user.adresseMail }}</li>
@@ -29,7 +29,25 @@
             </ul>
         </div>
     </div>
-    {{ form(form) }}
 
-{% endblock %}
+
+    <div class="hero is-fullheight">
+        <div class="hero-head">
+            <nav class="navbar has-background-primary" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="../">
+                        {# <- Retour à l'accueil #}
+                    </a>
+                </div>
+            </nav>
+        </div>
+        <div class="hero-body is-centered">
+            <div class="column is-4 m-auto">
+                <h1 class="title">Modification</h1>
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
 
