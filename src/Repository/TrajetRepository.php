@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use \Datetime;
 use App\Entity\Trajet;
 use App\Entity\Recherche;
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,6 +39,29 @@ class TrajetRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+    public function getTrajetsPassesUtilisateur($id) : array
+    {
+        $currentDate = new DateTime("now");
+        return $qb = $this->createQueryBuilder('t')
+                ->where('t.Covoitureur = :id')
+                ->setParameter('id', $id)
+                ->andWhere('t.dateHeureDepart < :date')
+                ->setParameter('date', $currentDate)
+                ->getQuery()
+                ->getResult();
+    }
+
+    public function getTrajetsFutursUtilisateur($id) : array
+    {
+        $currentDate = new DateTime("now");
+        return $qb = $this->createQueryBuilder('t')
+                ->where('t.Covoitureur = :id')
+                ->setParameter('id', $id)
+                ->andWhere('t.dateHeureDepart >= :date')
+                ->setParameter('date', $currentDate)
+                ->getQuery()
+                ->getResult();
     }
 
     public function ajouter(Trajet $t) : array
