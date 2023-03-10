@@ -1,35 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block javascripts %}
+<script type="text/javascript" src="suggestion.js"></script>
 <script>
     var lieuDepart = "";
     var lieuArrive = "";
     var pointIntermediaireSave = "";
     var pointIntermediaireList = [];
-
-    function suggestionVille(texte, divName){
-        $.ajax({
-            url: '{{ path('rechercherVille') }}', 
-            data: JSON.stringify({texte: texte}),
-            method: 'POST',
-            contentType: 'application/json',
-            headers: {'X-Requested-With': 'XMLHttpRequest'},
-            success: function (response) 
-            {    
-                $(".autocomplete-items").remove();
-                $(('#autocomplete_'+divName)).append(response);
-            },
-            statusCode: {
-                100: function(response) {
-                    console.log(response.responseText);
-                    $(".autocomplete-items").remove();
-                },
-                400: function(response) {
-                        console.log(response.responseText)
-                    }   
-            }
-        });
-    }
+    const pathSuggestion = '{{ path('rechercherVille') }}';
 
     $(document).ready(function(){
 
@@ -50,26 +28,28 @@
                 $('#creer_form_lieuDepart').focus(function () {
                     let texte = $(this).val();
                     if(texte != "")
-                        suggestionVille(texte, "lieuDepart");
+                        suggestionVille(texte, "lieuDepart", pathSuggestion);
                 });
 
                 $('#creer_form_ptIntermediaire').focus(function () {
                     let texte = $(this).val();
                     if(texte != "")
-                        suggestionVille(texte, "pointIntermediaire");
+                        suggestionVille(texte, "pointIntermediaire", pathSuggestion);
                 });
 
                 $('#creer_form_lieuArrive').focus(function () {
                     let texte = $(this).val();
                     if(texte != "")
-                        suggestionVille(texte, "lieuArrive");
+                        suggestionVille(texte, "lieuArrive", pathSuggestion);
                 });
 
                 $('#creer_form_lieuDepart').keyup( function() {
                     let texte = $(this).val();
                     ($(this)[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
                     if(texte != "")
-                        suggestionVille(texte, "lieuDepart");
+                        suggestionVille(texte, "lieuDepart", pathSuggestion);
+                    else 
+                        $(".autocomplete-items").remove();
                     lieuDepart = "";
                     $("#prevDepart").text("Départ : ");
                    
@@ -78,7 +58,9 @@
                 $('#creer_form_ptIntermediaire').keyup( function(){
                     let texte = $(this).val();
                     if(texte != "")
-                        suggestionVille(texte, "pointIntermediaire");
+                        suggestionVille(texte, "pointIntermediaire", pathSuggestion);
+                    else
+                    $(".autocomplete-items").remove();
                     pointIntermediaireSave = "";
                 });
 
@@ -87,7 +69,9 @@
                     let texte = $(this).val();
                     ($(this)[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
                     if(texte != "")
-                        suggestionVille(texte, "lieuArrive");
+                        suggestionVille(texte, "lieuArrive", pathSuggestion);
+                    else 
+                        $(".autocomplete-items").remove();
                     lieuArrive = "";
                     $("#prevArrive").text("Arrivé : ");  
                 });
@@ -128,7 +112,9 @@
                     else{
                         $('#creer_form_ptIntermediaire').focus();
                         ($('#creer_form_ptIntermediaire')[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
-                        suggestionVille($('#creer_form_ptIntermediaire').val(), "pointIntermediaire");
+                        texte = $('#creer_form_ptIntermediaire').val();
+                        if(texte != "")
+                            suggestionVille(texte, "pointIntermediaire", pathSuggestion);
                     }
                 });
 
@@ -145,7 +131,9 @@
                     } else if (index != -1) {
                         $('#creer_form_ptIntermediaire').focus();
                         ($('#creer_form_ptIntermediaire')[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
-                        suggestionVille($('#creer_form_ptIntermediaire').val(), "pointIntermediaire");
+                        texte = $('#creer_form_ptIntermediaire').val();
+                        if(texte != "")
+                            suggestionVille(texte, "pointIntermediaire", pathSuggestion);
                     }
                 });
 
