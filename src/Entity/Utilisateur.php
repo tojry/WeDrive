@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[UniqueEntity('adresseMail')]
@@ -27,6 +28,10 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
 
 
     #[ORM\Column(length: 128)]
+    #[Assert\Regex(
+        pattern: ' /^[a-zA-Z0-9àâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý \-\_!#$\*%{}\^&?\. ]{8,}$/i ',
+        message: 'mot de passe tres faible :8 caractères minimum composé de lettres, chiffres, tirets, accents, points et caractères  ',
+    )]
     private ?string $mdp = null;
 
     #[ORM\Column(length: 64)]
@@ -42,6 +47,10 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     private ?bool $voiture = null;
 
     #[ORM\Column(length: 11)]
+    #[Assert\Regex(
+        pattern: '/^[\+|0][0-9]{9,11}$/',
+        message: 'numero de telephone invalide',
+    )]
     private ?string $noTel = null;
 
     #[ORM\Column]
@@ -383,7 +392,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     }
 
 
-    public function getUserIdentifier(){
+    public function getUserIdentifier()
+    {
         return $this->getAdresseMail();
     }
 
@@ -418,7 +428,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
 
         return array_unique($roles);
     }
-
 
 
     public
