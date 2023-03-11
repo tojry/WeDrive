@@ -5,15 +5,13 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-/**
- * @method string getUserIdentifier()
- */
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[UniqueEntity('adresseMail')]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
@@ -385,6 +383,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     }
 
 
+    public function getUserIdentifier(){
+        return $this->getAdresseMail();
+    }
+
+
     public function getPassword(): ?string
     {
         return $this->getMdp();
@@ -438,4 +441,5 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
             return true;
         }
     }
+
 }
