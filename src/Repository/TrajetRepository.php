@@ -48,6 +48,7 @@ class TrajetRepository extends ServiceEntityRepository
                 ->setParameter('id', $id)
                 ->andWhere('t.dateHeureDepart < :date')
                 ->setParameter('date', $currentDate)
+                ->orderBy('t.dateHeureDepart', 'ASC')
                 ->getQuery()
                 ->getResult();
     }
@@ -60,6 +61,7 @@ class TrajetRepository extends ServiceEntityRepository
                 ->setParameter('id', $id)
                 ->andWhere('t.dateHeureDepart >= :date')
                 ->setParameter('date', $currentDate)
+                ->orderBy('t.dateHeureDepart', 'ASC')
                 ->getQuery()
                 ->getResult();
     }
