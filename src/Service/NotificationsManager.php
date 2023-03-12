@@ -29,17 +29,22 @@ class NotificationsManager
     }
 
     public function envoyerNotifAnnulation(NotifAnnulation $notif){
-        
+
+        $this->entityManager->persist($notif); 
+        $this->entityManager->flush();
     }
 
     public function envoyerNotifReponse(NotifReponse $notif){
         
+        $this->entityManager->persist($notif); 
+        $this->entityManager->flush();
     }
 
     public function envoyerNotifTrajetPrive(NotifTrajetPrive $notif){
         
+        $this->entityManager->persist($notif); 
+        $this->entityManager->flush();
     }
-    
 }
 
 ?>
