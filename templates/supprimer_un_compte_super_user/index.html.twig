@@ -24,13 +24,12 @@
                 <th> {{ utilisateur.getPrenom() }} </th>
                 <th> {{utilisateur.getAdresseMail() }} </th>
                 <th>
-                    <button style="color:red" onclick="javascript:alert('Test Suppression d\'un l\'utilisateur')">
+                    <button style="color:red" onclick="window.location.href='{{ path('utilisateur.supprimerCompte', {id:utilisateur.getId()}) }}' ">
                         Supprimer compte 
                     </button>
                 </th>
         </tr>
         {%endfor%}
-        
     </table>
 </div>
 
