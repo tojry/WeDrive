@@ -21,7 +21,7 @@ class Ville
     #[ORM\OneToMany(mappedBy: 'ville', targetEntity: PointIntermediaire::class, cascade:["persist"])]
     private Collection $pointIntermediaires;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 5)]
     private ?string $code_postal = null;
 
     public function __construct()
@@ -89,6 +89,8 @@ class Ville
         return $this;
     }
 
-
+    public function __toString() {
+        return $this->getVille().' ('.$this->getCodePostal().')';
+    }
 
 }
