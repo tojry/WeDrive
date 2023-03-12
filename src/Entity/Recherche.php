@@ -7,31 +7,31 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Recherche
 {
-    private ?string $lieuDepart = null;
+    private ?Ville $lieuDepart = null;
 
-    private ?string $lieuArrivee = null;
+    private ?Ville $lieuArrivee = null;
 
     #[Assert\Type(\DateTime::class)]
     private ?DateTimeInterface $dateDepart = null;
 
-    public function getLieuDepart(): ?string
+    public function getLieuDepart(): ?Ville
     {
         return $this->lieuDepart;
     }
 
-    public function setLieuDepart(?string $lieuDepart): self
+    public function setLieuDepart(?Ville $lieuDepart): self
     {
         $this->lieuDepart = $lieuDepart;
 
         return $this;
     }
 
-    public function getLieuArrivee(): ?string
+    public function getLieuArrivee(): ?Ville
     {
         return $this->lieuArrivee;
     }
 
-    public function setLieuArrivee(?string $lieuArrivee): self
+    public function setLieuArrivee(?Ville $lieuArrivee): self
     {
         $this->lieuArrivee = $lieuArrivee;
 

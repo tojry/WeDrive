@@ -5,8 +5,6 @@ namespace App\Repository;
 use App\Entity\Trajet;
 use App\Entity\Recherche;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Recherche;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -51,13 +49,14 @@ class TrajetRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('t');
 
+        
         if($depart){
-            $qb->andWhere('t.lieuDepart LIKE :depart')
-            ->setParameter('depart', '%'.$depart.'%');
+            $qb->andWhere('t.lieuDepart = :depart')
+            ->setParameter('depart', $depart);
         }
         if($arrivee){
-            $qb->andWhere('t.lieuArrive LIKE :arrivee')
-            ->setParameter('arrivee', '%'.$arrivee.'%');
+            $qb->andWhere('t.lieuArrive = :arrivee')
+            ->setParameter('arrivee', $arrivee);
         }
         if($date){
             $from = new \DateTime($date->format("Y-m-d")." 00:00:00");
@@ -67,7 +66,7 @@ class TrajetRepository extends ServiceEntityRepository
             ->setParameter('to', $to);
         }
         $qb->orderBy('t.dateHeureDepart', 'ASC');
-
+        
         $query  = $qb->getQuery();
 
         return $query->execute();

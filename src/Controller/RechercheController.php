@@ -29,7 +29,7 @@ class RechercheController extends AbstractController {
             $res = $trajets->rechercher($recherche);
 
             if (count($res) === 0) {
-                $message = 'Aucune offre trouvée.';
+                $message .= 'Aucune offre trouvée.';
             }
         }
 

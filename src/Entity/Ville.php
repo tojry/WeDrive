@@ -35,18 +35,6 @@ class Ville
         return $this->id;
     }
 
-    public function getIdVille(): ?int
-    {
-        return $this->ville;
-    }
-
-    public function setIdVille(int $idVille): self
-    {
-        $this->ville = $idVille;
-
-        return $this;
-    }
-
     public function getVille(): ?string
     {
         return $this->ville;
@@ -101,6 +89,8 @@ class Ville
         return $this;
     }
 
-
+    public function __toString() {
+        return $this->getVille().' ('.$this->getCodePostal().')';
+    }
 
 }
