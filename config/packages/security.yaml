@@ -1,24 +1,47 @@
 security:
-    enable_authenticator_manager: true
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
-    password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
-    providers:
-        users_in_memory: { memory: null }
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            lazy: true
-            provider: users_in_memory
+  enable_authenticator_manager: true
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
+  providers:
+    users_in_memory: { memory: null }
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+    #fournit l'utilidateur utilisateur(necessaire pour le hachage du mdp)
+    app_user_provider:
+      entity:
+        class: App\Entity\Utilisateur
+        property: adresseMail
+
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    main:
+      lazy: true
+      provider: app_user_provider
+
+      form_login:
+        login_path: app_login
+        check_path: app_login
+      logout:
+        path: app_logout
+
+        #parge redirigé apres logout
+        target: app_home
+
+
+    #protection crsf attack
+    enable_csrf: true
+
+
+
+
+  #hierachie des roles
+  role_hierarchy:
+    ROLE_1: ROLE_USER
+    ROLE_SUPER_ADMIN: ROLE_ADMIN
+
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
@@ -29,6 +52,7 @@ security:
 when@test:
     security:
         password_hashers:
+            App\Entity\Utilisateur:
             # By default, password hashers are resource intensive and take time. This is
             # important to generate secure password hashes. In tests however, secure hashes
             # are not important, waste resources and increase test times. The following

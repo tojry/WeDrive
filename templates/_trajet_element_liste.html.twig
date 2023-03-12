@@ -1,0 +1,9 @@
+<div>
+<p>{{ trajet.covoitureur.prenom|capitalize }}</p>
+<p>{{ trajet.lieuDepart|capitalize }} - {{ trajet.lieuArrive|capitalize }}</p>
+<p>{{ trajet.dateHeureDepart|date("d/m/Y - H:i") }}</p>
+<p>{{ trajet.prix }}€</p>
+
+<a href="{{ path('app_trajet', {id: trajet.id}) }}">Voir les détails</a>
+
+</div>
