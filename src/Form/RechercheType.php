@@ -25,14 +25,17 @@ class RechercheType extends AbstractType
         $builder
             ->add('lieuDepart', TextType::class, [
                 'label' => 'Départ',
+                'invalid_message' => 'Ville non valide. Veuillez choisir une option dans la liste.',
                 'required' => false,
             ])
             ->add('lieuArrivee', TextType::class, [
                 'label' => 'Arrivée',
+                'invalid_message' => 'Ville non valide. Veuillez choisir une option dans la liste.',
                 'required' => false,
             ])
             ->add('dateDepart', DateType::class, [
                 'label' => 'Date',
+                'invalid_message' => 'Date non valide.',
                 'widget' => 'single_text',
                 'required' => false,
             ])
