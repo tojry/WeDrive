@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <ul>
+    {% if notifs|length > 0 %}
+        {% for n in notifs %}
+            <li> Notif recue </li>
+        {% endfor %}
+    {% endif %}
+    </ul>
+
+{% endblock %}

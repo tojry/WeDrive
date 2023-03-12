@@ -15,6 +15,8 @@ class RechercheController extends AbstractController {
     #[Route('/recherche', name: 'recherche')]
     public function rechercher(Request $request, TrajetRepository $trajets) : Response {
 
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
         $recherche = new Recherche();
 
         $form = $this->createForm(RechercheType::class, $recherche);

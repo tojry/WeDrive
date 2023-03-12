@@ -21,6 +21,12 @@ class NotifAnnulation
     #[ORM\JoinColumn(nullable: false)]
     private ?Trajet $trajetConcerne = null;
 
+    #[ORM\Column(type: 'string', length: 1024)]
+    private $texteNotif;
+
+    #[ORM\Column(type: 'datetime')]
+    private $dateHeureNotif;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +52,30 @@ class NotifAnnulation
     public function setTrajetConcerne(Trajet $trajetConcerne): self
     {
         $this->trajetConcerne = $trajetConcerne;
+
+        return $this;
+    }
+
+    public function getTexteNotif(): ?string
+    {
+        return $this->texteNotif;
+    }
+
+    public function setTexteNotif(string $texteNotif): self
+    {
+        $this->texteNotif = $texteNotif;
+
+        return $this;
+    }
+
+    public function getDateHeureNotif(): ?\DateTimeInterface
+    {
+        return $this->dateHeureNotif;
+    }
+
+    public function setDateHeureNotif(\DateTimeInterface $dateHeureNotif): self
+    {
+        $this->dateHeureNotif = $dateHeureNotif;
 
         return $this;
     }

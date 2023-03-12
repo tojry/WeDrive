@@ -21,6 +21,12 @@ class NotifTrajetPrive
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $UtilisateurConcerne = null;
 
+    #[ORM\Column(type: 'string', length: 1024)]
+    private $texteNotif;
+
+    #[ORM\Column(type: 'datetime')]
+    private $dateHeureNotif;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +52,30 @@ class NotifTrajetPrive
     public function setUtilisateurConcerne(?Utilisateur $UtilisateurConcerne): self
     {
         $this->UtilisateurConcerne = $UtilisateurConcerne;
+
+        return $this;
+    }
+
+    public function getTexteNotif(): ?string
+    {
+        return $this->texteNotif;
+    }
+
+    public function setTexteNotif(string $texteNotif): self
+    {
+        $this->texteNotif = $texteNotif;
+
+        return $this;
+    }
+
+    public function getDateHeureNotif(): ?\DateTimeInterface
+    {
+        return $this->dateHeureNotif;
+    }
+
+    public function setDateHeureNotif(\DateTimeInterface $dateHeureNotif): self
+    {
+        $this->dateHeureNotif = $dateHeureNotif;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Utilisateur;
 use App\Entity\NotifReponse;
 use App\Entity\NotifAnnulation;
 use App\Entity\NotifTrajetPrive;
@@ -44,6 +45,13 @@ class NotificationsManager
         
         $this->entityManager->persist($notif); 
         $this->entityManager->flush();
+    }
+
+    public function chargerNotifs(Utilisateur $user) : array{
+        
+        $listeNotifs = $this->notifsReponse->findByUser($user);
+
+        return $listeNotifs;
     }
 }
 
