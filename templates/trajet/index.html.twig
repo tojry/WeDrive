@@ -29,8 +29,6 @@
                 {{ listePointsIntermediaires|raw }}
             </ol>
         </div>
-    
-    
 
     <p id="lieuArrive">Lieu d'arrivé : {{ lieuArrive }} </p>
 
@@ -43,12 +41,52 @@
 <br>
 
 <div Align=CENTER >
-
-    <a class="button is-primary"  style="background:height:50px;width:200px;font: 18px/1.5 sans-serif;" href="/supprimer">
+    <button id="supprimer" onclick="openPopup()" type="button" class="button is-primary" style="background:height:50px;width:200px;font: 18px/1.5 sans-serif;">
         Supprimer ce trajet
-    </a>
-
+    </button>
 </div>
+
+<br>
+
+<div Align="CENTER" style="display:none" id="popup">
+    <div class="modal-header">
+        <div class="title">Etes-vous sure de vouloir supprimer ce trajet ?</div>
+    </div>
+    <br>
+    <div class="modal-body">
+        <button type="button" onclick="window.location.href='../';" style="background:height:50px;width:150px;font: 18px/1.5 sans-serif;">Oui</button>
+        <button type="button" style="background:height:50px;width:150px;font: 18px/1.5 sans-serif;" onClick="openPopup()">Non</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function openPopup(){
+        if(document.getElementById('popup').style.display=="none"){
+            document.getElementById('popup').style="display:block;";
+            document.getElementById('supprimer').style="display:none;";
+        }else{
+            document.getElementById('popup').style="display:none;";
+            document.getElementById('supprimer').style="display:block;background:height:50px;width:200px;font: 18px/1.5 sans-serif;";
+        }
+    }
+
+    /*
+
+    On teste si l'utilisateur est bien le créateur de l'offre, si oui on lui donne la possibilité de la supprimer sinon non
+    if(  ){
+        document.getElementById('supprimer').style="display:none;";
+    }
+
+
+    Fonction pour supprimer la ligne correspondant au trajet dans la BDD, lié au bouton "Oui"
+    function supprimerTrajetBDD(){
+
+    }
+
+    */
+
+</script>
 
 
 {% endblock %}
