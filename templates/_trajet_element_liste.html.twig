@@ -4,6 +4,6 @@
 <p>{{ trajet.dateHeureDepart|date("d/m/Y - H:i") }}</p>
 <p>{{ trajet.prix }}€</p>
 
-<a href="..{{ path('app_trajet', {id: trajet.id}) }}">Voir les détails</a>
+<a href="{{ path('app_trajet', {id: trajet.id}) }}">Voir les détails</a>
 
 </div>
