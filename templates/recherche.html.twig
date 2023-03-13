@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+
+    <script type="text/javascript" src="suggestion.js"></script>
+    <script type="text/javascript" src="recherche.js"></script>
+    
+
+    <script>
+    $(document).ready(function(){
+
+        const pathSuggestion = '{{ path('rechercherVille') }}';
+        
+        /* Suggestion des villes */
+
+        $('#recherche_lieuDepart').focusout(function () {
+            $(".autocomplete-items").remove();
+        });
+
+        $('#recherche_lieuArrivee').focusout(function () {
+            $(".autocomplete-items").remove();
+        });
+
+        $('#recherche_lieuDepart').focus(function () {
+            let texte = $(this).val();
+            if(texte != "")
+                suggestionVille(texte, "lieuDepart", pathSuggestion);
+        });
+
+        $('#recherche_lieuArrivee').focus(function () {
+            let texte = $(this).val();
+            if(texte != "")
+                suggestionVille(texte, "lieuArrive", pathSuggestion);
+        });
+
+        $('#recherche_lieuDepart').keyup( function() {
+            let texte = $(this).val();
+            if(texte != "")
+                suggestionVille(texte, "lieuDepart", pathSuggestion);
+            else 
+                $(".autocomplete-items").remove(); 
+        });
+
+
+        $('#recherche_lieuArrivee').keyup( function(){
+            let texte = $(this).val();
+            if(texte != "")
+                suggestionVille(texte, "lieuArrive", pathSuggestion);
+            else 
+                $(".autocomplete-items").remove();
+        });
+
+        $(document).on('mousedown', '.autocomplete-items', function(){
+            switch($(this).parent().attr('id')){
+                case "autocomplete_lieuDepart":
+                    $('#recherche_lieuDepart').prop('value', $(this).text());
+                    ($('#recherche_lieuDepart')[0]).setCustomValidity("");
+                    break;
+                case "autocomplete_lieuArrive":
+                    $('#recherche_lieuArrivee').prop('value', $(this).text());
+                    ($('#recherche_lieuArrivee')[0]).setCustomValidity("");
+                    break;
+                default: break;
+            }
+        });
+    });
+    </script>
+
+{% endblock %}
+
+{% block body %}
+    {{ include('_champs_recherche.html.twig', {form: form}) }}
+
+    <div id="autocomplete_lieuDepart">
+    </div>
+    <div id="autocomplete_lieuArrive">
+    </div>
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    {% if res|length > 0 %}
+        {% for r in res %}
+            {{ include('_trajet_element_liste.html.twig', {trajet: r}) }}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
