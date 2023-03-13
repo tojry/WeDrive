@@ -30,6 +30,7 @@ class CreerController extends AbstractController {
             if($trajet != null)
             {
                 $trajet->setCovoitureur($utilisateur); 
+                $trajet->addUtilisateur($utilisateur);
                 $form = $this->createForm(CreerFormType::class, $trajet);
                 $session->set('trajet', $trajet);
 
