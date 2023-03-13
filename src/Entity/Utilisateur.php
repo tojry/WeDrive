@@ -47,7 +47,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\Column]
     private ?bool $mailNotif = null;
 
-    #[ORM\ManyToMany(targetEntity: Trajet::class, mappedBy: '$utilisateurs')]
+    #[ORM\ManyToMany(targetEntity: Trajet::class, mappedBy: 'utilisateurs')]
     private Collection $trajets;
 
     #[ORM\ManyToMany(targetEntity: GroupeAmis::class, inversedBy: 'utilisateurs')]

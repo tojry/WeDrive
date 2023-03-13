@@ -2,14 +2,16 @@
 
 {% block title %}Supprimer un compte (super-utilisateur){% endblock %}
 
+{% block head %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"> {% endblock %}
+
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
-<h3> Supprimer un compte en tant que super-utilisateur </h3>
-<div class="card">
-    <table>
+<h3 class="title is-4"> Cette page est reservée aux super-utilisateurs de Wedrive </h3>
+<div>
+    <table class="table">
         <tr>
             <th> Identifiant </th>
             <th> Nom  </th>
@@ -24,7 +26,7 @@
                 <th> {{ utilisateur.getPrenom() }} </th>
                 <th> {{utilisateur.getAdresseMail() }} </th>
                 <th>
-                    <button style="color:red" onclick="window.location.href='{{ path('utilisateur.supprimerCompte', {id:utilisateur.getId()}) }}' ">
+                    <button class="button is-primary" onclick="window.location.href='{{ path('utilisateur.supprimerCompte', {id:utilisateur.getId()}) }}' ">
                         Supprimer compte 
                     </button>
                 </th>
