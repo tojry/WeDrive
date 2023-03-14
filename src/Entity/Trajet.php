@@ -44,7 +44,7 @@ class Trajet
     #[ORM\OneToMany(mappedBy: 'trajet', targetEntity: PointIntermediaire::class, cascade:["persist"])]
     private Collection $PointIntermediaires;
 
-    #[ORM\ManyToOne(targetEntity: Utilisateur::class,inversedBy: 'trajetProposés')]
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class,inversedBy: 'trajetProposes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $Covoitureur = null;
 

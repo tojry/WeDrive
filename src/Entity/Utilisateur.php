@@ -419,8 +419,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         return array_unique($roles);
     }
 
-
-
     public
     function isEqualTo(UserInterface $user): bool
     {

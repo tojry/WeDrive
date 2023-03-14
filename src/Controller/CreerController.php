@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Entity\PointIntermediaire;
 use App\Entity\Trajet;
-use App\Entity\Utilisateur;
-use App\Entity\Ville;
 use App\Form\CreerFormType;
 use App\Repository\UtilisateurRepository;
 use App\Repository\VilleRepository;
