@@ -205,7 +205,9 @@
                     <h1 class="title">Créer un trajet (publique)</h1>
                     {{ form_start(creer_form) }}
                         {{ form_row(creer_form.lieuDepart) }}
+                        <div id="autocomplete_lieuDepart"></div>
                         {{ form_row(creer_form.ptIntermediaire) }}
+                        <div id="autocomplete_pointIntermediaire"></div>
 
 
                         <div class="field is-grouped">
@@ -214,6 +216,9 @@
                         </div>
 
                         {{ form_row(creer_form.lieuArrive) }}
+                        <div id="autocomplete_lieuArrive"></div>
+
+
                         {{ form_row(creer_form.dateHeureDepart) }}
                         {{ form_row(creer_form.precisionLieuRdv) }}
                         {{ form_row(creer_form.prix) }}  
@@ -228,13 +233,6 @@
                 </div>
 
                 <div class="column box">
-                        <div id="autocomplete_lieuDepart">
-                        </div>
-                        <div id="autocomplete_lieuArrive">
-                        </div>
-                        <div id="autocomplete_pointIntermediaire">
-                        </div>
-
                         <h2 class="title is-4">Prévisualisation du trajet</h2>
 
                         <p id="prevDepart"></p>
