@@ -198,35 +198,43 @@
 
 
 <div class="hero is-fullheight">
-    <div class="hero-body is-centered">
-        <div class="column is-4 m-auto">
-            <h1 class="title">Créer un trajet (publique)</h1>
-            {{ form(creer_form) }}
+    <div class="hero-body is-centered"> 
+        <div class="column is-6 m-auto">
+            <div class="columns">
+                <div class="column is-two-thirds">
+                    <h1 class="title">Créer un trajet (publique)</h1>
+                    {{ form_start(creer_form) }}
+
+                    {{ form_end(creer_form) }}
+                </div>
+
+                <div class="column box">
+                        <div id="autocomplete_lieuDepart">
+                        </div>
+                        <div id="autocomplete_lieuArrive">
+                        </div>
+                        <div id="autocomplete_pointIntermediaire">
+                        </div>
+
+                        <h2 class="title is-4">Prévisualisation du trajet</h2>
+
+                        <p id="prevDepart"></p>
+                        <p hidden id="prevPointsIntermediaires">Etape(s) intermédiaire(s) : </p>
+                        <ol>
+                            <div id="prevListePtIntermediaires"></div>
+                        </ol>
+
+                        <p id="prevArrive"></p>
+
+                    </div>
+            </div>
+            
         </div>
     </div>
 </div>
 
 
-<div class="right">
-</br></br>
-    <div id="autocomplete_lieuDepart">
-    </div>
-    <div id="autocomplete_lieuArrive">
-    </div>
-    <div id="autocomplete_pointIntermediaire">
-    </div>
 
-    <h2>Prévisualisation du trajet</h2>
-
-    <p id="prevDepart"></p>
-    <p hidden id="prevPointsIntermediaires">Etape(s) intermédiaire(s) : </p>
-    <ol>
-        <div id="prevListePtIntermediaires"></div>
-    </ol>
-
-    <p id="prevArrive"></p>
-
-</div>
 
 {% endblock %}
 
