@@ -27,12 +27,21 @@
 						<div class="navbar-end">
 							<div class="navbar-item">
 								<div class="buttons">
-									<a class="button is-primary">
-										<strong>S'inscrire</strong>
-									</a>
-									<a class="button is-light">
-										Se connecter
-									</a>
+
+									{% if not is_granted("ROLE_USER") %}
+										<a href="{{ path('/inscription') }}" class="button is-primary">
+											<strong>S'inscrire</strong>
+										</a>
+
+										<a href="{{ path('/login') }}" class="button is-light">
+											Se connecter
+										</a>
+									{% else %}
+										<a href="{{ path('/logout') }}" class="button is-light">
+											Se Deconnecter
+										</a>
+									{% endif %}
+
 								</div>
 							</div>
 						</div>
