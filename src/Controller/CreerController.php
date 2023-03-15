@@ -11,94 +11,87 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CreerController extends AbstractController {
  
     #[Route('/creer', name: 'creer')]
-    public function creer(Request $request, UtilisateurRepository $utilisateurs, EntityManagerInterface $entityManager) : Response { 
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $session = $request->getSession();
+    public function creer(Request $request, UtilisateurRepository $utilisateurs, EntityManagerInterface $entityManager, VilleRepository $villes) : Response { 
         $mail =  $this->getUser()->getUserIdentifier();
-        $utilisateur = $utilisateurs->rechercher($mail);
-        
-        if($utilisateur != null)
-        {
-            $trajet = $session->get('trajet', new Trajet());
-            if($trajet != null)
-            {
-                $trajet->setCovoitureur($utilisateur); 
-                $form = $this->createForm(CreerFormType::class, $trajet);
-                $session->set('trajet', $trajet);
+        if($mail != null && $mail != ""){
+            $utilisateur = $utilisateurs->findOneBy(['adresseMail' => $mail]);
+            $session = $request->getSession();
+            if($utilisateur != null && $session != null) {
+                $trajet = new Trajet();
+                if($trajet != null){
+                    $utilisateur->addTrajetPropose($trajet); 
+                    $form = $this->createForm(CreerFormType::class, $trajet);
 
-                $form->handleRequest($request);
-                $res = [];
-                $message = '';
+                    $form->handleRequest($request);
+                    $res = [];
+                    $message = '';
 
-                if ($form->isSubmitted() && $form->isValid()) {
+                    if ($form->isSubmitted() && $form->isValid()) {
+                        $lieuDepart = $session->get('lieuDepart');
+                        $lieuArrive = $session->get('lieuArrive');
+                        $pointIntermediaireList = $session->get('pointIntermediaireList');
 
-                    // Persist sur tous les nouveaux points
-                    foreach($trajet->getPointIntermediaires() as $point)
-                        $entityManager->persist($point); 
+                        if(isset($lieuArrive) && isset($lieuDepart) && $lieuArrive != "" && $lieuDepart != ""){
+                            $lieuDepartVille = $villes->findOneBy(['id' => $lieuDepart]);
+                            $lieuArriveVille = $villes->findOneBy(['id' => $lieuArrive]);
 
-                    // Sauvegarde de l'objet dans la DB
-                    $entityManager->persist($trajet); 
-                    $entityManager->flush();
+                            if($lieuArrive != null && $lieuArrive != null){
+                                $trajet->setLieuDepart($lieuDepartVille);
+                                $trajet->setLieuArrive($lieuArriveVille);
+                                $trajet->newArrayPointIntermediaires();
+                                
+                                if(isset($pointIntermediaireList)) {
+                                    foreach($pointIntermediaireList as $idVille){    
+                                        $ville = $villes->findOneBy(['id' => $idVille]);
+                                        if($ville != null){
+                                            $pt = new PointIntermediaire();
+                                            $pt->setVille($ville);
+                                            $pt->setTrajet($trajet);
+                                            $trajet->addPointIntermediaire($pt);
+                                        } else return new Response("Ville non trouvée (pointIntermediaire)", 500);
+                                    }
+                                }
+                                // Sauvegarde de l'objet dans la DB   
+                                $entityManager->persist($trajet); 
+                                $entityManager->flush();
 
-                    // Réponse
-                    return new Response('Trajet ' . $trajet->getId() . ' crée', 200);
-                }
+                                // Réponse
+                                return new Response('Trajet ' . $trajet->getId() . ' crée', 200);
+                            } else return new Response('Lieu de départ ou d\'arrivé invalide', 501);
+                        } else return new Response('Lieu de départ ou d\'arrivé invalide', 501); 
+                    } 
 
-                return $this->render('creer/creer.html.twig', [
-                    'creer_form' => $form->createView(),
-                    'res' => $res,
-                    'message' => $message,
-                ]);
-            } else return new Response('Trajet non récupéré/crée', 503);
+                    return $this->render('creer/creer.html.twig', [
+                        'creer_form' => $form->createView(),
+                        'res' => $res,
+                        'message' => $message,
+                    ]);
+
+                } else return new Response('Trajet non créée', 502);
+            
+            } else return new Response('Utilisateur actuel non trouvé', 503);
         }
-        else return new Response('Utilisateur actuel non trouvé', 502);
-        
     }
 
 
     #[Route('/Controller/CreerController.php', name: 'preValidationForm', methods: ["POST"])]
-    public function preValidationForm(Request $request, VilleRepository $villes, EntityManagerInterface $entityManager) : Response {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        if ($request->isXMLHttpRequest()) {       
+    public function preValidationForm(Request $request) : Response {
+        if ($request->isXMLHttpRequest()) {  
+            $session = $request->getSession();     
             $data = json_decode($request->getContent(), true);
 
-            $lieuDepart = $villes->getByID($data['lieuDepart']);
-            $lieuArrive = $villes->getByID($data['lieuArrive']);
-            $pointIntermediaireList = array_values($data['pointIntermediaireList']);
+            $session->set('lieuDepart', $data['lieuDepart']);
+            $session->set('lieuArrive', $data['lieuArrive']);
+            $session->set('pointIntermediaireList', array_values($data['pointIntermediaireList']));
 
-            $session = $request->getSession();
-            if($session != null && $lieuArrive != null && $lieuDepart != null)
-            {
-                $trajet = $session->get('trajet');
-                if($trajet != null)
-                {
-                    $trajet->setLieuDepart($lieuDepart);
-                    $trajet->newArrayPointIntermediaires();
-                    $i = 0;
-                    foreach($pointIntermediaireList as $idVille){    
-
-                        $ville = $villes->getByID($idVille);
-                        if($ville != null){
-                            $pt = new PointIntermediaire();
-                            $pt->setVille($ville);
-                            $pt->setTrajet($trajet);
-                            $trajet->addPointIntermediaire($pt);
-                        } else return new Response("Ville non trouvée (pointIntermediaire)", 500);
-                    }
-                    $trajet->setLieuArrive($lieuArrive);
-                    $session->set('trajet', $trajet);
-
-                    return new Response("Tout s'est bien passé.", 200);
-                }
-            }
-            else return new Response("Ville non trouvée (lieuDepart ou lieuArrive)", 501);
-        }
-        return new Response("Ce n'est pas un requête AJAX !", 400);
+            return new Response("Sauvegardé en session", 200);
+        } else return new Response("Ce n'est pas un requête AJAX !", 400);
     }
 }
 ?>

@@ -69,7 +69,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\JoinTable(name: 'amitie')]
     private Collection $Amis;
 
-    #[ORM\OneToMany(mappedBy: 'Covoitureur', targetEntity: Trajet::class)]
+    #[ORM\OneToMany(mappedBy: 'Covoitureur', targetEntity: Trajet::class, cascade:['persist'])]
     private Collection $trajetProposes;
 
     #[ORM\OneToMany(mappedBy: 'utilisateurConcerne', targetEntity: Reponse::class)]
@@ -261,6 +261,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         if (!$this->trajetProposes->contains($trajetPropose)) {
             $this->trajetProposes->add($trajetPropose);
             $trajetPropose->setCovoitureur($this);
+            $this->addTrajet($trajetPropose);
         }
 
         return $this;
