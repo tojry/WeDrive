@@ -23,7 +23,7 @@ class CreerGroupeAmisType extends AbstractType {
                         'min'=>1,
                         'max'=>64
                     ]),
-                    new Regex('/^[A-Za-z]+$/', "Le nom peut contenir uniquement des lettres !")
+                    new Regex('/^[A-Za-z\s]+$/', "Le nom peut contenir uniquement des lettres !")
                 ]
             ])
             ->add('creer', SubmitType::class, [
