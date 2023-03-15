@@ -39,16 +39,20 @@
                 {{ form_row(form.sexe) }}
                 {{ form_row(form.noTel) }}
 
-                <label class="label">{{ form_widget(form.voiture) }} J'ai un véhicule à ma disposition </label>
+                <label class="label">{{ form_widget(form.voiture, { 'attr': {'class': 'calendar'} }) }} J'ai un véhicule à ma disposition </label>
                 <label class="label">{{ form_widget(form.mailNotif ) }} J'accepte de recevoir des notifications par mail
                     de la part de WeDrive</label>
 
-                {{ form_row(form.creer) }}
+              
+
+                <div class="field is-grouped">
+                    {{ form_row(form.creer) }}
+                  
+                    {{ form_widget(form.supprimer, {'attr': {'class': 'is-danger'}}) }} 
+                </div>
 
                 {{ form_end(form) }}
-                <button onclick="suppresionCompte()">
-                    SUPPRIMER MON COMPTE
-                </button>
+                
             </div>
         </div>
     </div>
