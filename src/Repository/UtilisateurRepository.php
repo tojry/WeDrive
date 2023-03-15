@@ -38,6 +38,14 @@ class UtilisateurRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function rechercher(String $mail) : Utilisateur|null
+    {
+        return $this->createQueryBuilder('u')
+                ->where('u.adresseMail = :mailUser')
+                ->setParameter('mailUser', $mail)
+                ->getQuery()
+                ->getOneOrNullResult();
+    }
 
 //    /**
 //     * @return Utilisateur[] Returns an array of Utilisateur objects

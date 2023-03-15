@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use \Datetime;
 use App\Entity\Trajet;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Recherche;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Trajet>
@@ -38,29 +40,82 @@ class TrajetRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function getTrajetsPassesUtilisateur($id) : array
+    {
+        $currentDate = new DateTime("now");
+        return $qb = $this->createQueryBuilder('t')
+                ->where('t.Covoitureur = :id')
+                ->setParameter('id', $id)
+                ->andWhere('t.dateHeureDepart < :date')
+                ->setParameter('date', $currentDate)
+                ->orderBy('t.dateHeureDepart', 'ASC')
+                ->getQuery()
+                ->getResult();
+    }
 
-//    /**
-//     * @return Trajet[] Returns an array of Trajet objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getTrajetsFutursUtilisateur($id) : array
+    {
+        $currentDate = new DateTime("now");
+        return $qb = $this->createQueryBuilder('t')
+                ->where('t.Covoitureur = :id')
+                ->setParameter('id', $id)
+                ->andWhere('t.dateHeureDepart >= :date')
+                ->setParameter('date', $currentDate)
+                ->orderBy('t.dateHeureDepart', 'ASC')
+                ->getQuery()
+                ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Trajet
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function rechercher(Recherche $r) : array
+    {
+        $depart  = $r->getLieuDepart();
+        $arrivee = $r->getLieuArrivee();
+        $date    = $r->getDateDepart();
+        
+
+        $qb = $this->createQueryBuilder('t');
+
+        
+        if($depart){
+            $qb->andWhere('t.lieuDepart = :depart')
+            ->setParameter('depart', $depart);
+        }
+        if($arrivee){
+            $qb->andWhere('t.lieuArrive = :arrivee')
+            ->setParameter('arrivee', $arrivee);
+        }
+        if($date){
+            $from = new \DateTime($date->format("Y-m-d")." 00:00:00");
+            $to   = new \DateTime($date->format("Y-m-d")." 23:59:59");
+            $qb->andWhere('t.dateHeureDepart BETWEEN :from AND :to')
+            ->setParameter('from', $from )
+            ->setParameter('to', $to);
+        }
+        $qb->orderBy('t.dateHeureDepart', 'ASC');
+        
+        $query  = $qb->getQuery();
+
+        return $query->execute();
+    }
+
+    public function ajouter(Trajet $t) : array
+    {
+        /*
+        $this->dba_insert
+
+        $qb = $this->createQueryBuilder('t')
+            ->where('t.lieuDepart LIKE :depart')
+            ->setParameter('depart', '%'.$r->getLieuDepart().'%')
+            ->andWhere('t.lieuArrive LIKE :arrivee')
+            ->setParameter('arrivee', '%'.$r->getLieuArrivee().'%')
+            ->andWhere('t.dateHeureDepart BETWEEN :from AND :to')
+            ->setParameter('from', $from )
+            ->setParameter('to', $to)
+            ->orderBy('t.dateHeureDepart', 'ASC')
+        ;
+        $query  = $qb->getQuery();
+
+        return $query->execute();*/
+        return [];
+    }
 }

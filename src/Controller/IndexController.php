@@ -1,15 +1,19 @@
 <?php
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-    #[Route('/')]
-    public function number(): Response
+    #[Route('/',name: 'app_home')]
+    public function number(RequestStack $requestStack): Response
     {
+
+
         return $this->render('index.html.twig');
     }
 }
