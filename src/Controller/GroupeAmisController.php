@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GroupeAmisController extends AbstractController
 {
-    #[Route('/groupe/amis', name: 'app_groupe_amis')]
+    #[Route('/amis/creation', name: 'creation_amis')]
     public function index(Request $request, UtilisateurRepository $utilisateurs, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
