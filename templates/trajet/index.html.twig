@@ -7,35 +7,42 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1> Détails du trajet </h1>
+<section class="hero is-fullheight">
+    <div class="hero-body columns is-centered">
+        <div class="column is-4 box content">
 
-    <p id="covoitureur">Covoitureur : {{ covoitureur }}</p>
+    <div class="example-wrapper">
+        <h1> Détails du trajet </h1>
 
-    <p id="lieuDepart">Lieu de départ : {{ lieuDepart }}</p>
+        <p id="covoitureur">Covoitureur : {{ covoitureur }}</p>
 
-    <p id="dateDepart">Date de départ : {{ date }}</p>
+        <p id="lieuDepart">Lieu de départ : {{ lieuDepart }}</p>
 
-    <p id="lieuRDV">Lieu de rendez-vous : {{ lieuRDV }}</p>
+        <p id="dateDepart">Date de départ : {{ date }}</p>
 
-    <p id="prix">Prix : {{ prix }}€</p>
+        <p id="lieuRDV">Lieu de rendez-vous : {{ lieuRDV }}</p>
 
-    <p {{ hidden }} id="prevPointsIntermediaires">Etape(s) intermédiaire(s) : </p>
-    
-    
-        <div id="listePtIntermediaires">
-            <ol>
-                {{ listePointsIntermediaires|raw }}
-            </ol>
-        </div>
-    
-    
+        <p id="prix">Prix : {{ prix }}€</p>
 
-    <p id="lieuArrive">Lieu d'arrivé : {{ lieuArrive }} </p>
+        <p {{ hidden }} id="prevPointsIntermediaires">Etape(s) intermédiaire(s) : </p>
+        
+        
+            <div id="listePtIntermediaires">
+                <ol>
+                    {{ listePointsIntermediaires|raw }}
+                </ol>
+            </div>
+        
+        
 
-    <p id="commentaire">Commentaire du covoitureur : {{ commentaire }} </p>
+        <p id="lieuArrive">Lieu d'arrivé : {{ lieuArrive }} </p>
 
-    <p id="capaciteMax">Capacité maximale du véhicule : {{ capaciteMax }} </p>
+        <p id="commentaire">Commentaire du covoitureur : {{ commentaire }} </p>
 
+        <p id="capaciteMax">Capacité maximale du véhicule : {{ capaciteMax }} </p>
+
+    </div>
+    </div>
+    </div>
 </div>
 {% endblock %}
