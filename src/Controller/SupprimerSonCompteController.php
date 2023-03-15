@@ -7,37 +7,46 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\UtilisateurRepository;
 use App\Entity\Utilisateur;
 
 class SupprimerSonCompteController extends AbstractController
 {
     #[Route('/supprimersoncompte', name: 'app_supprimer_son_compte')]
-    public function index(): Response
+    public function index(UtilisateurRepository $utilisateurRepository = null): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); //L'utilisateur est authentifié
+        $mail =  $this->getUser()->getUserIdentifier();
+        $utilisateur = $utilisateurRepository->rechercher($mail);
         return $this->render('supprimer_son_compte/index.html.twig', [
             'controller_name' => 'SupprimerSonCompteController',
+            'utilisateur'   => $utilisateur
         ]);
     }
 
-    #[Route('/supprimerCompte/{id}', name: 'utilisateur.supprimerCompte')]
-    public function supprimerUnCompteSuperUser(Utilisateur $utilisateur = null, ManagerRegistry $doctrine ) : RedirectResponse {
-        
-        // Récuperer la personne
-        /*
-        if($utilisateur){
-            // Si la personne existe => le supprimer et retourner un flashMessage de succès
-            $manager = $doctrine->getManager();
-            // Ajoute la fonction de suppression dans la transaction
-            $manager->remove($utilisateur);
-            //Exécuter la transation
-            $manager->flush();
-            $this->addFlash('success','La personne a été supprimer avec succès');
-        } else {
-            // Sinon retourner un flashMessage d'erreur
-            $this->addFlash('error','Personne inexistante');
-        }
-        return $this->redirectToRoute("app_supprimer_un_compte_super_user");
-        */
+    #[Route('/supprimerSonComptePerso', name: 'utilisateur.supprimerComptePerso')]
+    public function supprimerSonComptePerso(UtilisateurRepository $utilisateurRepository = null, ManagerRegistry $doctrine ) : RedirectResponse {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); //L'utilisateur est authentifié
+            $mail =  $this->getUser()->getUserIdentifier();
+            $utilisateur = $utilisateurRepository->rechercher($mail);
+            if($utilisateur){
+                if(($utilisateur->getTrajets()->isEmpty())){
+                    if(($utilisateur->getTrajetProposes()->isEmpty())){
+                        $manager = $doctrine->getManager();
+                        $manager->remove($utilisateur);
+                        $manager->flush();
+                        $this->addFlash('success','Votre compte a été supprimer avec succès');
+                        return $this->redirectToRoute("app_login");
+                    }else{
+                        $this->addFlash('error','Suppression impossible : vous avez déposer une demande de covoiturage encore en cours');
+                    }
+                }
+                else{
+                    $this->addFlash('error','Suppression impossible : vous participer encore à un trajet');
+                }
+            } else {
+                $this->addFlash('error','Personne inexistante');
+            }
+        return $this->redirectToRoute("app_supprimer_son_compte");
     }
-
 }
