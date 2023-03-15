@@ -11,9 +11,6 @@
         {% for message in app.flashes('error') %}
             <div class="notification is-danger is-light"> <button class="delete"></button> {{ message }}</div>
         {% endfor %}
-        {% for message in app.flashes('success') %}
-            <div class="notification is-success is-light"> <button class="delete"></button> {{ message }}</div>
-        {% endfor %}
     <div class="columns" style="justify-content:center; margin-top:15%;">
         <div class="column is-5">
         <h3 class="title is-4"> Confirmer la suppression de votre compte </h3>
