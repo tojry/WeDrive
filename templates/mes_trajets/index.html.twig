@@ -1,34 +1,42 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Vos trajets</h1>
 
-    {% if (trajetsPasses|length > 0) or (trajetsFuturs|length > 0) %}
+<section class="hero is-fullheight">
+    <div class="hero-body columns is-centered">
+        <div class="column is-4 box content">
+            <h1>Vos trajets</h1>
 
-        {% if trajetsFuturs|length > 0 %}
-            
+            {% if (trajetsPasses|length > 0) or (trajetsFuturs|length > 0) %}
+
+            {% if trajetsFuturs|length > 0 %}
+
             <h2>A venir</h2>
 
             {% for t in trajetsFuturs %}
-                {{ include('_trajet_element_liste.html.twig', {trajet: t}) }}
+            {{ include('_trajet_element_liste.html.twig', {trajet: t}) }}
             {% endfor %}
 
-        {% endif %}
+            {% endif %}
 
-
-        {% if trajetsPasses|length > 0 %}
+            {% if trajetsPasses|length > 0 %}
 
             <h2>Passés</h2>
 
             {% for t in trajetsPasses %}
-                {{ include('_trajet_element_liste.html.twig', {trajet: t}) }}
+
+            {{ include('_trajet_element_liste.html.twig', {trajet: t}) }}
+
             {% endfor %}
 
-        {% endif %}
+            {% endif %}
 
-    {% else %}
+            {% else %}
 
-        <h3>Vous n'avez pas encore de trajet</h3>
+            <h3>Vous n'avez pas encore de trajet</h3>
 
-    {% endif %}
+            {% endif %}
+        </div>
+</section>
+
 {% endblock %}
