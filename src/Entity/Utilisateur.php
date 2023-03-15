@@ -2,18 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\UtilisateurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @method string getUserIdentifier()
  */
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
+#[UniqueEntity('adresseMail')]
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
 
     #[ORM\Id]
@@ -388,7 +391,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    public function getSalt():?string
+    public function getSalt(): ?string
     {
         return null;
     }
@@ -410,5 +413,29 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
-        return array_unique($roles);    }
+        return array_unique($roles);
+    }
+
+
+
+    public
+    function isEqualTo(UserInterface $user): bool
+    {
+        {
+            if (!$user instanceof Utilisateur) {
+                return true;
+            }
+
+            if ($this->mdp !== $user->getPassword()) {
+                return true;
+            }
+
+
+            if ($this->adresseMail !== $user->getUsername()) {
+                return false;
+            }
+
+            return true;
+        }
+    }
 }
