@@ -41,7 +41,7 @@ class InscriptionType extends AbstractType
                     'Homme' => 'H',
                     'Femme' => 'F',
                 ]])
-            ->add('noTel',IntegerType::class ,['label'=>'Numéro de téléphone*', 'required' => true])
+            ->add('noTel',TextType::class ,['label'=>'Numéro de téléphone*', 'required' => true])
             ->add('voiture',CheckboxType::class,['label'=>'J\'ai un véhicule à ma disposition :', 'required' => false])
             ->add('mailNotif',CheckboxType::class,['label'=>'J\'accepte de recevoir des notifications par mail de la part de WeDrive :', 'required' => false])
             ->add('annuler', ResetType::class, ['label' => 'Effacer'])
