@@ -44,6 +44,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\Column(length: 64)]
     private ?string $prenom = null;
 
+    #[ORM\Column(length: 64)]
+    private ?bool $isAdmin = null;
     #[ORM\Column(length: 1)]
     private ?string $sexe = null;
 
@@ -91,6 +93,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         $this->notifreponses = new ArrayCollection();
         $this->notifTrajetsPrives = new ArrayCollection();
         $this->notifAnnulations = new ArrayCollection();
+        $this->isAdmin = false;
     }
 
     public function getId(): ?int
@@ -428,7 +431,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     {
         //$roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        if ($this->isAdmin){
+            $roles[] = 'ROLE_ADMIN';
+        }else{
+            $roles[] = 'ROLE_USER';
+        }
 
         return array_unique($roles);
     }

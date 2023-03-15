@@ -33,7 +33,6 @@ class ModifierSonCompteController extends AbstractController
             print "Formulaire mise a jour";
         }
 
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $user = $this->security->getUser();
         $form = $this->createForm(ModifierCompteType::class, $user);
