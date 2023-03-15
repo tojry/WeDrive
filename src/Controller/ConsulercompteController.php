@@ -15,7 +15,7 @@ class ConsulercompteController extends AbstractController
         $listUsers = $utilisateurRepository->findAll();
         $user = $this->getUser();
         if ($user) {
-            $id = $user->getId();
+
             $adresseMail = $user->getAdresseMail();
             $nom = $user->getNom();
             $prenom = $user->getPrenom();
