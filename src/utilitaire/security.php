@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\Security\Core;
+namespace Symfony\Bundle\SecurityBundle;
 
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

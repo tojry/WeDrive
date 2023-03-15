@@ -23,28 +23,20 @@ class ModifierSonCompteController extends AbstractController
         $this->security = $security;
     }
 
-    #[Route('/modifierSonCompte', name: 'app_modifier_son_compte',)]
-    public function index(Request $request,EntityManagerInterface $entityManager): Response
+    #[Route('/modifierSonCompte/{isSubmit}', name: 'app_modifier_son_compte', requirements: ['page' => '\d+'])]
+    public function index(Request $request, EntityManagerInterface $entityManager, $isSubmit = 0): Response
     {
+        $routeParameters = $request->attributes->get('_route_params');
+
+        //il faut transposer ca dans le twig, j'ai pas la syntaxe
+        if ($routeParameters['isSubmit'] == 1) {
+            print "Formulaire mise a jour";
+        }
+
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $user = $this->security->getUser();
-        $isVoiture = $user->isVoiture();
-        $noTel = $user->getNoTel();
-        $isMailNotif = $user->isMailNotif();
-        if ($isVoiture) {
-            $voiture = 'oui';
-        } else {
-            $voiture = 'non';
-        }
-        if ($isMailNotif) {
-            $notif = 'oui';
-        } else {
-            $notif = 'non';
-        }
-
         $form = $this->createForm(ModifierCompteType::class, $user);
-
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,15 +45,14 @@ class ModifierSonCompteController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->redirectToRoute('app_modifier_son_compte');
+            return $this->redirectToRoute('app_modifier_son_compte', array('isSubmit' => 1));
         }
 
         return $this->render('modifier_son_compte/modifierCompte.html.twig', [
             'user' => $user,
-             'voiture' => $voiture,
-             'notif' => $notif,
             'controller_name' => 'ModifierSonCompteController',
             'form' => $form->createView(),
         ]);
     }
 }
+
