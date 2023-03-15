@@ -29,15 +29,15 @@
 								<div class="buttons">
 
 									{% if not is_granted("ROLE_USER") %}
-										<a href="{{ path('/inscription') }}" class="button is-primary">
+										<a href="{{ path('inscription') }}" class="button is-primary">
 											<strong>S'inscrire</strong>
 										</a>
 
-										<a href="{{ path('/login') }}" class="button is-light">
+										<a href="{{ path('app_login') }}" class="button is-light">
 											Se connecter
 										</a>
 									{% else %}
-										<a href="{{ path('/logout') }}" class="button is-light">
+										<a href="{{ path('app_logout') }}" class="button is-light">
 											Se Deconnecter
 										</a>
 									{% endif %}
