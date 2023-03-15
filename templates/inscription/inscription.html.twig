@@ -20,4 +20,28 @@
 			</div>
 		</div>
 
-	{% endblock %}
+
+    <div class="hero is-fullheight">
+    <div class="hero-body is-centered">
+        <div class="column is-4 m-auto">
+            <h1 class="title">Formulaire d'inscription</h1>
+            {{ form_start(inscription_form) }}
+                {{ form_row(inscription_form.adresseMail) }}
+                {{ form_row(inscription_form.mdp) }}
+                {{ form_row(inscription_form.nom) }}
+                {{ form_row(inscription_form.prenom) }}
+                {{ form_row(inscription_form.sexe) }}
+                <label class="label">{{ form_widget(inscription_form.voiture) }} Je possède une voiture</label>
+                {{ form_row(inscription_form.noTel) }} </label>
+                <label class="label">{{ form_widget(inscription_form.mailNotif) }} Je souhaite recevoir des notifications de WeDrive</label>
+
+                <div class="field is-grouped">
+                    {{ form_row(inscription_form.annuler) }}
+                    {{ form_row(inscription_form.creer) }}
+                </div>
+            {{ form_end(inscription_form) }}
+        </div>
+    </div>
+    </div>
+
+{% endblock %}
