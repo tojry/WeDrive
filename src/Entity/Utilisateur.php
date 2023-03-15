@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[UniqueEntity('adresseMail')]
@@ -23,10 +24,18 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     private ?int $id = null;
 
     #[ORM\Column(length: 320, unique: true)]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+        message: 'adresse email incorrect  ',
+    )]
     private ?string $adresseMail = null;
 
 
     #[ORM\Column(length: 128)]
+    #[Assert\Regex(
+        pattern: ' /^[a-zA-Z0-9àâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý \-\_!#$\*%{}\^&?\. ]{8,}$/i ',
+        message: 'mot de passe tres faible :8 caractères minimum composé de lettres, chiffres, tirets, accents, points et caractères  ',
+    )]
     private ?string $mdp = null;
 
     #[ORM\Column(length: 64)]
@@ -35,6 +44,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\Column(length: 64)]
     private ?string $prenom = null;
 
+    #[ORM\Column(length: 64)]
+    private ?bool $isAdmin = null;
     #[ORM\Column(length: 1)]
     private ?string $sexe = null;
 
@@ -42,6 +53,10 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     private ?bool $voiture = null;
 
     #[ORM\Column(length: 11)]
+    #[Assert\Regex(
+        pattern: '/^[\+|0][0-9]{9,11}$/',
+        message: 'numero de telephone invalide',
+    )]
     private ?string $noTel = null;
 
     #[ORM\Column]
@@ -78,6 +93,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         $this->notifreponses = new ArrayCollection();
         $this->notifTrajetsPrives = new ArrayCollection();
         $this->notifAnnulations = new ArrayCollection();
+        $this->isAdmin = false;
     }
 
     public function getId(): ?int
@@ -383,7 +399,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     }
 
 
-    public function getUserIdentifier(){
+    public function getUserIdentifier()
+    {
         return $this->getAdresseMail();
     }
 
@@ -414,10 +431,15 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     {
         //$roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        if ($this->isAdmin){
+            $roles[] = 'ROLE_ADMIN';
+        }else{
+            $roles[] = 'ROLE_USER';
+        }
 
         return array_unique($roles);
     }
+
 
     public
     function isEqualTo(UserInterface $user): bool
