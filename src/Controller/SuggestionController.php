@@ -30,7 +30,7 @@ class SuggestionController extends AbstractController
             {
                 $response = "";
                 foreach ($res as $ville){
-                    $response .= '<div class="autocomplete-items" id="'.($ville->getId()).'">'.($ville->getVille()).' '.'('.($ville->getCodePostal()).')</div>';
+                    $response .= '<div class="tag m-1 autocomplete-items" id="'.($ville->getId()).'">'.($ville->getVille()).' '.'('.($ville->getCodePostal()).')</div>';
                 }
                 return new Response($response, 200);
             }
