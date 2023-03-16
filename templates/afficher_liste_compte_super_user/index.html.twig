@@ -36,7 +36,7 @@
                     <th> {{ (utilisateur.isMailNotif() ? 'OUI' : 'NON')|raw }} </th>
                     <th> {{ utilisateur.isVoiture()  ? 'OUI' : 'NON' }} </th>
                     <th>
-                        <button class="button is-primary" onclick="window.location.href='#' ">
+                        <button class="button is-primary" onclick="window.location.href='{{ path('app_consultercompte', {id: utilisateur.id}) }}' ">
                             Consulter
                         </button>
                     </th>
