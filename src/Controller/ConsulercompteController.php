@@ -5,11 +5,13 @@ namespace App\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ConsulercompteController extends AbstractController
 {
+
     #[Route('/consulercompte/{isSubmit}', name: 'app_consulercompte',  requirements: ['page' => '\d+'])]
     public function index(EntityManagerInterface $entityManager,Request $request, int $isSubmit = 0): Response
     {
@@ -39,6 +41,7 @@ class ConsulercompteController extends AbstractController
             if ($isMailNotif) {
                 $notif = 'oui';
             } else {
+
                 $notif = 'non';
             }
 
@@ -46,10 +49,12 @@ class ConsulercompteController extends AbstractController
             // L'utilisateur n'est pas connecté
             echo "Vous n'êtes pas connecté";
         }
+
         return $this->render('consulercompte/index.html.twig', [
             'user' => $user,
             'voiture' => $voiture,
             'notif' => $notif,
+
         ]);
     }
 }

@@ -44,6 +44,8 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\Column(length: 64)]
     private ?string $prenom = null;
 
+    #[ORM\Column(length: 64)]
+    private ?bool $isAdmin = null;
     #[ORM\Column(length: 1)]
     private ?string $sexe = null;
 
@@ -67,7 +69,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\JoinTable(name: 'amitie')]
     private Collection $Amis;
 
-    #[ORM\OneToMany(mappedBy: 'Covoitureur', targetEntity: Trajet::class)]
+    #[ORM\OneToMany(mappedBy: 'Covoitureur', targetEntity: Trajet::class, cascade:['persist'])]
     private Collection $trajetProposes;
 
     #[ORM\OneToMany(mappedBy: 'utilisateurConcerne', targetEntity: Reponse::class)]
@@ -91,6 +93,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         $this->notifreponses = new ArrayCollection();
         $this->notifTrajetsPrives = new ArrayCollection();
         $this->notifAnnulations = new ArrayCollection();
+        $this->isAdmin = false;
     }
 
     public function getId(): ?int
@@ -258,6 +261,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         if (!$this->trajetProposes->contains($trajetPropose)) {
             $this->trajetProposes->add($trajetPropose);
             $trajetPropose->setCovoitureur($this);
+            $this->addTrajet($trajetPropose);
         }
 
         return $this;
@@ -428,7 +432,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     {
         //$roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        if ($this->isAdmin){
+            $roles[] = 'ROLE_ADMIN';
+        }else{
+            $roles[] = 'ROLE_USER';
+        }
 
         return array_unique($roles);
     }

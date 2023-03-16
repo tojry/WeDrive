@@ -17,13 +17,16 @@
             <h1 class="title">Mon compte</h1>
 
             <ul>
+
                 <li>Adresse mail : {{ user.adresseMail }}</li>
+
                 <li>Nom : {{ user.nom }}</li>
                 <li>Prénom : {{ user.prenom }}</li>
                 <li>Sexe : {{ user.sexe }}</li>
                 <li>Numéro de téléphone : 0{{ user.noTel }}</li>
                 <li>J'ai un véhicule à ma disposition : {{ voiture }}</li>
                 <li>J'accepte de recevoir des notifications par mail de la part de WeDrive : {{ notif }}</li>
+
                 <button onclick="location.href='../modifierSonCompte' "> Modifier </button>
             </ul>
         </div>

@@ -26,6 +26,7 @@ class ModifierSonCompteController extends AbstractController
     #[Route('/modifierSonCompte', name: 'app_modifier_son_compte')]
     public function index( EntityManagerInterface $entityManager, Request $request,): Response
     {
+
         $user = $this->security->getUser();
         $form = $this->createForm(ModifierCompteType::class, $user);
 
