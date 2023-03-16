@@ -15,22 +15,15 @@
     <div class="hero-body is-centered">
         <div class="column is-4 m-auto">
 
-            <h1 class="title">Liste des utilisateurs</h1>
+            <h1 class="title">Information du compte</h1>
             <ul>
 
-                {% set user_select = '' %}
-                {% for user in listusers %}
-                    <li><a href="{{ path(app.request.attributes.get('_route'), {'user_select': user.id}) }}">{{ user.adresseMail }}</a></li>
-                    {% set user_select = app.request.get('user_select') %}
 
-                {% endfor %}
 
-                {% for user in listusers %}
-                    {% if user.id == user_select %}
-                        <h1 class="title">Information de {{ user.nom }} {{ user.prenom }}</h1>
-                        {% if user.id == user_co.id %}
+                        {% if user.id != user_co.id %}
+                            <h1 class="title">Information de {{ user.nom }} {{ user.prenom }}</h1>
                             <p class="title">(moi)</p>
-                            <li>ID : {{ user.id }}</li>
+
                             <li>Adresse mail : {{ user.adresseMail }}</li>
                             <li>Nom : {{ user.nom }}</li>
                             <li>Prénom : {{ user.prenom }}</li>
@@ -50,9 +43,9 @@
                             <li>Numéro de téléphone : 0{{ user.noTel }}</li>
                             <li>J'ai un véhicule à ma disposition : {{ voiture }}</li>
                             <li>J'accepte de recevoir des notifications par mail de la part de WeDrive : {{ notif }}</li>
-                        {% endif %}
+
                     {% endif %}
-                {% endfor %}
+
 
             </ul>
         </div>
