@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ConsulterGroupeAmiController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .tr-user:hover { background-color: #00d1b2 };
+</style>
+
+<div style="text-align:-webkit-center;margin-top:5%;">
+ <div style="display: -webkit-inline-box;">
+    <h3 class="title is-4" style="width:max-content; margin-right:35%;"> {{ groupeAmi.getNomGroupe() }} 
+    ({{ groupeAmi.getUtilisateurs().count() }} membres) </h3>
+ </div>
+ <div class="control" style="margin-top:2%">
+  <div class="select">
+    <select>
+      <option>Select dropdown</option>
+      <option>With options</option>
+    </select>
+  </div>
+  <button class="button is-info">Ajouter ami</button>
+ </div>
+ <div style="margin-top:2%">
+        <table class="table" >
+            <tr>
+                <th> Liste des membres du groupeAmi
+                <th><th></th><th></th><th></th>
+            </tr>
+            <tr style="margin-top:2%">
+                <th> Nom </th>
+                <th> Prenom </th>
+                <th> Adresse email </th>
+                <th> Action </th>
+                <th></th>
+            </tr>
+            {% for utilisateur in groupeAmi.getUtilisateurs() %}
+                        <tr class="tr-user">
+                                <th> {{ utilisateur.getNom() }} </th>
+                                <th> {{ utilisateur.getPrenom() }} </th>
+                                <th> {{ utilisateur.getAdresseMail() }} </th>                
+                                <th>
+                                    <button class="button is-primary" onclick="window.location.href='#' ">
+                                        Consulter
+                                    </button>
+                                </th>
+                                <th>
+                                    <button class="button is-danger" onclick="window.location.href='#' ">
+                                        Supprimer du groupe
+                                    </button>
+                                </th>
+                        </tr>
+                {%endfor%}
+        </table>
+</div>
+{% endblock %}
