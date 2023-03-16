@@ -28,8 +28,6 @@
                 {{ listePointsIntermediaires|raw }}
             </ol>
         </div>
-    
-    
 
     <p id="lieuArrive">Lieu d'arrivé : {{ lieuArrive }} </p>
 
@@ -38,4 +36,58 @@
     <p id="capaciteMax">Capacité maximale du véhicule : {{ capaciteMax }} </p>
 
 </div>
+
+<br>
+
+<div Align=CENTER >
+
+    <h2 style="display:none" id="texte_erreur_date"><FONT color="red">Vous ne pouvez pas supprimer ce trajet car la date de départ est dans moins de 24h</FONT></h2>
+    <br>
+    <button id="supprimer" onclick="openPopup()" type="button" class="button is-primary" style="background:height:50px;width:200px;font: 18px/1.5 sans-serif;">
+        Supprimer ce trajet
+    </button>
+</div>
+
+<br>
+
+<div Align="CENTER" style="display:none" id="popup">
+    <div class="modal-header">
+        <div class="title">Etes-vous sure de vouloir supprimer ce trajet ?</div>
+    </div>
+    <br>
+    <div class="modal-body">
+        <button type="button" onclick="window.location.href='../';" style="background:height:50px;width:150px;font: 18px/1.5 sans-serif;">Oui</button>
+        <button type="button" style="background:height:50px;width:150px;font: 18px/1.5 sans-serif;" onClick="openPopup()">Non</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+     /* Il n'y a que le createur d'un trajet qui puisse le supprimer */
+    if( {{ covoitureur_id }} != {{ user_id }}){
+        document.getElementById('supprimer').style="display:none;";
+    }
+
+
+    function openPopup(){
+        /* Il faut qu'il y est 24h minimum avant la date du trajet pour pouvoir le supprimer */
+        if(false){
+            document.getElementById('texte_erreur_date').style="display:block;";
+        }else{
+            if(document.getElementById('popup').style.display=="none"){
+                document.getElementById('popup').style="display:block;";
+                document.getElementById('supprimer').style="display:none;";
+            }else{
+                document.getElementById('popup').style="display:none;";
+                document.getElementById('supprimer').style="display:block;background:height:50px;width:200px;font: 18px/1.5 sans-serif;";
+            }
+        }
+    }
+
+
+
+
+</script>
+
+
 {% endblock %}

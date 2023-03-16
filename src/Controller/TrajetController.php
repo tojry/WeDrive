@@ -15,6 +15,7 @@ class TrajetController extends AbstractController
     #[Route('/trajet/{id}', name: 'app_trajet')]
     public function detailsTrajet(Trajet $trajet): Response
     {
+        $user_id =  $this->getUser()->getId();
         if($trajet != null){
 
             $lieuDepart = $trajet->getLieuDepart();
@@ -48,7 +49,9 @@ class TrajetController extends AbstractController
                 'commentaire' => $commentaire,
                 'lieuRDV' => $lieuRDV,
                 'date' => $date->format('d-m-Y H:i'),
-                'hidden' => ($isEmpty)?('hidden'):('')
+                'hidden' => ($isEmpty)?('hidden'):(''),
+                'covoitureur_id' => $covoitureur->getId(),
+                'user_id' => $user_id
             ]);
         }
         else return new Response('Veuillez spécifier un trajet.', 500);
