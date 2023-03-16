@@ -17,7 +17,6 @@ class ConsultercompteController extends AbstractController
         $user = $utilisateur;
         if ($user) {
 
-
             $isVoiture = $user->isVoiture();
 
             $isMailNotif = $user->isMailNotif();
