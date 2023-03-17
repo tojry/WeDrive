@@ -49,7 +49,8 @@
 </div>
 
 <br>
-
+<p style="display:none" id="test">{{ date }}</p>
+<br>
 <div Align="CENTER" style="display:none" id="popup">
     <div class="modal-header">
         <div class="title">Etes-vous sure de vouloir supprimer ce trajet ?</div>
@@ -69,9 +70,73 @@
     }
 
 
+    function testDate(){
+        /* On recupere la date de départ du trajet (Format: jj-mm-aaaa hh:mm)*/
+        temp = document.getElementById('test').innerHTML;
+        tab_Date_Heure = temp.split(" ");
+        tabDate = tab_Date_Heure[0].split("-");
+        tabHeure = tab_Date_Heure[1].split(":");
+
+        /* On enleve un jour a cette date pour pouvoir la comparer avec la date actuelle */
+
+        /* Si on est le 1er du mois */
+        if(tabDate[0] == "01"){
+            /*  Si on est en Janvier */
+            if(tabDate[1] == "01"){
+                anneeInt = parseInt(tabDate[2],10)-1;
+                tabDate[0] = "31";
+                tabDate[1] = "12";
+                tabDate[2] = anneeInt.toString();
+            /* On est le 1er du mois mais pas en Janvier*/
+            }else{
+                /* On determine le nombre de jours du mois juste avant */
+                moisInt = parseInt(tabDate[1],10)-1;
+                /* 31 jours */
+                if(moisInt==1 || moisInt==3 || moisInt==5 || moisInt==7 || moisInt==8 || moisInt==10){
+                    tabDate[0] = "31";
+                    tabDate[1] = moisInt.toString();
+                }else{
+                    /* Fevrier */
+                    if(moisInt==2){
+                        /* Annee bisextile */
+                        if(parseInt(tabDate[2],10)%4 == 0){
+                            tabDate[0] = "29";
+                            tabDate[1] = moisInt.toString();
+                        /* Annee non bisextile */
+                        }else{
+                            tabDate[0] = "28";
+                            tabDate[1] = moisInt.toString();
+                        }
+                    /* 30 jours */
+                    }else{
+                        tabDate[0] = "30";
+                        tabDate[1] = moisInt.toString();
+                    }
+                }
+            }
+        /* On est pas le 1er du mois */
+        }else{
+            jourInt = parseInt(tabDate[0],10)-1;
+            /* Si on est entre le 1er et le 9ème jour du mois il faut rajouter le "0" devant */
+            if(jourInt<10){
+                tabDate[0] = "0"+jourInt.toString();
+            /* Sinon non */
+            }else{
+                tabDate[0] = jourInt.toString();
+            }
+        }
+
+        /*
+        Comparer la date actuelle avec la date du depart - 1 jour (a faire)
+        */
+
+        return(true);
+    }
+
+
     function openPopup(){
-        /* Il faut qu'il y est 24h minimum avant la date du trajet pour pouvoir le supprimer */
-        if(false){
+
+        if(!testDate()){
             document.getElementById('texte_erreur_date').style="display:block;";
         }else{
             if(document.getElementById('popup').style.display=="none"){
@@ -83,9 +148,6 @@
             }
         }
     }
-
-
-
 
 </script>
 

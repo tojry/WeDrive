@@ -15,7 +15,11 @@ class TrajetController extends AbstractController
     #[Route('/trajet/{id}', name: 'app_trajet')]
     public function detailsTrajet(Trajet $trajet): Response
     {
-        $user_id =  $this->getUser()->getId();
+        if($this->getUser()!=null){
+            $user_id =  $this->getUser()->getId();
+        }else{
+            $user_id = -1;
+        }
         if($trajet != null){
 
             $lieuDepart = $trajet->getLieuDepart();
