@@ -19,4 +19,17 @@ class ConsulterGroupesController extends AbstractController
         ]);
     }
 
+    #[Route('/groupes/{id}', name: 'app_consulter_groupe_details', methods: ['GET'])]
+    public function show(int $id, GroupeAmisRepository $groupeAmisRepository): Response
+    {
+        $groupe = $groupeAmisRepository->find($id);
+
+        if (!$groupe) {
+            throw $this->createNotFoundException('Le groupe demandé n\'existe pas.');
+        }
+
+        return $this->render('consulter_groupes/details.html.twig', [
+            'groupe' => $groupe,
+        ]);
+    }
 }
