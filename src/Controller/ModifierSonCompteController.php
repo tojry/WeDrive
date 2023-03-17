@@ -23,7 +23,7 @@ class ModifierSonCompteController extends AbstractController
         $this->security = $security;
     }
 
-    #[Route('/modifierSonCompte/{isSubmit}', name: 'app_modifier_son_compte', requirements: ['page' => '\d+'])]
+    #[Route('/modifierSonCompte', name: 'app_modifier_son_compte')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
 
