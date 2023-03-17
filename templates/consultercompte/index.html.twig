@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="hero is-fullheight">
+    <div class="hero-head">
+        <nav class="navbar has-background-primary" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="../">
+                    {#<- Retour à l'accueil#}
+                </a>
+            </div>
+        </nav>
+    </div>
+    <div class="hero-body is-centered">
+        <div class="column is-4 m-auto">
+
+            <ul>
+                {% if user.id == user_co.id %}
+                    <h1 class="title">Vos informations</h1>
+
+                    <li>Adresse mail : {{ user.adresseMail }}</li>
+                    <li>Nom : {{ user.nom }}</li>
+                    <li>Prénom : {{ user.prenom }}</li>
+                    <li>Sexe : {{ user.sexe }}</li>
+                    <li>Numéro de téléphone : 0{{ user.noTel }}</li>
+                    <li>J'ai un véhicule à ma disposition : {{ voiture }}</li>
+                    <li>J'accepte de recevoir des notifications par mail de la part de WeDrive : {{ notif }}</li>
+                    <a class="button is-light" href="\modifierSonCompte">
+                        Modifier mon compte
+                    </a>
+                {% else %}
+                    <h1 class="title">Informations de {{ user.prenom }}</h1>
+                    <li>Prénom : {{ user.prenom }}</li>
+                    <li>Sexe : {{ user.sexe }}</li>
+
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}
