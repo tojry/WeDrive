@@ -5,16 +5,6 @@
 {% block javascripts %}
     <script type="text/javascript"></script>
 
-    <script>
-        function suppresionCompte() {
-            alert("Button operationnel, veillez rediriger vers la route de suppression !");
-        }
-
-        function ajouterTexte() {
-            alert("Button operationnel !");
-        }
-
-    </script>
 {% endblock %}
 
 {% block body %}
@@ -47,12 +37,10 @@
 
                 <div class="field is-grouped">
                     {{ form_row(form.creer) }}
-                  
-                    {{ form_widget(form.supprimer, {'attr': {'class': 'is-danger'}}) }} 
                 </div>
-
                 {{ form_end(form) }}
-                
+                <button onclick="window.location.href='../supprimersoncompte'" >Supprimer </button>
+
             </div>
         </div>
     </div>

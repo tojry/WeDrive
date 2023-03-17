@@ -30,7 +30,7 @@ class ModifierCompteType extends AbstractType
             ->add('voiture', CheckboxType::class, ['label' => 'J\'ai un véhicule à ma disposition :', 'required' => false])
             ->add('mailNotif', CheckboxType::class, ['label' => 'J\'accepte de recevoir des notifications par mail de la part de WeDrive :', 'required' => false])
             ->add('creer', SubmitType::class, ['label' => 'Valider'])
-            ->add('supprimer', SubmitType::class, ['label' => 'Supprimer mon compte', 'attr' => [ 'class' => 'is-danger', 'onclick' => 'suppresionCompte()' ]]);
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
