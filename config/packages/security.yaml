@@ -53,6 +53,7 @@ security:
     - { path: '^/mestrajets', roles: [ ROLE_ADMIN, ROLE_USER, IS_AUTHENTICATED_FULL ] }
     - { path: '^/afficherlistecomptesuperuser', roles: [ ROLE_ADMIN, IS_AUTHENTICATED_FULL ] }
     - { path: '^/supprimeruncomptesuperuser', roles: [ ROLE_ADMIN, IS_AUTHENTICATED_FULL ] }
+    - { path: '^/inscription', roles: [ ROLE_ANONYMOUS ] }
    # - { path: '^/supprimersoncompte', roles: [ ROLE_ADMIN, IS_AUTHENTICATED_FULL ] }
 
 
