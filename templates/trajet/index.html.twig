@@ -77,66 +77,19 @@
         tabDate = tab_Date_Heure[0].split("-");
         tabHeure = tab_Date_Heure[1].split(":");
 
-        /* On enleve un jour a cette date pour pouvoir la comparer avec la date actuelle */
+        date_depart = new Date(parseInt(tabDate[2],10),parseInt(tabDate[1],10)-1,parseInt(tabDate[0],10),parseInt(tabHeure[0],10),parseInt(tabHeure[1],10));
+        /* On enleve un jour pour pouvoir faire le test  */
+        date_depart.setDate(date_depart.getDate()-1);
 
-        /* Si on est le 1er du mois */
-        if(tabDate[0] == "01"){
-            /*  Si on est en Janvier */
-            if(tabDate[1] == "01"){
-                anneeInt = parseInt(tabDate[2],10)-1;
-                tabDate[0] = "31";
-                tabDate[1] = "12";
-                tabDate[2] = anneeInt.toString();
-            /* On est le 1er du mois mais pas en Janvier*/
-            }else{
-                /* On determine le nombre de jours du mois juste avant */
-                moisInt = parseInt(tabDate[1],10)-1;
-                /* 31 jours */
-                if(moisInt==1 || moisInt==3 || moisInt==5 || moisInt==7 || moisInt==8 || moisInt==10){
-                    tabDate[0] = "31";
-                    tabDate[1] = moisInt.toString();
-                }else{
-                    /* Fevrier */
-                    if(moisInt==2){
-                        /* Annee bisextile */
-                        if(parseInt(tabDate[2],10)%4 == 0){
-                            tabDate[0] = "29";
-                            tabDate[1] = moisInt.toString();
-                        /* Annee non bisextile */
-                        }else{
-                            tabDate[0] = "28";
-                            tabDate[1] = moisInt.toString();
-                        }
-                    /* 30 jours */
-                    }else{
-                        tabDate[0] = "30";
-                        tabDate[1] = moisInt.toString();
-                    }
-                }
-            }
-        /* On est pas le 1er du mois */
-        }else{
-            jourInt = parseInt(tabDate[0],10)-1;
-            /* Si on est entre le 1er et le 9ème jour du mois il faut rajouter le "0" devant */
-            if(jourInt<10){
-                tabDate[0] = "0"+jourInt.toString();
-            /* Sinon non */
-            }else{
-                tabDate[0] = jourInt.toString();
-            }
-        }
+        current_date = new Date();
 
-        /*
-        Comparer la date actuelle avec la date du depart - 1 jour (a faire)
-        */
-
-        return(true);
+        return(date_depart>current_date);
     }
 
 
     function openPopup(){
 
-        if(!testDate()){
+        if(testDate()){
             document.getElementById('texte_erreur_date').style="display:block;";
         }else{
             if(document.getElementById('popup').style.display=="none"){
