@@ -23,8 +23,8 @@ class ModifierSonCompteController extends AbstractController
         $this->security = $security;
     }
 
-    #[Route('/modifierSonCompte', name: 'app_modifier_son_compte')]
-    public function index( EntityManagerInterface $entityManager, Request $request,): Response
+    #[Route('/modifierSonCompte/{isSubmit}', name: 'app_modifier_son_compte', requirements: ['page' => '\d+'])]
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $user = $this->security->getUser();
@@ -32,9 +32,12 @@ class ModifierSonCompteController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $task = $form->getData();
+
+
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->redirectToRoute('app_consulercompte', array('isSubmit' => 1));
+            return $this->redirectToRoute('app_consultercompte', array('id' => $user->getId()));
         }
 
         return $this->render('modifier_son_compte/modifierCompte.html.twig', [
