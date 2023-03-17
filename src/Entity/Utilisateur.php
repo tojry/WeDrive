@@ -84,6 +84,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\OneToMany(mappedBy: 'UtilisateurConcerne', targetEntity: NotifAnnulation::class)]
     private Collection $notifAnnulations;
 
+    #[ORM\OneToMany(mappedBy: 'createur', targetEntity: GroupeAmis::class)]
+    private Collection $groupeCree;
+
     public function __construct()
     {
         $this->trajets = new ArrayCollection();
@@ -94,6 +97,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         $this->notifTrajetsPrives = new ArrayCollection();
         $this->notifAnnulations = new ArrayCollection();
         $this->isAdmin = false;
+        $this->groupeCree = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -461,6 +465,36 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
 
             return true;
         }
+    }
+
+    /**
+     * @return Collection<int, GroupeAmis>
+     */
+    public function getGroupeCree(): Collection
+    {
+        return $this->groupeCree;
+    }
+
+    public function addGroupeCree(GroupeAmis $groupeCree): self
+    {
+        if (!$this->groupeCree->contains($groupeCree)) {
+            $this->groupeCree->add($groupeCree);
+            $groupeCree->setCreateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupeCree(GroupeAmis $groupeCree): self
+    {
+        if ($this->groupeCree->removeElement($groupeCree)) {
+            // set the owning side to null (unless already changed)
+            if ($groupeCree->getCreateur() === $this) {
+                $groupeCree->setCreateur(null);
+            }
+        }
+
+        return $this;
     }
 
 }
