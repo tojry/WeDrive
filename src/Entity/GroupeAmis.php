@@ -25,6 +25,10 @@ class GroupeAmis
     #[ORM\OneToMany(mappedBy: 'groupeAmi', targetEntity: Trajet::class)]
     private Collection $trajets;
 
+    #[ORM\ManyToOne(inversedBy: 'groupeCree')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $createur = null;
+
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
@@ -101,6 +105,18 @@ class GroupeAmis
                 $trajet->setGroupeAmi(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreateur(): ?Utilisateur
+    {
+        return $this->createur;
+    }
+
+    public function setCreateur(?Utilisateur $createur): self
+    {
+        $this->createur = $createur;
 
         return $this;
     }
