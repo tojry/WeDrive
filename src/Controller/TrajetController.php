@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Trajet;
 use App\Repository\TrajetRepository;
+use App\Repository\UtilisateurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Persistence\ManagerRegistry;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -41,6 +43,7 @@ class TrajetController extends AbstractController
             $commentaire = $trajet->getCommentaire();
             $lieuRDV = $trajet->getPrecisionLieuRdv();
             $date = $trajet->getDateHeureDepart();
+            $trajet_id = $trajet->getId();
 
             return $this->render('trajet/index.html.twig', [
                 'controller_name' => 'TrajetController',
@@ -55,10 +58,28 @@ class TrajetController extends AbstractController
                 'date' => $date->format('d-m-Y H:i'),
                 'hidden' => ($isEmpty)?('hidden'):(''),
                 'covoitureur_id' => $covoitureur->getId(),
-                'user_id' => $user_id
+                'user_id' => $user_id,
+                'trajet_id' => $trajet_id
             ]);
         }
         else return new Response('Veuillez spécifier un trajet.', 500);
 
+    }
+
+    #[Route('/supprimerTrajet/{id}', name: 'supp_trajet')]
+    public function supprimer(Trajet $trajet, UtilisateurRepository $utilisateurRepository, TrajetRepository $trajetRepository, ManagerRegistry $doctrine) : Response
+    {
+        $mail =  $this->getUser()->getUserIdentifier();
+        $utilisateur = $utilisateurRepository->rechercher($mail);
+        if($utilisateur!=null){
+
+            $manager = $doctrine->getManager();
+            $manager->remove($trajet);
+            $manager->flush();
+
+            return $this->redirectToRoute("app_mes_trajets");
+        }else{
+            return $this->redirectToRoute("app_login");
+        }
     }
 }

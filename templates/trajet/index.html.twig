@@ -57,8 +57,8 @@
     </div>
     <br>
     <div class="modal-body">
-        <button type="button" onclick="window.location.href='../';" style="background:height:50px;width:150px;font: 18px/1.5 sans-serif;">Oui</button>
-        <button type="button" style="background:height:50px;width:150px;font: 18px/1.5 sans-serif;" onClick="openPopup()">Non</button>
+        <a class="button" href="{{ path('supp_trajet', {id: trajet_id}) }}" style="background:height:50px;width:150px;font: 18px/1.5 sans-serif;">Oui</a>
+        <a class="button" style="background:height:50px;width:150px;font: 18px/1.5 sans-serif;" onClick="openPopup()">Non</a>
     </div>
 </div>
 
@@ -100,6 +100,11 @@
                 document.getElementById('supprimer').style="display:block;background:height:50px;width:200px;font: 18px/1.5 sans-serif;";
             }
         }
+    }
+
+    function supprimerTrajet(){
+
+        return "/trajet/{id}/supprimerTrajet";
     }
 
 </script>
