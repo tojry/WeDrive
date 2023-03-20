@@ -24,15 +24,24 @@ class ModifierGroupeController extends AbstractController
             if (!$groupe){
                 return new Response("Groupe d'amis non trouvé", 501);
             }
-
+            $nom_groupe = $groupe->getNomGroupe();
             $form = $this->createForm(ModifierGroupeType::class, $groupe);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()){
-                $groupe = $form->getData();
-                $entityManager->persist($groupe);
-                $entityManager->flush();
-                return $this->redirectToRoute('app_home');
+                $existingGroup = $groupes->findOneBy([
+                    'nomGroupe' => $groupe->getNomGroupe(),
+                    'createur' => $groupe->getCreateur(),
+                ]);
+                if ($nom_groupe==$groupe->getNomGroupe()){
+                    $this->addFlash('danger', 'Le nom du groupe est déjà "'.$nom_groupe.'" !');
+                }else if ($existingGroup) {
+                    $this->addFlash('danger', 'Un groupe avec le même nom et le même créateur existe déjà.');
+                } else {
+                    $entityManager->persist($groupe);
+                    $entityManager->flush();
+                    return $this->redirectToRoute('app_home');
+                }
             }
 
             return $this->render('modifier_groupe/index.html.twig', [
