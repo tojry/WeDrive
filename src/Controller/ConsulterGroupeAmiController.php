@@ -15,7 +15,7 @@ class ConsulterGroupeAmiController extends AbstractController
     #[Route('/consultergroupeami/{id}', name: 'app_consulter_groupe_ami')]
     public function index(GroupeAmis $groupeAmi = null): Response
     {
-        //$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); 
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); 
         if($groupeAmi){
             return $this->render('consulter_groupe_ami/index.html.twig', [
                 'controller_name' => 'ConsulterGroupeAmiController',
