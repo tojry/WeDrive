@@ -81,19 +81,19 @@
 					<form class="is-inline-block" action="/recherche" method="post">
 						<div class="field is-grouped has-background-primary box">
 							<div class="control">
-								<input class="input" type="text" placeholder="Depart">
+								<input class="input" type="text" placeholder="Depart" name="recherche[lieuDepart]">
 							</div>
 
 							<div class="control">
-								<input class="input" type="text" placeholder="Arrivée">
+								<input class="input" type="text" placeholder="Arrivée" name="recherche[lieuArrivee]">
 							</div>
 
 							<div class="control">
-								<input class="input" type="date" placeholder="Date">
+								<input class="input" type="date" placeholder="Date" name="recherche[dateDepart]">
 							</div>
 
 							<div class="control">
-								<button class="button">Rechercher !</button>
+								<button class="button" type="submit" name="recherche[rechercher]">Rechercher !</button>
 							</div>
 
 						</div>

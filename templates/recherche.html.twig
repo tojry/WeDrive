@@ -2,15 +2,13 @@
 
 {% block javascripts %}
 
-    <script type="text/javascript" src="suggestion.js"></script>
-    <script type="text/javascript" src="recherche.js"></script>
-    
+<script type="text/javascript" src="suggestion.js"></script>
+<script type="text/javascript" src="recherche.js"></script>
 
-    <script>
-    $(document).ready(function(){
-
+<script>
+    $(document).ready(function () {
         const pathSuggestion = '{{ path('rechercherVille') }}';
-        
+
         /* Suggestion des villes */
 
         $('#recherche_lieuDepart').focusout(function () {
@@ -23,35 +21,35 @@
 
         $('#recherche_lieuDepart').focus(function () {
             let texte = $(this).val();
-            if(texte != "")
+            if (texte != "")
                 suggestionVille(texte, "lieuDepart", pathSuggestion);
         });
 
         $('#recherche_lieuArrivee').focus(function () {
             let texte = $(this).val();
-            if(texte != "")
+            if (texte != "")
                 suggestionVille(texte, "lieuArrive", pathSuggestion);
         });
 
-        $('#recherche_lieuDepart').keyup( function() {
+        $('#recherche_lieuDepart').keyup(function () {
             let texte = $(this).val();
-            if(texte != "")
+            if (texte != "")
                 suggestionVille(texte, "lieuDepart", pathSuggestion);
-            else 
-                $(".autocomplete-items").remove(); 
-        });
-
-
-        $('#recherche_lieuArrivee').keyup( function(){
-            let texte = $(this).val();
-            if(texte != "")
-                suggestionVille(texte, "lieuArrive", pathSuggestion);
-            else 
+            else
                 $(".autocomplete-items").remove();
         });
 
-        $(document).on('mousedown', '.autocomplete-items', function(){
-            switch($(this).parent().attr('id')){
+
+        $('#recherche_lieuArrivee').keyup(function () {
+            let texte = $(this).val();
+            if (texte != "")
+                suggestionVille(texte, "lieuArrive", pathSuggestion);
+            else
+                $(".autocomplete-items").remove();
+        });
+
+        $(document).on('mousedown', '.autocomplete-items', function () {
+            switch ($(this).parent().attr('id')) {
                 case "autocomplete_lieuDepart":
                     $('#recherche_lieuDepart').prop('value', $(this).text());
                     ($('#recherche_lieuDepart')[0]).setCustomValidity("");
@@ -64,26 +62,47 @@
             }
         });
     });
-    </script>
+</script>
 
 {% endblock %}
 
 {% block body %}
-    {{ include('_champs_recherche.html.twig', {form: form}) }}
+<div class="hero is-fullheight">
+    <div class="hero-body is-centered">
+        <div class="column is-4 m-auto">
+            <h1 class="title">Formulaire de recherche</h1>
+            {{ form_start(form, { 'attr': {'autocomplete': 'off'} }) }}
+            {{ form_row(form.lieuDepart) }}
+            <div id="autocomplete_lieuDepart">
+            </div>
+            {{ form_row(form.lieuArrivee) }}
+            <div id="autocomplete_lieuArrive">
+            </div>
 
-    <div id="autocomplete_lieuDepart">
+            {{ form_row(form.dateDepart) }}
+            {{ form_end(form) }}
+            <hr/>
+            {% if message %}
+<p>{{ message }}</p>
+{% endif %}
+
+{% if res|length > 0 %}
+{% for r in res %}
+<div>
+    <p>{{ trajet.covoitureur.prenom|capitalize }}</p>
+    <p>{{ trajet.lieuDepart.ville|capitalize }} - {{ trajet.lieuArrive.ville|capitalize }}</p>
+    <p>{{ trajet.dateHeureDepart|date("d/m/Y - H:i") }}</p>
+    <p>{{ trajet.prix }}€</p>
+
+    <a href="{{ path('app_trajet', {id: trajet.id}) }}">Voir les détails</a>
+</div>
+{% endfor %}
+{% endif %}
+        </div>
+
+        
     </div>
-    <div id="autocomplete_lieuArrive">
-    </div>
+</div>
 
-    {% if message %}
-        <p>{{ message }}</p>
-    {% endif %}
 
-    {% if res|length > 0 %}
-        {% for r in res %}
-            {{ include('_trajet_element_liste.html.twig', {trajet: r}) }}
-        {% endfor %}
-    {% endif %}
 {% endblock %}
-
