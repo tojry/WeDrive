@@ -96,7 +96,8 @@
 {%- endblock choice_widget_options -%}
 
 {%- block checkbox_widget -%}
-    <input class="checkbox" type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+   
+    <input class="checkbox"  type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
 {%- endblock checkbox_widget -%}
 
 {%- block radio_widget -%}
@@ -237,7 +238,12 @@
             {% set label = name|humanize %}
         {%- endif -%}
     {%- endif -%}
-    <button class="button is-primary" type="{{ type|default('button') }}" {{ block('button_attributes') }}>
+    
+    {% set classs = ""  %}
+    {% if attr is not empty %}
+        {% set classs = attr.class  %}
+    {% endif %}
+    <button class="button is-primary {{ classs }}" type="{{ type|default('button') }}" {{ block('button_attributes') }}>
         {%- if translation_domain is same as(false) -%}
             {%- if label_html is same as(false) -%}
                 {{- label -}}
