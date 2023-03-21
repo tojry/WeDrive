@@ -12,47 +12,51 @@
 					🏎️
 				</a>
 			</div>
-
+	
 			<div class="navbar-menu">
 				<div class="navbar-start">
 					<a class="navbar-item">
 						Créer une offre
 					</a>
-
+	
 					<a class="navbar-item">
 						Parcourir les offres
 					</a>
 				</div>
-
+	
 				<div class="navbar-end">
 					{% if not is_granted("ROLE_USER") %}
-					<a href="{{ path('inscription') }}" class="button is-primary">
-						<strong>S'inscrire</strong>
-					</a>
-
-					<a href="{{ path('app_login') }}" class="button is-light">
-						Se connecter
-					</a>
+					<div class="navbar-item">
+						<a href="{{ path('inscription') }}" class="button is-primary">
+							<strong>S'inscrire</strong>
+						</a>
+					</div>
+	
+	
+					<div class="navbar-item">
+						<a href="{{ path('app_login') }}" class="button is-light">
+							Se connecter
+						</a>
+					</div>
+	
 					{% else %}
-
-
+	
+	
 					<div class="navbar-item has-dropdown is-hoverable">
 						<a class="navbar-link">
 							Mon compte
 						</a>
-
-
+	
 						<div class="navbar-dropdown">
-							<a class="navbar-item">
-								Voir mon profil
+							Voir mon profil
 							</a>
-
+	
 							<hr class="navbar-divider">
 							<a class="navbar-item" href="{{ path('app_logout') }}">
 								Se Deconnecter
 							</a>
 						</div>
-
+	
 					</div>
 					{% endif %}
 				</div>
@@ -97,6 +101,14 @@
 				</div>
 			</div>
 		</section>
+
+		<footer class="footer">
+			<div class="content has-text-centered is-primary">
+				<p>
+					q
+				</p>
+			</div>
+		</footer>
 
 	</body>
 
