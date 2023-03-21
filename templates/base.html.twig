@@ -22,61 +22,66 @@
 
 <body>
     <nav class="navbar is-primary">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="#">
-                🏎️
-            </a>
-        </div>
+			<div class="navbar-brand">
+				<a class="navbar-item" href="#">
+					🏎️
+				</a>
+			</div>
+	
+			<div class="navbar-menu">
+				<div class="navbar-start">
+					<a class="navbar-item" href="/creer">
+						Créer une offre
+					</a>
+	
+					<a class="navbar-item" href="/recherche">
+						Rechercher une offre
+					</a>
 
-        <div class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item">
-                    Créer une offre
-                </a>
-
-                <a class="navbar-item">
-                    Parcourir les offres
-                </a>
-            </div>
-
-            <div class="navbar-end">
-                {% if not is_granted("ROLE_USER") %}
-                <div class="navbar-item">
-                    <a href="{{ path('inscription') }}" class="button is-primary">
-                        <strong>S'inscrire</strong>
-                    </a>
-                </div>
-
-
-                <div class="navbar-item">
-                    <a href="{{ path('app_login') }}" class="button is-light">
-                        Se connecter
-                    </a>
-                </div>
-
-                {% else %}
-
-
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Mon compte
-                    </a>
-
-                    <div class="navbar-dropdown">
-                        Voir mon profil
-                        </a>
-
-                        <hr class="navbar-divider">
-                        <a class="navbar-item" href="{{ path('app_logout') }}">
-                            Se Deconnecter
-                        </a>
-                    </div>
-
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
+					<a class="navbar-item" href="/">
+						Groupe d'amis (FAIRE LIEN)
+					</a>
+				</div>
+	
+				<div class="navbar-end">
+					{% if not is_granted("ROLE_USER") %}
+					<div class="navbar-item">
+						<a href="{{ path('inscription') }}" class="button is-primary">
+							<strong>S'inscrire</strong>
+						</a>
+					</div>
+	
+	
+					<div class="navbar-item">
+						<a href="{{ path('app_login') }}" class="button is-light">
+							Se connecter
+						</a>
+					</div>
+	
+					{% else %}
+	
+	
+					<div class="navbar-item has-dropdown is-hoverable">
+						<a class="navbar-link">
+							Mon compte
+						</a>
+	
+						<div class="navbar-dropdown">
+							<a class="navbar-item" href="/consultercompte">
+							Voir mon profil
+							</a>
+	
+							<hr class="navbar-divider">
+							<a class="navbar-item" href="{{ path('app_logout') }}">
+								Se Deconnecter
+							</a>
+						</div>
+	
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</nav>
 
     {% block body %}{% endblock %}
 
