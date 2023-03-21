@@ -1,62 +1,78 @@
 <!DOCTYPTE html>
-<html>
+	<html>
+
 	<head>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 	</head>
 
 	<body>
-		<section class="hero is-fullheight is-info">
-			<div class="hero-head">
+		<nav class="navbar is-primary">
+			<div class="navbar-brand">
+				<a class="navbar-item" href="#">
+					🏎️
+				</a>
+			</div>
 
-				<nav class="navbar" role="navigation" aria-label="main navigation">
-					<div class="navbar-brand">
-						<a class="navbar-item is-size-2" href="#">
-							🏎️
+			<div class="navbar-menu">
+				<div class="navbar-start">
+					<a class="navbar-item">
+						Créer une offre
+					</a>
+
+					<a class="navbar-item">
+						Parcourir les offres
+					</a>
+				</div>
+
+				<div class="navbar-end">
+					{% if not is_granted("ROLE_USER") %}
+					<a href="{{ path('inscription') }}" class="button is-primary">
+						<strong>S'inscrire</strong>
+					</a>
+
+					<a href="{{ path('app_login') }}" class="button is-light">
+						Se connecter
+					</a>
+					{% else %}
+
+
+					<div class="navbar-item has-dropdown is-hoverable">
+						<a class="navbar-link">
+							Mon compte
 						</a>
 
-						<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-							<span aria-hidden="true"></span>
-							<span aria-hidden="true"></span>
-							<span aria-hidden="true"></span>
-						</a>
-					</div>
 
-					<div id="navbarBasicExample" class="navbar-menu">
-						
+						<div class="navbar-dropdown">
+							<a class="navbar-item">
+								Voir mon profil
+							</a>
 
-						<div class="navbar-end">
-							<div class="navbar-item">
-								<div class="buttons">
-
-									{% if not is_granted("ROLE_USER") %}
-										<a href="{{ path('inscription') }}" class="button is-primary">
-											<strong>S'inscrire</strong>
-										</a>
-
-										<a href="{{ path('app_login') }}" class="button is-light">
-											Se connecter
-										</a>
-									{% else %}
-										<a href="{{ path('app_logout') }}" class="button is-light">
-											Se Deconnecter
-										</a>
-									{% endif %}
-
-								</div>
-							</div>
+							<hr class="navbar-divider">
+							<a class="navbar-item" href="{{ path('app_logout') }}">
+								Se Deconnecter
+							</a>
 						</div>
+
 					</div>
-				</nav>
+					{% endif %}
+				</div>
+			</div>
+		</nav>
+
+		<section class="hero is-fullheight">
+			<div class="hero-head is-primary">
+				
+				
 			</div>
 
 			<div class="hero-body">
-                <div class="container has-text-centered">
-                    <p class="title">
-                        WeDRIVE
-                    </p>
-                    <p class="subtitle">
-                        Vroom vroom
-                    </p>
+				<div class="container has-text-centered">
+					<p class="title">
+						WeDRIVE
+					</p>
+					<p class="subtitle">
+						Vroom vroom
+					</p>
 
 					<form class="is-inline-block" action="/recherche" method="post">
 						<div class="field is-grouped has-background-primary box">
@@ -75,12 +91,13 @@
 							<div class="control">
 								<button class="button">Rechercher !</button>
 							</div>
-							
+
 						</div>
 					</form>
-                </div>
+				</div>
 			</div>
 		</section>
 
 	</body>
-</html>
+
+	</html>

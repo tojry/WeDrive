@@ -1,25 +1,85 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}WeDrive{% endblock %}</title>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}WeDrive{% endblock %}</title>
 
-        {% block stylesheets %}
-            
-        {% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 
-        {% block javascripts %}
-            <script >
+    {% block stylesheets %}
 
-            </script>
-        {% endblock %}
+    {% endblock %}
 
-    </head>
-    <body>
-        {% block body %}{% endblock %}
+    {% block javascripts %}
+    <script>
 
-    </body>
+    </script>
+    {% endblock %}
+
+</head>
+
+<body>
+    <nav class="navbar is-primary">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="#">
+                🏎️
+            </a>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item">
+                    Créer une offre
+                </a>
+
+                <a class="navbar-item">
+                    Parcourir les offres
+                </a>
+            </div>
+
+            <div class="navbar-end">
+                {% if not is_granted("ROLE_USER") %}
+                <div class="navbar-item">
+                    <a href="{{ path('inscription') }}" class="button is-primary">
+                        <strong>S'inscrire</strong>
+                    </a>
+                </div>
+
+
+                <div class="navbar-item">
+                    <a href="{{ path('app_login') }}" class="button is-light">
+                        Se connecter
+                    </a>
+                </div>
+
+                {% else %}
+
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Mon compte
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        Voir mon profil
+                        </a>
+
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="{{ path('app_logout') }}">
+                            Se Deconnecter
+                        </a>
+                    </div>
+
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    {% block body %}{% endblock %}
+
+</body>
+
 </html>
