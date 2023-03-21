@@ -1,65 +1,45 @@
-<!DOCTYPTE html>
-<html>
-	<head>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-	</head>
+{% extends 'base.html.twig' %}
 
-	<body>
-		<section class="hero is-fullheight is-info">
-			<div class="hero-head">
-
-				<nav class="navbar" role="navigation" aria-label="main navigation">
-					<div class="navbar-brand">
-						<a class="navbar-item is-size-2" href="#">
-							🏎️
-						</a>
-
-						<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-							<span aria-hidden="true"></span>
-							<span aria-hidden="true"></span>
-							<span aria-hidden="true"></span>
-						</a>
-					</div>
-
-					<div id="navbarBasicExample" class="navbar-menu">
-						
-
-						<div class="navbar-end">
-							<div class="navbar-item">
-								<div class="buttons">
-
-									{% if not is_granted("ROLE_USER") %}
-										<a href="{{ path('inscription') }}" class="button is-primary">
-											<strong>S'inscrire</strong>
-										</a>
-
-										<a href="{{ path('app_login') }}" class="button is-light">
-											Se connecter
-										</a>
-									{% else %}
-										<a href="{{ path('app_logout') }}" class="button is-light">
-											Se Deconnecter
-										</a>
-									{% endif %}
-
-								</div>
-							</div>
-						</div>
-					</div>
-				</nav>
+{% block body %}
+		
+		<section class="hero is-fullheight">
+			<div class="hero-head is-primary">
+				
+				
 			</div>
 
 			<div class="hero-body">
-                <div class="container has-text-centered">
-                    <p class="title">
-                        WeDRIVE
-                    </p>
-                    <p class="subtitle">
-                        Vroom vroom
-                    </p>
-                </div>
+				<div class="container has-text-centered">
+					<p class="title">
+						WeDRIVE
+					</p>
+					<p class="subtitle">
+						Vroom vroom
+					</p>
+
+					<form class="is-inline-block" action="/recherche" method="post">
+						<div class="field is-grouped has-background-primary box">
+							<div class="control">
+								<input class="input" type="text" placeholder="Depart" name="recherche[lieuDepart]">
+							</div>
+
+							<div class="control">
+								<input class="input" type="text" placeholder="Arrivée" name="recherche[lieuArrivee]">
+							</div>
+
+							<div class="control">
+								<input class="input" type="date" placeholder="Date" name="recherche[dateDepart]">
+							</div>
+
+							<div class="control">
+								<button class="button" type="submit" name="recherche[rechercher]">Rechercher !</button>
+							</div>
+
+						</div>
+					</form>
+				</div>
 			</div>
 		</section>
 
-	</body>
-</html>
+
+{% endblock %}
