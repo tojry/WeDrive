@@ -38,11 +38,7 @@
     <p id="capaciteMax">Places disponibles : {{ trajet.placesDispo }} / {{ trajet.capaciteMax }} </p>
 
     {% if app.user.id != trajet.covoitureur.id %}
-        {% if trajet.placesDispo <= 0 %}
-            <p>Il n'y a plus de place disponible pour ce trajet.</p>
-        {% elseif not reponse %}
-            {{ form(form, { 'attr': {'autocomplete': 'off'} }) }}
-        {% else %}
+        {% if reponse %}
             <p>Votre réponse :</p>
             {{ reponse.texteReponse }}
             {% if reponse.etatReponse is same as("En attente") %}
@@ -52,6 +48,10 @@
             {% else %}
                 <p>Votre réponse a été refusée.</p>
             {% endif %}
+        {% elseif trajet.placesDispo <= 0 %}
+            <p>Il n'y a plus de place disponible pour ce trajet.</p>
+        {% else %}
+            {{ form(form, { 'attr': {'autocomplete': 'off'} }) }}   
         {% endif %}
     {% else %}
         {% if trajet.utilisateurs %}

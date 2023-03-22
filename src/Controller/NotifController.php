@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Trajet;
 use App\Entity\Notification;
 use App\Entity\NotifReponse;
 use App\Entity\NotifAnnulation;
@@ -46,6 +47,18 @@ class NotifController extends AbstractController {
 
         $trajet->diminuerPlacesDispo();
         $trajet->addUtilisateur($notif->getReponse()->getUtilisateurConcerne());
+
+        // Refus de toutes les réponses en attente si la capacité max est atteinte
+        if($trajet->getPlacesDispo() <= 0){
+            foreach($trajet->getReponses() as $rep){
+                if($rep->getEtatReponse() === "En attente"){
+
+                    $this->envoiNotifRefus($trajet, $notifs);
+                    $rep->setEtatReponse("Refusée");
+                    $entityManager->persist($rep);
+                }
+            }
+        }
         $entityManager->persist($trajet);
         $entityManager->persist($notif->getReponse());
         $entityManager->flush();
@@ -62,14 +75,7 @@ class NotifController extends AbstractController {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $trajet = $notif->getReponse()->getTrajetConcerne();
-        $notifRefuser = new Notification();
-        $notifRefuser->setUtilisateurConcerne($trajet->getCovoitureur());
-        $notifRefuser->setTitreNotif("Votre demande a été refusée");
-        $notifRefuser->setTexteNotif("Vous demande pour le trajet ".$trajet->getLieuDepart()->getVille()." - ". 
-                                $trajet->getLieuArrive()->getVille()." du ".$trajet->getDateHeureDepart()->format("d/m/Y - H:i")." a été refusée.\n");
-        $notifRefuser->setDateHeureNotif(new \DateTime('now'));
-
-        $notifs->envoyerNotif($notifRefuser);
+        $this->envoiNotifRefus($trajet, $notifs);
 
         $notif->getReponse()->setEtatReponse("Refusée");
         $entityManager->persist($notif->getReponse());
@@ -78,6 +84,17 @@ class NotifController extends AbstractController {
         return $this->render('notif.html.twig', [
             'notif' => $notif,
         ]);
+    }
+
+    private function envoiNotifRefus(Trajet $trajet, NotificationsManager $notifs){
+        $notifRefuser = new Notification();
+        $notifRefuser->setUtilisateurConcerne($trajet->getCovoitureur());
+        $notifRefuser->setTitreNotif("Votre demande a été refusée");
+        $notifRefuser->setTexteNotif("Vous demande pour le trajet ".$trajet->getLieuDepart()->getVille()." - ". 
+                                $trajet->getLieuArrive()->getVille()." du ".$trajet->getDateHeureDepart()->format("d/m/Y - H:i")." a été refusée.\n");
+        $notifRefuser->setDateHeureNotif(new \DateTime('now'));
+
+        $notifs->envoyerNotif($notifRefuser);
     }
 }
 ?>

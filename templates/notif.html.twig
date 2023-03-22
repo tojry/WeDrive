@@ -16,7 +16,11 @@
             {% elseif notif.reponse.etatReponse is same as("Acceptée") %}
                 <p>Vous avez accepté cette réponse.</p>
             {% else %}
-                <p>Vous avez refusé cette réponse.</p>
+                {% if notif.reponse.trajetConcerne.placesDispo <= 0 %}
+                    <p>La nombre maximal de passagers pour ce trajet est atteint.</p>
+                {% else %}
+                    <p>Vous avez refusé cette réponse.</p>
+                {% endif %}
             {% endif %}
         {% endif %}
 
