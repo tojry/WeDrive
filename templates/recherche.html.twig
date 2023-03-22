@@ -87,7 +87,7 @@
             {% endif %}
 
 {% if res|length > 0 %}
-{% for r in res %}
+{% for trajet in res %}
 <div>
     <p>Offre de {{ trajet.covoitureur.prenom|capitalize }}</p>
     <p>{{ trajet.lieuDepart.ville|capitalize }} - {{ trajet.lieuArrive.ville|capitalize }}</p>

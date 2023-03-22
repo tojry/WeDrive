@@ -45,6 +45,7 @@ class NotifController extends AbstractController {
         $notif->getReponse()->setEtatReponse("Acceptée");
 
         $trajet->diminuerPlacesDispo();
+        $trajet->addUtilisateur($notif->getReponse()->getUtilisateurConcerne());
         $entityManager->persist($trajet);
         $entityManager->persist($notif->getReponse());
         $entityManager->flush();

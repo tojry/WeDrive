@@ -42,7 +42,7 @@ class ReponseRepository extends ServiceEntityRepository
         }
     }
 
-    public function verifierEnvoiReponse(Utilisateur $user, Trajet $trajet): bool
+    public function verifierEnvoiReponse(Utilisateur $user, Trajet $trajet): ?Reponse
     {
         $qb = $this->createQueryBuilder('r')
                 ->andWhere('r.utilisateurConcerne = :user')
@@ -52,7 +52,7 @@ class ReponseRepository extends ServiceEntityRepository
                 ->getQuery()
         ;
         $res = $qb->getOneOrNullResult();
-        return $res != null;
+        return $res;
     }
 
 //    /**
