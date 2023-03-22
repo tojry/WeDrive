@@ -41,14 +41,14 @@ class Trajet
     #[ORM\InverseJoinColumn(name: 'id_utilisateur', referencedColumnName: "id")]
     private Collection $utilisateurs;
 
-    #[ORM\OneToMany(mappedBy: 'trajet', targetEntity: PointIntermediaire::class, cascade:["persist"])]
+    #[ORM\OneToMany(mappedBy: 'trajet', targetEntity: PointIntermediaire::class, cascade:['persist'])]
     private Collection $PointIntermediaires;
 
-    #[ORM\ManyToOne(targetEntity: Utilisateur::class,inversedBy: 'trajetProposés')]
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class,inversedBy: 'trajetProposes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $Covoitureur = null;
 
-    #[ORM\OneToMany(mappedBy: 'trajetConcerne', targetEntity: Reponse::class)]
+    #[ORM\OneToMany(mappedBy: 'trajetConcerne', targetEntity: Reponse::class, cascade:['persist', 'remove'])]
     private Collection $reponses;
 
     #[ORM\OneToOne(mappedBy: 'trajetConcerne', cascade: ['persist', 'remove'])]
@@ -57,14 +57,14 @@ class Trajet
     #[ORM\OneToOne(mappedBy: 'trajetConcerne', cascade: ['persist', 'remove'])]
     private ?NotifAnnulation $notifAnnulation = null;
 
-    #[ORM\ManyToOne(inversedBy: 'trajets')]
+    #[ORM\ManyToOne(inversedBy: 'trajets', cascade:["persist"])]
     private ?GroupeAmis $groupeAmi = null;
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $lieuDepart = null;
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $lieuArrive = null;
 
@@ -79,31 +79,7 @@ class Trajet
     {
         return $this->id;
     }
-
-    public function getLieuDepart(): ?Ville
-    {
-        return $this->lieuDepart;
-    }
-
-    public function setLieuDepart(Ville $lieuDepart): self
-    {
-        $this->lieuDepart = $lieuDepart;
-
-        return $this;
-    }
-
-    public function getLieuArrive(): ?Ville
-    {
-        return $this->lieuArrive;
-    }
-
-    public function setLieuArrive(Ville $lieuArrive): self
-    {
-        $this->lieuArrive = $lieuArrive;
-
-        return $this;
-    }
-
+    
     public function getDateHeureDepart(): ?\DateTimeInterface
     {
         return $this->dateHeureDepart;
@@ -176,6 +152,7 @@ class Trajet
     {
         if (!$this->utilisateurs->contains($utilisateur)) {
             $this->utilisateurs->add($utilisateur);
+            $utilisateur->addTrajet($this);
         }
 
         return $this;
@@ -324,5 +301,30 @@ class Trajet
 
         return $this;
     }
+
+    public function getLieuDepart(): ?Ville
+    {
+        return $this->lieuDepart;
+    }
+
+    public function setLieuDepart(?Ville $lieuDepart): self
+    {
+        $this->lieuDepart = $lieuDepart;
+
+        return $this;
+    }
+
+    public function getLieuArrive(): ?Ville
+    {
+        return $this->lieuArrive;
+    }
+
+    public function setLieuArrive(?Ville $lieuArrive): self
+    {
+        $this->lieuArrive = $lieuArrive;
+
+        return $this;
+    }
+
 
 }

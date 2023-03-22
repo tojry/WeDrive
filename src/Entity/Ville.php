@@ -13,6 +13,7 @@ class Ville
     #[ORM\Column]
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\OneToMany(mappedBy: 'id', targetEntity: Trajet::class)]
     private ?int $id = null;
 
     #[ORM\Column(length: 500)]

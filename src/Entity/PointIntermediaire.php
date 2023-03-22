@@ -19,7 +19,7 @@ class PointIntermediaire
     #[ORM\JoinColumn(nullable: false)]
     private ?Trajet $trajet = null;
 
-    #[ORM\ManyToOne(inversedBy: 'pointIntermediaires', cascade:["persist"] )]
+    #[ORM\ManyToOne(inversedBy: 'pointIntermediaires')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $ville = null;
 
