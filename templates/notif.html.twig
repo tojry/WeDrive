@@ -12,7 +12,7 @@
             <br/>
             {% if notif.reponse.etatReponse is same as("En attente") %}
                 <a href="{{ path('accepter_notification', {id: notif.id}) }}">Accepter</a>
-                <a href={#"{{ path('notification', {id: notif.id}) }}"#}>Refuser</a>
+                <a href="{{ path('refuser_notification', {id: notif.id}) }}">Refuser</a>
             {% elseif notif.reponse.etatReponse is same as("Acceptée") %}
                 <p>Vous avez accepté cette réponse.</p>
             {% else %}
