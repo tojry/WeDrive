@@ -30,16 +30,24 @@
 	
 			<div class="navbar-menu">
 				<div class="navbar-start">
-					<a class="navbar-item" href="/creer">
+					<a class="navbar-item" href="{{ path('creer') }}">
 						Créer une offre
 					</a>
 	
-					<a class="navbar-item" href="/recherche">
+					<a class="navbar-item" href="{{ path('recherche') }}">
 						Rechercher une offre
 					</a>
 
 					<a class="navbar-item" href="/">
 						Groupe d'amis (FAIRE LIEN)
+					</a>
+
+					<a class="navbar-item" href="{{ path('app_mes_trajets') }}">
+						Mes trajets
+					</a>
+					
+					<a class="navbar-item" href="{{ path('notifications') }}">
+						Notifications
 					</a>
 				</div>
 	
