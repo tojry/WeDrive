@@ -28,7 +28,8 @@ class SupprimerSonCompteController extends AbstractController
         
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); //L'utilisateur est authentifié
         
-            $utilisateur = $this->getUser();
+            $mail =  $this->getUser()->getUserIdentifier();
+            $utilisateur = $utilisateurRepository->rechercher($mail);
             if($utilisateur){
                 if(($utilisateur->getTrajets()->isEmpty())){
                     if(($utilisateur->getTrajetProposes()->isEmpty())){
