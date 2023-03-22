@@ -1,5 +1,86 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+<script>
+
+    var users = [];
+
+    $(document).ready(function(){
+
+        function etoile(number){
+            $('.etoile_' + number).hover(function () {
+                    id = $(this).parent().attr('id');
+                    setEtoile(number, id);
+                }, 
+                function () {
+                    id = $(this).parent().attr('id');
+                    if(id in users)
+                        setEtoile(users[id], id);
+                    else
+                        setEtoile(0, id);
+                }
+            );
+
+            $('.etoile_' + number).click(function () {
+                id = $(this).parent().attr('id');
+                $.ajax({
+                    url: '{{ path('noteUtilisateur') }}', 
+                    data: JSON.stringify({idEvaluateur: "{{ utilisateurActuel.id }}",
+                                            idEvalue: id, 
+                                            idTrajet: "{{ trajet.id }}",
+                                            note: $(this).attr('class')[7]
+                                            }),
+                    method: 'POST',
+                    contentType: 'application/json',
+                    headers: {'X-Requested-With': 'XMLHttpRequest'},
+                    success: function (response) 
+                    {    
+                        console.log(response);
+                        users[id] = number;
+                        setEtoile(number, id);
+                    },
+                    500: function(response) {
+                        console.log(response.responseText)
+                    },
+                    501: function(response) {
+                        console.log(response.responseText)
+                    },
+                    400: function(response) {
+                        console.log(response.responseText)
+                    }    
+                });
+            });
+        }
+
+
+        function setEtoile(number, id){
+            $(document).find("#"+id).children().each(function() {
+                if($(this).attr('class')[7] <= number)
+                    $(this).attr('src','../etoile_pleine.png');
+                else
+                    $(this).attr('src','../etoile_vide.png');
+            });
+        }
+
+        // Affichage des étoiles existantes
+        {% for n in utilisateurActuel.notes %}
+            {% if n.idTrajet.id == trajet.id %}
+                users[{{n.idEvalue.id}}] = {{n.note}};
+                setEtoile({{n.note}}, {{n.idEvalue.id}})
+            {% endif %}
+        {% endfor %}
+
+        // Mise en place des event des étoiles de chaque utilisateur
+        for(i = 1; i < 6; i++)
+            etoile(i);
+        
+    });
+
+</script>
+
+
+
+{% endblock %}
 
 {% block body %}
 <style>
@@ -10,15 +91,15 @@
 <div class="example-wrapper">
     <h1> Détails du trajet </h1>
 
-    <p id="covoitureur">Covoitureur : {{ include('_utilisateur_trajet_element.html.twig', {date: date, today: today, utilisateur: covoitureur, utilisateurActuel: utilisateurActuel}) }}</p>
+    <p id="{{trajet.Covoitureur.id}}">Covoitureur : {{ include('_utilisateur_trajet_element.html.twig', {date: date, today: today, utilisateur: trajet.Covoitureur, utilisateurActuel: utilisateurActuel}) }}</p>
 
     <p id="lieuDepart">Lieu de départ : {{ lieuDepart }}</p>
 
     <p id="dateDepart">Date de départ : {{ date }}</p>
 
-    <p id="lieuRDV">Lieu de rendez-vous : {{ lieuRDV }}</p>
+    <p id="lieuRDV">Lieu de rendez-vous : {{ trajet.precisionLieuRdv }}</p>
 
-    <p id="prix">Prix : {{ prix }}€</p>
+    <p id="prix">Prix : {{ trajet.prix }}€</p>
 
     <p {{ hidden }} id="prevPointsIntermediaires">Etape(s) intermédiaire(s) : </p>
     
@@ -33,15 +114,15 @@
 
     <p id="lieuArrive">Lieu d'arrivé : {{ lieuArrive }} </p>
 
-    <p id="commentaire">Commentaire du covoitureur : {{ commentaire }} </p>
+    <p id="commentaire">Commentaire du covoitureur : {{ trajet.commentaire }} </p>
 
-    <p id="capaciteMax">Capacité maximale du véhicule : {{ capaciteMax }} </p>
+    <p id="capaciteMax">Places occupées : {{trajet.utilisateurs|length}}/{{ trajet.capaciteMax }}</p>
 
     <h2>Participants</h2>
     <div id="listeParticipants">
         <ul>
-            {% for u in participants %}
-                <li>
+            {% for u in trajet.utilisateurs %}
+                <li id='{{ u.id }}'>
                     {{ include('_utilisateur_trajet_element.html.twig', {date: date, today: today, utilisateur: u, utilisateurActuel: utilisateurActuel}) }}
                 </li>
             {% endfor %}

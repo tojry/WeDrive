@@ -31,14 +31,9 @@ class TrajetController extends AbstractController
             }
 
             $lieuArrive = $trajet->getLieuArrive();
-            $prix = $trajet->getPrix();
-            $capaciteMax = $trajet->getCapaciteMax();
             $covoitureur = $trajet->getCovoitureur();
-            $commentaire = $trajet->getCommentaire();
-            $lieuRDV = $trajet->getPrecisionLieuRdv();
             $date = $trajet->getDateHeureDepart();
-            $participants = $trajet->getUtilisateurs()->removeElement($covoitureur);
-
+            
             $utilisateur = null;
             $mail = $this->getUser()->getUserIdentifier();
             if($mail != null && $mail != ""){
@@ -48,16 +43,11 @@ class TrajetController extends AbstractController
 
             return $this->render('trajet/index.html.twig', [
                 'controller_name' => 'TrajetController',
+                'trajet' => $trajet,
                 'lieuDepart' => $lieuDepart->getVille().' ('.$lieuDepart->getCodePostal().')',
                 'listePointsIntermediaires' => $listePoints,
                 'lieuArrive' => $lieuArrive->getVille().' ('.$lieuArrive->getCodePostal().')',
-                'prix' => $prix,
-                'capaciteMax' => $capaciteMax,
-                'covoitureur' => $covoitureur,
-                'participants' => $participants,
                 'utilisateurActuel' => $utilisateur,
-                'commentaire' => $commentaire,
-                'lieuRDV' => $lieuRDV,
                 'date' => $date->format('d-m-Y H:i'),
                 'today' => (new \DateTime('today'))->format('d-m-Y H:i'), 
                 'hidden' => ($isEmpty)?('hidden'):('')

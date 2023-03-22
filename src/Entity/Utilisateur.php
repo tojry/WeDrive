@@ -87,6 +87,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\OneToMany(mappedBy: 'createur', targetEntity: GroupeAmis::class)]
     private Collection $groupeCree;
 
+    #[ORM\OneToMany(mappedBy: 'idEvaluateur', targetEntity: Evaluation::class, orphanRemoval: true)]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->trajets = new ArrayCollection();
@@ -98,6 +101,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         $this->notifAnnulations = new ArrayCollection();
         $this->isAdmin = false;
         $this->groupeCree = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -491,6 +495,36 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
             // set the owning side to null (unless already changed)
             if ($groupeCree->getCreateur() === $this) {
                 $groupeCree->setCreateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Evaluation>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Evaluation $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setIdEvaluateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Evaluation $note): self
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getIdEvaluateur() === $this) {
+                $note->setIdEvaluateur(null);
             }
         }
 
