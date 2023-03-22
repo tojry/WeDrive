@@ -62,8 +62,8 @@ class CreerController extends AbstractController {
                                 $entityManager->flush();
 
                                 // Réponse
-                                return new Response('Trajet ' . $trajet->getId() . ' crée', 200);
-                            } else return new Response('Lieu de départ ou d\'arrivé invalide', 501);
+                                return $this->redirectToRoute('app_mes_trajets');
+                            } else return new Response('Lieu de départ ou d\'arrivée invalide', 501);
                         } else return new Response('Lieu de départ ou d\'arrivé invalide', 501); 
                     } 
 

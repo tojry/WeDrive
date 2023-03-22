@@ -41,7 +41,7 @@ class InscriptionController extends AbstractController
 
 
             // Réponse
-            return new Response('Utilisateur ajouté ' . $utilisateur->getId() . ' ajouté au site');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('inscription/inscription.html.twig', [
