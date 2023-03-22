@@ -122,9 +122,11 @@
     <div id="listeParticipants">
         <ul>
             {% for u in trajet.utilisateurs %}
-                <li id='{{ u.id }}'>
-                    {{ include('_utilisateur_trajet_element.html.twig', {date: date, today: today, utilisateur: u, utilisateurActuel: utilisateurActuel}) }}
-                </li>
+                {% if u.id != trajet.Covoitureur.id %}
+                    <li id='{{ u.id }}'>
+                        {{ include('_utilisateur_trajet_element.html.twig', {date: date, today: today, utilisateur: u, utilisateurActuel: utilisateurActuel}) }}
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     </div>
