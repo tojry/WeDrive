@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Trajet;
 use App\Entity\Reponse;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Utilisateur;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Reponse>
@@ -37,6 +40,19 @@ class ReponseRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function verifierEnvoiReponse(Utilisateur $user, Trajet $trajet): bool
+    {
+        $qb = $this->createQueryBuilder('r')
+                ->andWhere('r.utilisateurConcerne = :user')
+                ->setParameter('user', $user)
+                ->andWhere('r.trajetConcerne = :trajet')
+                ->setParameter('trajet', $trajet)
+                ->getQuery()
+        ;
+        $res = $qb->getOneOrNullResult();
+        return $res != null;
     }
 
 //    /**

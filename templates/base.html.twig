@@ -67,13 +67,13 @@
 						</a>
 	
 						<div class="navbar-dropdown">
-							<a class="navbar-item" href="/consultercompte">
+							<a class="navbar-item" href="{{ path('app_consultercompte', {id: app.user.id}) }}">
 							Voir mon profil
 							</a>
 	
 							<hr class="navbar-divider">
 							<a class="navbar-item" href="{{ path('app_logout') }}">
-								Se Deconnecter
+								Se déconnecter
 							</a>
 						</div>
 	

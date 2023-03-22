@@ -2,12 +2,10 @@
 
 {% block body %}
 
-    <ul>
     {% if notifs|length > 0 %}
         {% for n in notifs %}
-            <li> Notif recue </li>
+            {{ include('_notif_element_liste.html.twig', {notif: n}) }}
         {% endfor %}
     {% endif %}
-    </ul>
 
 {% endblock %}

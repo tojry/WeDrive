@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div>
+        <p>{{ notif.dateHeureNotif|date("d/m/Y - H:i") }}</p>
+        <p>{{ notif.texteNotif }}</p>
+
+        {% if notif.reponse %}
+            <a href={#"{{ path('notification', {id: notif.id}) }}"#}>Accepter</a>
+            <a href={#"{{ path('notification', {id: notif.id}) }}"#}>Refuser</a>
+        {% endif %}
+
+        
+
+    </div>
+
+{% endblock %}

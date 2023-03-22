@@ -10,7 +10,7 @@
 <div class="example-wrapper">
     <h1> Détails du trajet </h1>
 
-    <p id="covoitureur">Covoitureur : {{ covoitureur }}</p>
+    <p id="covoitureur">Offre proposée par {{ covoitureur.prenom }}</p>
 
     <p id="lieuDepart">Lieu de départ : {{ lieuDepart }}</p>
 
@@ -36,6 +36,10 @@
     <p id="commentaire">Commentaire du covoitureur : {{ commentaire }} </p>
 
     <p id="capaciteMax">Capacité maximale du véhicule : {{ capaciteMax }} </p>
+
+    {% if app.user.id != covoitureur.id and not reponseEnvoyee %}
+        {{ form(form, { 'attr': {'autocomplete': 'off'} }) }}
+    {% endif %}
 
 </div>
 {% endblock %}
