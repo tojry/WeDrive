@@ -4,11 +4,20 @@
 
     <div>
         <p>{{ notif.dateHeureNotif|date("d/m/Y - H:i") }}</p>
+        <p>{{ notif.titreNotif }}</p>
         <p>{{ notif.texteNotif }}</p>
 
         {% if notif.reponse %}
-            <a href={#"{{ path('notification', {id: notif.id}) }}"#}>Accepter</a>
-            <a href={#"{{ path('notification', {id: notif.id}) }}"#}>Refuser</a>
+            {{ notif.reponse.texteReponse }}
+            <br/>
+            {% if notif.reponse.etatReponse is same as("En attente") %}
+                <a href="{{ path('accepter_notification', {id: notif.id}) }}">Accepter</a>
+                <a href={#"{{ path('notification', {id: notif.id}) }}"#}>Refuser</a>
+            {% elseif notif.reponse.etatReponse is same as("Acceptée") %}
+                <p>Vous avez accepté cette réponse.</p>
+            {% else %}
+                <p>Vous avez refusé cette réponse.</p>
+            {% endif %}
         {% endif %}
 
         

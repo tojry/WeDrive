@@ -1,7 +1,7 @@
 <div>
 <p>{{ notif.dateHeureNotif|date("d/m/Y - H:i") }}</p>
-<p>{{ notif.texteNotif }}</p>
+<p>{{ notif.titreNotif }}</p>
 
-<a href={#"{{ path('notification', {id: notif.id}) }}"#}>Consulter</a>
+<a href="{{ path('notification', {id: notif.id}) }}">Consulter</a>
 
 </div>

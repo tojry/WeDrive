@@ -22,6 +22,9 @@ class NotifReponse
     private ?Utilisateur $UtilisateurConcerne = null;
 
     #[ORM\Column(type: 'string', length: 1024)]
+    private $titreNotif;
+
+    #[ORM\Column(type: 'string', length: 1024)]
     private $texteNotif;
 
     #[ORM\Column(type: 'datetime')]
@@ -52,6 +55,18 @@ class NotifReponse
     public function setUtilisateurConcerne(?Utilisateur $UtilisateurConcerne): self
     {
         $this->UtilisateurConcerne = $UtilisateurConcerne;
+
+        return $this;
+    }
+
+    public function getTitreNotif(): ?string
+    {
+        return $this->titreNotif;
+    }
+
+    public function setTitreNotif(string $titreNotif): self
+    {
+        $this->titreNotif = $titreNotif;
 
         return $this;
     }

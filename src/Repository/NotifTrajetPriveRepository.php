@@ -40,7 +40,7 @@ class NotifTrajetPriveRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return NotifTrajetPrive[] Returns an array of NotifReponse objects
+     * @return NotifTrajetPrive[] Returns an array of NotifTrajetPrive objects
      */
     public function findByUser($user): array
     {

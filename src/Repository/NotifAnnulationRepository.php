@@ -40,7 +40,7 @@ class NotifAnnulationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return NotifAnnulation[] Returns an array of NotifReponse objects
+     * @return NotifAnnulation[] Returns an array of NotifAnnulation objects
      */
     public function findByUser($user): array
     {

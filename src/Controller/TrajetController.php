@@ -58,7 +58,9 @@ class TrajetController extends AbstractController
 
                 $notif->setReponse($reponse);
                 $notif->setUtilisateurConcerne($covoitureur);
-                $notif->setTexteNotif("Vous avez reçu une nouvelle réponse pour le trajet");
+                $notif->setTitreNotif("Nouvelle réponse pour un trajet");
+                $notif->setTexteNotif("Vous avez reçu une nouvelle réponse pour le trajet ".$trajet->getLieuDepart()->getVille()." - ". 
+                                        $trajet->getLieuArrive()->getVille()." du ".$trajet->getDateHeureDepart()->format("d/m/Y - H:i").".");
                 $notif->setDateHeureNotif(new \DateTime('now'));
 
                 // Sauvegarde de l'objet dans la DB   

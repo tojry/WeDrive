@@ -68,6 +68,10 @@ class Trajet
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $lieuArrive = null;
 
+    #[ORM\Column(type: 'integer')]
+    #[Assert\Positive]
+    private $placesDispo;
+
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
@@ -112,6 +116,7 @@ class Trajet
     public function setCapaciteMax(int $capaciteMax): self
     {
         $this->capaciteMax = $capaciteMax;
+        $this->placesDispo = $capaciteMax;
 
         return $this;
     }
@@ -322,6 +327,32 @@ class Trajet
     public function setLieuArrive(?Ville $lieuArrive): self
     {
         $this->lieuArrive = $lieuArrive;
+
+        return $this;
+    }
+
+    public function getPlacesDispo(): ?int
+    {
+        return $this->placesDispo;
+    }
+
+    public function setPlacesDispo(int $placesDispo): self
+    {
+        $this->placesDispo = $placesDispo;
+
+        return $this;
+    }
+
+    public function diminuerPlacesDispo(): self
+    {
+        $this->placesDispo--;
+
+        return $this;
+    }
+
+    public function augmenterPlacesDispo(): self
+    {
+        $this->placesDispo++;
 
         return $this;
     }

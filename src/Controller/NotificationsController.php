@@ -18,9 +18,8 @@ class NotificationsController extends AbstractController {
     public function afficher(Request $request, UtilisateurRepository $utilisateurs, NotificationsManager $notifs) : Response {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $session = $request->getSession();
-        $mail =  $this->getUser()->getUserIdentifier();
-        $utilisateur = $utilisateurs->rechercher($mail);
+ 
+        $utilisateur =  $this->getUser();
         
         if($utilisateur != null)
         {
