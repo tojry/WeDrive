@@ -33,7 +33,7 @@ class SupprimerSonCompteController extends AbstractController
                 if(($utilisateur->getTrajets()->isEmpty())){
                     if(($utilisateur->getTrajetProposes()->isEmpty())){
                         //verifier mot de passe 
-                        if($pwd == null || $pwd = ''){
+                        if($pwd == null || $pwd = '0'){
                             $this->addFlash('error',"Veuillez entrer votre mot de passe afin de confirmer la suppression de votre compte");
                         }
                         else{
