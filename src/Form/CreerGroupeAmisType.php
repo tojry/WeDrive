@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Unique;
 
 class CreerGroupeAmisType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -23,7 +24,8 @@ class CreerGroupeAmisType extends AbstractType {
                         'min'=>1,
                         'max'=>64
                     ]),
-                    new Regex('/^[A-Za-z\s]+$/', "Le nom peut contenir uniquement des lettres !")
+                    new Regex('/^[A-Za-z\s]+$/', "Le nom peut contenir uniquement des lettres !"),
+                    new Unique(['groups' => ['nom_groupe', 'createur_id']])
                 ]
             ])
             ->add('creer', SubmitType::class, [
