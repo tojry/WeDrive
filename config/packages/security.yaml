@@ -51,6 +51,7 @@ security:
     - { path: '^/consulercompte', roles: [ ROLE_ADMIN, ROLE_USER, IS_AUTHENTICATED_FULLY ] }
     - { path: '^/modifierSonCompte', roles: [ ROLE_ADMIN, ROLE_USER, IS_AUTHENTICATED_FULL ] }
     - { path: '^/mestrajets', roles: [ ROLE_ADMIN, ROLE_USER, IS_AUTHENTICATED_FULL ] }
+    - { path: '^/trajet', roles: [ ROLE_ADMIN, ROLE_USER, IS_AUTHENTICATED_FULL ] }
     - { path: '^/afficherlistecomptesuperuser', roles: [ ROLE_ADMIN, IS_AUTHENTICATED_FULL ] }
     - { path: '^/supprimeruncomptesuperuser', roles: [ ROLE_ADMIN, IS_AUTHENTICATED_FULL ] }
    # - { path: '^/supprimersoncompte', roles: [ ROLE_ADMIN, IS_AUTHENTICATED_FULL ] }

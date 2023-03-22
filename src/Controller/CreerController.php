@@ -21,6 +21,9 @@ class CreerController extends AbstractController {
         $mail =  $this->getUser()->getUserIdentifier();
         if($mail != null && $mail != ""){
             $utilisateur = $utilisateurs->findOneBy(['adresseMail' => $mail]);
+            if(!$utilisateur->isVoiture()){
+                return new Response('Vous ne possédez pas de véhicule.', 504);
+            }
             $session = $request->getSession();
             if($utilisateur != null && $session != null) {
                 $trajet = new Trajet();

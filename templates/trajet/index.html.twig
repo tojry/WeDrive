@@ -10,7 +10,7 @@
 <div class="example-wrapper">
     <h1> Détails du trajet </h1>
 
-    <p id="covoitureur">Covoitureur : {{ covoitureur }}</p>
+    <p id="covoitureur">Covoitureur : {{ include('_utilisateur_trajet_element.html.twig', {date: date, today: today, utilisateur: covoitureur, utilisateurActuel: utilisateurActuel}) }}</p>
 
     <p id="lieuDepart">Lieu de départ : {{ lieuDepart }}</p>
 
@@ -36,6 +36,17 @@
     <p id="commentaire">Commentaire du covoitureur : {{ commentaire }} </p>
 
     <p id="capaciteMax">Capacité maximale du véhicule : {{ capaciteMax }} </p>
+
+    <h2>Participants</h2>
+    <div id="listeParticipants">
+        <ul>
+            {% for u in participants %}
+                <li>
+                    {{ include('_utilisateur_trajet_element.html.twig', {date: date, today: today, utilisateur: u, utilisateurActuel: utilisateurActuel}) }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
 </div>
 {% endblock %}

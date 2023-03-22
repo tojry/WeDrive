@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Trajet;
 use App\Repository\TrajetRepository;
+use App\Repository\UtilisateurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,7 +14,7 @@ use function PHPUnit\Framework\isEmpty;
 class TrajetController extends AbstractController
 {
     #[Route('/trajet/{id}', name: 'app_trajet')]
-    public function detailsTrajet(Trajet $trajet): Response
+    public function detailsTrajet(Trajet $trajet, UtilisateurRepository $utilisateurs): Response
     {
         if($trajet != null){
 
@@ -36,6 +37,14 @@ class TrajetController extends AbstractController
             $commentaire = $trajet->getCommentaire();
             $lieuRDV = $trajet->getPrecisionLieuRdv();
             $date = $trajet->getDateHeureDepart();
+            $participants = $trajet->getUtilisateurs()->removeElement($covoitureur);
+
+            $utilisateur = null;
+            $mail = $this->getUser()->getUserIdentifier();
+            if($mail != null && $mail != ""){
+                $utilisateur = $utilisateurs->findOneBy(['adresseMail' => $mail]);
+                if($utilisateur == null) return new Response('Erreur Lors de la récupération de l\'utilisateur actuel', 501);
+            }
 
             return $this->render('trajet/index.html.twig', [
                 'controller_name' => 'TrajetController',
@@ -44,10 +53,13 @@ class TrajetController extends AbstractController
                 'lieuArrive' => $lieuArrive->getVille().' ('.$lieuArrive->getCodePostal().')',
                 'prix' => $prix,
                 'capaciteMax' => $capaciteMax,
-                'covoitureur' => $covoitureur->getNom().' '.$covoitureur->getPrenom(),
+                'covoitureur' => $covoitureur,
+                'participants' => $participants,
+                'utilisateurActuel' => $utilisateur,
                 'commentaire' => $commentaire,
                 'lieuRDV' => $lieuRDV,
                 'date' => $date->format('d-m-Y H:i'),
+                'today' => (new \DateTime('today'))->format('d-m-Y H:i'), 
                 'hidden' => ($isEmpty)?('hidden'):('')
             ]);
         }
