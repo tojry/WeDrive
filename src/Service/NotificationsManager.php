@@ -60,7 +60,7 @@ class NotificationsManager
 
     public function chargerNotifs(Utilisateur $user) : array{
         
-        $listeNotifs = $this->notifsReponse->findByUser($user);
+        $listeNotifs = $this->notifs->findByUser($user);
         /*array_push($listeNotifs, $this->notifsReponse->findByUser($user));
         array_push($listeNotifs, $this->notifsAnnulation->findByUser($user));
         array_push($listeNotifs, $this->notifsTrajetPrive->findByUser($user));*/

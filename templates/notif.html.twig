@@ -2,12 +2,13 @@
 
 {% block body %}
 
+    <button class="button" onclick="window.location.href='{{ path('notifications') }}'" >Retour</button>
     <div>
         <p>{{ notif.dateHeureNotif|date("d/m/Y - H:i") }}</p>
         <p>{{ notif.titreNotif }}</p>
         <p>{{ notif.texteNotif }}</p>
 
-        {% if notif.reponse %}
+        {% if notif.getReponse() is defined %}
             {{ notif.reponse.texteReponse }}
             <br/>
             {% if notif.reponse.etatReponse is same as("En attente") %}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Trajet;
+use App\Entity\Utilisateur;
 use App\Entity\Notification;
 use App\Entity\NotifReponse;
 use App\Entity\NotifAnnulation;
@@ -18,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class NotifController extends AbstractController {
  
     #[Route('/notification/{id}', name: 'notification')]
-    public function afficher(NotifReponse $notif, Request $request, NotificationsManager $notifs) : Response {
+    public function afficher(Notification $notif, Request $request, NotificationsManager $notifs) : Response {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -34,7 +35,7 @@ class NotifController extends AbstractController {
 
         $trajet = $notif->getReponse()->getTrajetConcerne();
         $notifAccepter = new Notification();
-        $notifAccepter->setUtilisateurConcerne($trajet->getCovoitureur());
+        $notifAccepter->setUtilisateurConcerne($notif->getReponse()->getUtilisateurConcerne());
         $notifAccepter->setTitreNotif("Votre demande a été acceptée");
         $notifAccepter->setTexteNotif("Vous demande pour le trajet ".$trajet->getLieuDepart()->getVille()." - ". 
                                 $trajet->getLieuArrive()->getVille()." du ".$trajet->getDateHeureDepart()->format("d/m/Y - H:i")." a été acceptée.\n
@@ -53,7 +54,7 @@ class NotifController extends AbstractController {
             foreach($trajet->getReponses() as $rep){
                 if($rep->getEtatReponse() === "En attente"){
 
-                    $this->envoiNotifRefus($trajet, $notifs);
+                    $this->envoiNotifRefus($notif->getReponse()->getUtilisateurConcerne(), $trajet, $notifs);
                     $rep->setEtatReponse("Refusée");
                     $entityManager->persist($rep);
                 }
@@ -75,7 +76,7 @@ class NotifController extends AbstractController {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $trajet = $notif->getReponse()->getTrajetConcerne();
-        $this->envoiNotifRefus($trajet, $notifs);
+        $this->envoiNotifRefus($notif->getReponse()->getUtilisateurConcerne(), $trajet, $notifs);
 
         $notif->getReponse()->setEtatReponse("Refusée");
         $entityManager->persist($notif->getReponse());
@@ -86,9 +87,9 @@ class NotifController extends AbstractController {
         ]);
     }
 
-    private function envoiNotifRefus(Trajet $trajet, NotificationsManager $notifs){
+    private function envoiNotifRefus(Utilisateur $user, Trajet $trajet, NotificationsManager $notifs){
         $notifRefuser = new Notification();
-        $notifRefuser->setUtilisateurConcerne($trajet->getCovoitureur());
+        $notifRefuser->setUtilisateurConcerne($user);
         $notifRefuser->setTitreNotif("Votre demande a été refusée");
         $notifRefuser->setTexteNotif("Vous demande pour le trajet ".$trajet->getLieuDepart()->getVille()." - ". 
                                 $trajet->getLieuArrive()->getVille()." du ".$trajet->getDateHeureDepart()->format("d/m/Y - H:i")." a été refusée.\n");
