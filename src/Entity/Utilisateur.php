@@ -75,6 +75,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\OneToMany(mappedBy: 'utilisateurConcerne', targetEntity: Reponse::class)]
     private Collection $reponses;
 
+    #[ORM\OneToMany(mappedBy: 'UtilisateurConcerne', targetEntity: Notification::class)]
+    private Collection $notifications;
+
     #[ORM\OneToMany(mappedBy: 'UtilisateurConcerne', targetEntity: NotifReponse::class)]
     private Collection $notifreponses;
 
@@ -308,6 +311,24 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
             if ($reponse->getUtilisateurConcerne() === $this) {
                 $reponse->setUtilisateurConcerne(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setUtilisateurConcerne($this);
         }
 
         return $this;

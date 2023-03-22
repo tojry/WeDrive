@@ -10,32 +10,62 @@
 <div class="example-wrapper">
     <h1> Détails du trajet </h1>
 
-    <p id="covoitureur">Covoitureur : {{ covoitureur }}</p>
+    <p id="covoitureur">Offre proposée par {{ trajet.covoitureur.prenom }}</p>
 
-    <p id="lieuDepart">Lieu de départ : {{ lieuDepart }}</p>
+    <p id="lieuDepart">Lieu de départ : {{ trajet.lieuDepart }}</p>
 
-    <p id="dateDepart">Date de départ : {{ date }}</p>
+    <p id="dateDepart">Date de départ : {{ trajet.dateHeureDepart|date("d/m/Y - H:i") }}</p>
 
-    <p id="lieuRDV">Lieu de rendez-vous : {{ lieuRDV }}</p>
+    <p id="lieuRDV">Lieu de rendez-vous : {{ trajet.precisionLieuRdv }}</p>
 
-    <p id="prix">Prix : {{ prix }}€</p>
+    <p id="prix">Prix : {{ trajet.prix }}€</p>
 
-    <p {{ hidden }} id="prevPointsIntermediaires">Etape(s) intermédiaire(s) : </p>
-    
-    
+    {% if trajet.pointIntermediaires %}
+        <p id="prevPointsIntermediaires">Etape(s) intermédiaire(s) : </p>
         <div id="listePtIntermediaires">
-            <ol>
-                {{ listePointsIntermediaires|raw }}
-            </ol>
+        <ol>
+        {% for p in trajet.pointIntermediaires %}
+            <li> {{ p.ville }}</li>
+        {% endfor %}
+        </ol>
         </div>
-    
-    
+    {% endif %}
 
-    <p id="lieuArrive">Lieu d'arrivé : {{ lieuArrive }} </p>
+    <p id="lieuArrive">Lieu d'arrivée : {{ trajet.lieuArrive }} </p>
 
-    <p id="commentaire">Commentaire du covoitureur : {{ commentaire }} </p>
+    <p id="commentaire">Commentaire du conducteur : {{ trajet.commentaire }} </p>
 
-    <p id="capaciteMax">Capacité maximale du véhicule : {{ capaciteMax }} </p>
+    <p id="capaciteMax">Places disponibles : {{ trajet.placesDispo }} / {{ trajet.capaciteMax }} </p>
+
+    {% if app.user.id != trajet.covoitureur.id %}
+        {% if reponse %}
+            <p>Votre réponse :</p>
+            {{ reponse.texteReponse }}
+            {% if reponse.etatReponse is same as("En attente") %}
+                <p>Votre réponse n'a pas encore été traitée par le conducteur.</p>
+            {% elseif reponse.etatReponse is same as("Acceptée") %}
+                <p>Vous réponse a été acceptée, veuillez consulter vos notifications pour savoir comment contacter directement le conducteur.</p>
+            {% else %}
+                <p>Votre réponse a été refusée.</p>
+            {% endif %}
+        {% elseif trajet.placesDispo <= 0 %}
+            <p>Il n'y a plus de place disponible pour ce trajet.</p>
+        {% else %}
+            {{ form(form, { 'attr': {'autocomplete': 'off'} }) }}   
+        {% endif %}
+    {% else %}
+        {% if trajet.utilisateurs %}
+            <p>Participants au trajet : </p>
+            <ul>
+            {% for u in trajet.utilisateurs %}
+                <li>{{ u.prenom }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Vous n'avez accepté aucun passager pour l'instant.</p>
+        {% endif %}
+        
+    {% endif %}
 
 </div>
 {% endblock %}
