@@ -28,13 +28,12 @@ class SupprimerSonCompteController extends AbstractController
         
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); //L'utilisateur est authentifié
         
-            $mail =  $this->getUser()->getUserIdentifier();
-            $utilisateur = $utilisateurRepository->rechercher($mail);
+            $utilisateur = $this->getUser();
             if($utilisateur){
                 if(($utilisateur->getTrajets()->isEmpty())){
                     if(($utilisateur->getTrajetProposes()->isEmpty())){
                         //verifier mot de passe 
-                        if($pwd == null){
+                        if($pwd == null || $pwd = ''){
                             $this->addFlash('error',"Veuillez entrer votre mot de passe afin de confirmer la suppression de votre compte");
                         }
                         else{
