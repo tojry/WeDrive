@@ -32,11 +32,9 @@
                 <div class="field is-grouped">
                     {{ form_row(form.creer) }}
 
-                    <button class="button is-danger" onclick="window.location.href='../supprimersoncompte'" >Supprimer </button>
-
                 </div>
                 {{ form_end(form) }}
-
+                <button class="button is-danger" onclick="window.location.href='{{ path('utilisateur.supprimerComptePerso') }}'" >Supprimer </button>
 
 
             </div>
