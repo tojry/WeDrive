@@ -31,7 +31,6 @@ class TrajetController extends AbstractController
             }
 
             $lieuArrive = $trajet->getLieuArrive();
-            $covoitureur = $trajet->getCovoitureur();
             $date = $trajet->getDateHeureDepart();
             
             $utilisateur = null;
