@@ -28,11 +28,11 @@
         {% else %}
         {% for groupe in groupes %}
         <div class="group-box">
-            <h2>{{ groupe.nom }}</h2>
-            <p>Nombre de membres : {{ groupe.membres|length }}</p>
+            <h2>{{ groupe.getNomGroupe }}</h2>
+            <p>Nombre de membres : {{ groupe.utilisateurs|length }}</p>
             <ul>
-                {% for membre in groupe.membres %}
-                <li>{{ membre.nom }} {{ membre.prenom }}</li>
+                {% for membre in groupe.utilisateurs %}
+                <li>{{ membre.getNom }} {{ membre.getPrenom }}</li>
                 {% endfor %}
             </ul>
         </div>
