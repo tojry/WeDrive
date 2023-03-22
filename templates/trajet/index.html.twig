@@ -55,7 +55,7 @@
         {% endif %}
     {% else %}
         {% if trajet.utilisateurs %}
-            <p>Passagers acceptés : </p>
+            <p>Participants au trajet : </p>
             <ul>
             {% for u in trajet.utilisateurs %}
                 <li>{{ u.prenom }}</li>
