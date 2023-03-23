@@ -61,6 +61,7 @@ class ConsulterGroupesController extends AbstractController
             return new Response('Utilisateur actuel non trouvé', 502);
         }
     }
+    /*
 
     #[Route('/groupes/{id}', name: 'app_consulter_groupe_details', methods: ['GET'])]
     public function show(int $id, GroupeAmisRepository $groupeAmisRepository): Response
@@ -74,6 +75,6 @@ class ConsulterGroupesController extends AbstractController
         return $this->render('consulter_groupes/details.html.twig', [
             'groupe' => $groupe,
         ]);
-    }
+    }*/
 
 }
