@@ -372,7 +372,7 @@ class Trajet
                 $note->setIdTrajet(null);
             }
         }
-
+    }
     public function diminuerPlacesDispo(): self
     {
         $this->placesDispo--;
