@@ -91,7 +91,7 @@
 <div class="example-wrapper">
     <h1> Détails du trajet </h1>
 
-    <p id="{{trajet.Covoitureur.id}}">Covoitureur : {{ include('_utilisateur_trajet_element.html.twig', {date: date, today: today, utilisateur: trajet.Covoitureur, utilisateurActuel: utilisateurActuel}) }}</p>
+    <p id="{{trajet.Covoitureur.id}}">Covoitureur : {{ include('_utilisateur_trajet_element.html.twig', {date: trajet.dateHeureDepart|date('d-m-Y H:i'), today: today, utilisateur: trajet.Covoitureur, utilisateurActuel: utilisateurActuel}) }}</p>
 
     <p id="lieuDepart">Lieu de départ : {{ trajet.lieuDepart }}</p>
 
