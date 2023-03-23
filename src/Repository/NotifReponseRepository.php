@@ -39,20 +39,19 @@ class NotifReponseRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return NotifReponse[] Returns an array of NotifReponse objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('n.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return NotifReponse[] Returns an array of NotifReponse objects
+     */
+    public function findByUser($user): array
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.UtilisateurConcerne = :user')
+            ->setParameter('user', $user)
+            ->orderBy('n.dateHeureNotif', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?NotifReponse
 //    {

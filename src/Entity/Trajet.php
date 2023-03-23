@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Entity;
-
 use App\Repository\TrajetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TrajetRepository::class)]
 class Trajet
@@ -17,25 +17,22 @@ class Trajet
     #[ORM\Column()]
     private ?int $id = null;
 
-    #[ORM\Column(length: 500)]
-    private ?string $lieuDepart = null;
-
-    #[ORM\Column(length: 500)]
-    private ?string $lieuArrive = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThan('+24 hours')]
     private ?\DateTimeInterface $dateHeureDepart = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?int $prix = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?int $capaciteMax = null;
 
     #[ORM\Column(length: 1024)]
     private ?string $precisionLieuRdv = null;
 
-    #[ORM\Column(length: 1024)]
+    #[ORM\Column(length: 1024, nullable:true)]
     private ?string $commentaire = null;
 
     #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'trajets')]
@@ -44,14 +41,14 @@ class Trajet
     #[ORM\InverseJoinColumn(name: 'id_utilisateur', referencedColumnName: "id")]
     private Collection $utilisateurs;
 
-    #[ORM\OneToMany(mappedBy: 'trajet', targetEntity: PointIntermediare::class)]
-    private Collection $pointIntermediares;
+    #[ORM\OneToMany(mappedBy: 'trajet', targetEntity: PointIntermediaire::class, cascade:['persist'])]
+    private Collection $PointIntermediaires;
 
-    #[ORM\ManyToOne(inversedBy: 'trajetProposés')]
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class,inversedBy: 'trajetProposes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $Covoitureur = null;
 
-    #[ORM\OneToMany(mappedBy: 'trajetConcerne', targetEntity: Reponse::class)]
+    #[ORM\OneToMany(mappedBy: 'trajetConcerne', targetEntity: Reponse::class, cascade:['persist', 'remove'])]
     private Collection $reponses;
 
     #[ORM\OneToOne(mappedBy: 'trajetConcerne', cascade: ['persist', 'remove'])]
@@ -60,13 +57,25 @@ class Trajet
     #[ORM\OneToOne(mappedBy: 'trajetConcerne', cascade: ['persist', 'remove'])]
     private ?NotifAnnulation $notifAnnulation = null;
 
-    #[ORM\ManyToOne(inversedBy: 'trajets')]
+    #[ORM\ManyToOne(inversedBy: 'trajets', cascade:["persist"])]
     private ?GroupeAmis $groupeAmi = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Ville $lieuDepart = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Ville $lieuArrive = null;
+
+    #[ORM\Column(type: 'integer')]
+    #[Assert\Positive]
+    private $placesDispo;
 
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
-        $this->pointIntermediares = new ArrayCollection();
+        $this->PointIntermediaires = new ArrayCollection();
         $this->reponses = new ArrayCollection();
     }
 
@@ -74,31 +83,7 @@ class Trajet
     {
         return $this->id;
     }
-
-    public function getLieuDepart(): ?string
-    {
-        return $this->lieuDepart;
-    }
-
-    public function setLieuDepart(string $lieuDepart): self
-    {
-        $this->lieuDepart = $lieuDepart;
-
-        return $this;
-    }
-
-    public function getLieuArrive(): ?string
-    {
-        return $this->lieuArrive;
-    }
-
-    public function setLieuArrive(string $lieuArrive): self
-    {
-        $this->lieuArrive = $lieuArrive;
-
-        return $this;
-    }
-
+    
     public function getDateHeureDepart(): ?\DateTimeInterface
     {
         return $this->dateHeureDepart;
@@ -131,6 +116,7 @@ class Trajet
     public function setCapaciteMax(int $capaciteMax): self
     {
         $this->capaciteMax = $capaciteMax;
+        $this->placesDispo = $capaciteMax;
 
         return $this;
     }
@@ -171,6 +157,7 @@ class Trajet
     {
         if (!$this->utilisateurs->contains($utilisateur)) {
             $this->utilisateurs->add($utilisateur);
+            $utilisateur->addTrajet($this);
         }
 
         return $this;
@@ -184,34 +171,35 @@ class Trajet
     }
 
     /**
-     * @return Collection<int, PointIntermediare>
+     * @return Collection<int, PointIntermediaire>
      */
-    public function getPointIntermediares(): Collection
+    public function getPointIntermediaires(): Collection
     {
-        return $this->pointIntermediares;
+        return $this->PointIntermediaires;
     }
 
-    public function addPointIntermediare(PointIntermediare $pointIntermediare): self
+    public function addPointIntermediaire(PointIntermediaire $PointIntermediaire): self
     {
-        if (!$this->pointIntermediares->contains($pointIntermediare)) {
-            $this->pointIntermediares->add($pointIntermediare);
-            $pointIntermediare->setTrajet($this);
+        if (!$this->PointIntermediaires->contains($PointIntermediaire)) {
+            $this->PointIntermediaires->add($PointIntermediaire);
+            $PointIntermediaire->setTrajet($this);
         }
 
         return $this;
     }
 
-    public function removePointIntermediare(PointIntermediare $pointIntermediare): self
+    public function removePointIntermediaire(PointIntermediaire $PointIntermediaire): self
     {
-        if ($this->pointIntermediares->removeElement($pointIntermediare)) {
+        if ($this->PointIntermediaires->removeElement($PointIntermediaire)) {
             // set the owning side to null (unless already changed)
-            if ($pointIntermediare->getTrajet() === $this) {
-                $pointIntermediare->setTrajet(null);
+            if ($PointIntermediaire->getTrajet() === $this) {
+                $PointIntermediaire->setTrajet(null);
             }
         }
 
         return $this;
     }
+
 
     public function getCovoitureur(): ?Utilisateur
     {
@@ -307,6 +295,64 @@ class Trajet
     public function setGroupeAmi(?GroupeAmis $groupeAmi): self
     {
         $this->groupeAmi = $groupeAmi;
+
+        return $this;
+    }
+
+    public function newArrayPointIntermediaires(): self
+    {
+
+        $this->PointIntermediaires = new ArrayCollection();
+
+        return $this;
+    }
+
+    public function getLieuDepart(): ?Ville
+    {
+        return $this->lieuDepart;
+    }
+
+    public function setLieuDepart(?Ville $lieuDepart): self
+    {
+        $this->lieuDepart = $lieuDepart;
+
+        return $this;
+    }
+
+    public function getLieuArrive(): ?Ville
+    {
+        return $this->lieuArrive;
+    }
+
+    public function setLieuArrive(?Ville $lieuArrive): self
+    {
+        $this->lieuArrive = $lieuArrive;
+
+        return $this;
+    }
+
+    public function getPlacesDispo(): ?int
+    {
+        return $this->placesDispo;
+    }
+
+    public function setPlacesDispo(int $placesDispo): self
+    {
+        $this->placesDispo = $placesDispo;
+
+        return $this;
+    }
+
+    public function diminuerPlacesDispo(): self
+    {
+        $this->placesDispo--;
+
+        return $this;
+    }
+
+    public function augmenterPlacesDispo(): self
+    {
+        $this->placesDispo++;
 
         return $this;
     }

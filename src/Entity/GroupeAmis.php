@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GroupeAmisRepository::class)]
+#[ORM\UniqueConstraint(name: "nom_createur_ids", columns: ["nom_groupe", "createur_id"])]
 class GroupeAmis
 {
 
@@ -24,6 +25,10 @@ class GroupeAmis
 
     #[ORM\OneToMany(mappedBy: 'groupeAmi', targetEntity: Trajet::class)]
     private Collection $trajets;
+
+    #[ORM\ManyToOne(inversedBy: 'groupeCree')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $createur = null;
 
     public function __construct()
     {
@@ -101,6 +106,18 @@ class GroupeAmis
                 $trajet->setGroupeAmi(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreateur(): ?Utilisateur
+    {
+        return $this->createur;
+    }
+
+    public function setCreateur(?Utilisateur $createur): self
+    {
+        $this->createur = $createur;
 
         return $this;
     }

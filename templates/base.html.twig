@@ -1,21 +1,105 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}WeDrive{% endblock %}</title>
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+    {% block stylesheets %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+    <script>
+
+    </script>
+    {% endblock %}
+
+</head>
+
+<body>
+    <nav class="navbar is-primary">
+			<div class="navbar-brand">
+				<a class="navbar-item" href="#">
+					🏎️
+				</a>
+			</div>
+	
+			<div class="navbar-menu">
+				<div class="navbar-start">
+					<a class="navbar-item" href="{{ path('creer') }}">
+						Créer une offre
+					</a>
+	
+					<a class="navbar-item" href="{{ path('recherche') }}">
+						Rechercher une offre
+					</a>
+
+					<a class="navbar-item" href="/">
+						Groupe d'amis (FAIRE LIEN)
+					</a>
+
+					<a class="navbar-item" href="{{ path('app_mes_trajets') }}">
+						Mes trajets
+					</a>
+					
+					<a class="navbar-item" href="{{ path('notifications') }}">
+						Notifications
+					</a>
+				</div>
+	
+				<div class="navbar-end">
+					{% if not is_granted("ROLE_USER") %}
+					<div class="navbar-item">
+						<a href="{{ path('inscription') }}" class="button is-primary">
+							<strong>S'inscrire</strong>
+						</a>
+					</div>
+	
+	
+					<div class="navbar-item">
+						<a href="{{ path('app_login') }}" class="button is-light">
+							Se connecter
+						</a>
+					</div>
+	
+					{% else %}
+	
+	
+					<div class="navbar-item has-dropdown is-hoverable">
+						<a class="navbar-link">
+							Mon compte
+						</a>
+	
+						<div class="navbar-dropdown">
+							<a class="navbar-item" href="{{ path('app_consultercompte', {id: app.user.id}) }}">
+							Voir mon profil
+							</a>
+	
+							<hr class="navbar-divider">
+							<a class="navbar-item" href="{{ path('app_logout') }}">
+								Se déconnecter
+							</a>
+						</div>
+	
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</nav>
+
+    {% block body %}{% endblock %}
+
+    <footer class="footer is-primary">
+        <div class="content has-text-centered">
+            <p>
+                <b>WeDrive</b>
+            </p>
+        </div>
+    </footer>
+</body>
+
 </html>

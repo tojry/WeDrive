@@ -2,13 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\UtilisateurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\Collection;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-class Utilisateur
+#[UniqueEntity('adresseMail')]
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
 
     #[ORM\Id]
@@ -16,10 +23,19 @@ class Utilisateur
     #[ORM\Column()]
     private ?int $id = null;
 
-    #[ORM\Column(length: 320,unique: true)]
+    #[ORM\Column(length: 320, unique: true)]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+        message: 'adresse email incorrect  ',
+    )]
     private ?string $adresseMail = null;
 
+
     #[ORM\Column(length: 128)]
+    #[Assert\Regex(
+        pattern: ' /^[a-zA-Z0-9àâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý \-\_!#$\*%{}\^&?\. ]{8,}$/i ',
+        message: 'mot de passe tres faible :8 caractères minimum composé de lettres, chiffres, tirets, accents, points et caractères  ',
+    )]
     private ?string $mdp = null;
 
     #[ORM\Column(length: 64)]
@@ -28,6 +44,8 @@ class Utilisateur
     #[ORM\Column(length: 64)]
     private ?string $prenom = null;
 
+    #[ORM\Column(length: 64)]
+    private ?bool $isAdmin = null;
     #[ORM\Column(length: 1)]
     private ?string $sexe = null;
 
@@ -35,23 +53,30 @@ class Utilisateur
     private ?bool $voiture = null;
 
     #[ORM\Column(length: 11)]
+    #[Assert\Regex(
+        pattern: '/^[\+|0][0-9]{9,11}$/',
+        message: 'numero de telephone invalide',
+    )]
     private ?string $noTel = null;
 
     #[ORM\Column]
     private ?bool $mailNotif = null;
 
-    #[ORM\ManyToMany(targetEntity: Trajet::class, mappedBy: '$utilisateurs')]
+    #[ORM\ManyToMany(targetEntity: Trajet::class, mappedBy: 'utilisateurs')]
     private Collection $trajets;
 
     #[ORM\ManyToMany(targetEntity: GroupeAmis::class, inversedBy: 'utilisateurs')]
     #[ORM\JoinTable(name: 'amitie')]
     private Collection $Amis;
 
-    #[ORM\OneToMany(mappedBy: 'Covoitureur', targetEntity: Trajet::class)]
+    #[ORM\OneToMany(mappedBy: 'Covoitureur', targetEntity: Trajet::class, cascade:['persist'])]
     private Collection $trajetProposes;
 
     #[ORM\OneToMany(mappedBy: 'utilisateurConcerne', targetEntity: Reponse::class)]
     private Collection $reponses;
+
+    #[ORM\OneToMany(mappedBy: 'UtilisateurConcerne', targetEntity: Notification::class)]
+    private Collection $notifications;
 
     #[ORM\OneToMany(mappedBy: 'UtilisateurConcerne', targetEntity: NotifReponse::class)]
     private Collection $notifreponses;
@@ -62,6 +87,9 @@ class Utilisateur
     #[ORM\OneToMany(mappedBy: 'UtilisateurConcerne', targetEntity: NotifAnnulation::class)]
     private Collection $notifAnnulations;
 
+    #[ORM\OneToMany(mappedBy: 'createur', targetEntity: GroupeAmis::class)]
+    private Collection $groupeCree;
+
     public function __construct()
     {
         $this->trajets = new ArrayCollection();
@@ -71,6 +99,8 @@ class Utilisateur
         $this->notifreponses = new ArrayCollection();
         $this->notifTrajetsPrives = new ArrayCollection();
         $this->notifAnnulations = new ArrayCollection();
+        $this->isAdmin = false;
+        $this->groupeCree = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -238,6 +268,7 @@ class Utilisateur
         if (!$this->trajetProposes->contains($trajetPropose)) {
             $this->trajetProposes->add($trajetPropose);
             $trajetPropose->setCovoitureur($this);
+            $this->addTrajet($trajetPropose);
         }
 
         return $this;
@@ -280,6 +311,24 @@ class Utilisateur
             if ($reponse->getUtilisateurConcerne() === $this) {
                 $reponse->setUtilisateurConcerne(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setUtilisateurConcerne($this);
         }
 
         return $this;
@@ -375,5 +424,98 @@ class Utilisateur
         return $this;
     }
 
-    
+
+    public function getUserIdentifier()
+    {
+        return $this->getAdresseMail();
+    }
+
+
+    public function getPassword(): ?string
+    {
+        return $this->getMdp();
+    }
+
+
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        $this->mdp = null;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->getAdresseMail();
+    }
+
+
+    public function getRoles()
+    {
+        //$roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        if ($this->isAdmin){
+            $roles[] = 'ROLE_ADMIN';
+        }else{
+            $roles[] = 'ROLE_USER';
+        }
+
+        return array_unique($roles);
+    }
+
+
+    public
+    function isEqualTo(UserInterface $user): bool
+    {
+        {
+            if (!$user instanceof Utilisateur) {
+                return true;
+            }
+
+            if ($this->mdp !== $user->getPassword()) {
+                return true;
+            }
+
+
+            if ($this->adresseMail !== $user->getUsername()) {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    /**
+     * @return Collection<int, GroupeAmis>
+     */
+    public function getGroupeCree(): Collection
+    {
+        return $this->groupeCree;
+    }
+
+    public function addGroupeCree(GroupeAmis $groupeCree): self
+    {
+        if (!$this->groupeCree->contains($groupeCree)) {
+            $this->groupeCree->add($groupeCree);
+            $groupeCree->setCreateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupeCree(GroupeAmis $groupeCree): self
+    {
+        if ($this->groupeCree->removeElement($groupeCree)) {
+            // set the owning side to null (unless already changed)
+            if ($groupeCree->getCreateur() === $this) {
+                $groupeCree->setCreateur(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

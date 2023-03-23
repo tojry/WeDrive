@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Vos trajets</h1>
+
+    {% if (trajetsPasses|length > 0) or (trajetsFuturs|length > 0) %}
+
+        {% if trajetsFuturs|length > 0 %}
+            
+            <h2>A venir</h2>
+
+            {% for t in trajetsFuturs %}
+                {{ include('_trajet_element_liste.html.twig', {trajet: t}) }}
+            {% endfor %}
+
+        {% endif %}
+
+
+        {% if trajetsPasses|length > 0 %}
+
+            <h2>Passés</h2>
+
+            {% for t in trajetsPasses %}
+                {{ include('_trajet_element_liste.html.twig', {trajet: t}) }}
+            {% endfor %}
+
+        {% endif %}
+
+    {% else %}
+
+        <h3>Vous n'avez pas encore de trajet</h3>
+
+    {% endif %}
+{% endblock %}
