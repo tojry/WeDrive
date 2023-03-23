@@ -17,15 +17,15 @@ class Evaluation
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $note = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notes')]
+    #[ORM\ManyToOne(targetEntity: Trajet::class,inversedBy: 'notes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Trajet $idTrajet = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notes')]
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class,inversedBy: 'notes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $idEvaluateur = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notes')]
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class,inversedBy: 'notesrecus')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $idEvalue = null;
 
