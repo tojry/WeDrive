@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="suggestion.js"></script>
+    <script type="text/javascript" src="../suggestion.js"></script>
     <script>
-        var lieuDepart = "";
-        var lieuArrive = "";
+        var lieuDepart = '{{ trajet.getLieuDepart().getVille() }}';
+        var lieuArrive = '{{ trajet.getLieuArrive().getVille() }}';
         var pointIntermediaireSave = "";
         var pointIntermediaireList = [];
         const pathSuggestion = '{{ path('rechercherVille') }}';
@@ -13,17 +13,23 @@
 
             /* Suggestion des villes */
 
+            $('#creer_form_lieuDepart').val(lieuDepart);
+
             $('#creer_form_lieuDepart').focusout(function () {
                 $(".autocomplete-items").remove();
             });
+
+
 
             $('#creer_form_ptIntermediaire').focusout(function () {
                 $(".autocomplete-items").remove();
             });
 
+            $('#creer_form_lieuArrive').val(lieuArrive);
             $('#creer_form_lieuArrive').focusout(function () {
                 $(".autocomplete-items").remove();
             });
+
 
             $('#creer_form_lieuDepart').focus(function () {
                 let texte = $(this).val();
@@ -196,7 +202,7 @@
             <div class="column is-6 m-auto">
                 <div class="columns">
                     <div class="column is-two-thirds">
-                        <h1 class="title">Créer un trajet (publique)</h1>
+                        <h1 class="title">Modifier un trajet (publique)</h1>
                         {{ form_start(creer_form) }}
                         {{ form_row(creer_form.lieuDepart) }}
                         <div id="autocomplete_lieuDepart"></div>

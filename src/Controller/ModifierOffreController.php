@@ -29,7 +29,7 @@ class ModifierOffreController extends AbstractController
 
         }
 
-        return $this->render('creer/creer.html.twig', [
+        return $this->render('modifier_offre/index.html.twig', [
             'creer_form' => $form->createView(),
             'trajet' => $trajet,
         ]);
