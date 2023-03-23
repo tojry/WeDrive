@@ -68,8 +68,14 @@ class Trajet
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $lieuArrive = null;
 
+
     #[ORM\OneToMany(mappedBy: 'idTrajet', targetEntity: Evaluation::class, orphanRemoval: true)]
     private Collection $notes;
+
+    #[ORM\Column(type: 'integer')]
+    #[Assert\Positive]
+    private $placesDispo;
+
 
     public function __construct()
     {
@@ -116,6 +122,7 @@ class Trajet
     public function setCapaciteMax(int $capaciteMax): self
     {
         $this->capaciteMax = $capaciteMax;
+        $this->placesDispo = $capaciteMax;
 
         return $this;
     }
@@ -345,8 +352,17 @@ class Trajet
             $note->setIdTrajet($this);
         }
 
+    public function getPlacesDispo(): ?int
+    {
+        return $this->placesDispo;
+    }
+
+    public function setPlacesDispo(int $placesDispo): self
+    {
+        $this->placesDispo = $placesDispo;
         return $this;
     }
+
 
     public function removeNote(Evaluation $note): self
     {
@@ -356,6 +372,17 @@ class Trajet
                 $note->setIdTrajet(null);
             }
         }
+
+    public function diminuerPlacesDispo(): self
+    {
+        $this->placesDispo--;
+
+        return $this;
+    }
+
+    public function augmenterPlacesDispo(): self
+    {
+        $this->placesDispo++;
 
         return $this;
     }

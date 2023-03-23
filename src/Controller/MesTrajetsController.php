@@ -23,7 +23,6 @@ class MesTrajetsController extends AbstractController
             $trajetsFuturs = $trajetRepository->getTrajetsFutursUtilisateur($utilisateur->getId());
             
             return $this->render('mes_trajets/index.html.twig', [
-                'controller_name' => 'MesTrajetsController',
                 'trajetsPasses' => $trajetsPasses,
                 'trajetsFuturs' => $trajetsFuturs
             ]);

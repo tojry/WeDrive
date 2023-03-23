@@ -91,7 +91,10 @@ class TrajetRepository extends ServiceEntityRepository
             ->setParameter('from', $from )
             ->setParameter('to', $to);
         }
-        $qb->orderBy('t.dateHeureDepart', 'ASC');
+        $now = (new \DateTime('now'))->format("Y-m-d H:i:s");
+        $qb->andWhere('t.dateHeureDepart > :now')
+            ->setParameter('now', $now)
+            ->orderBy('t.dateHeureDepart', 'ASC');
         
         $query  = $qb->getQuery();
 
