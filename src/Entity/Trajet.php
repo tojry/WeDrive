@@ -68,15 +68,21 @@ class Trajet
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $lieuArrive = null;
 
+
+    #[ORM\OneToMany(mappedBy: 'idTrajet', targetEntity: Evaluation::class, orphanRemoval: true)]
+    private Collection $notes;
+
     #[ORM\Column(type: 'integer')]
     #[Assert\Positive]
     private $placesDispo;
+
 
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
         $this->PointIntermediaires = new ArrayCollection();
         $this->reponses = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -331,6 +337,21 @@ class Trajet
         return $this;
     }
 
+    /**
+     * @return Collection<int, Evaluation>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Evaluation $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setIdTrajet($this);
+        }
+
     public function getPlacesDispo(): ?int
     {
         return $this->placesDispo;
@@ -339,9 +360,18 @@ class Trajet
     public function setPlacesDispo(int $placesDispo): self
     {
         $this->placesDispo = $placesDispo;
-
         return $this;
     }
+
+
+    public function removeNote(Evaluation $note): self
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getIdTrajet() === $this) {
+                $note->setIdTrajet(null);
+            }
+        }
 
     public function diminuerPlacesDispo(): self
     {

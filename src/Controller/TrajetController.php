@@ -3,6 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Trajet;
+
+use App\Repository\TrajetRepository;
+use App\Repository\UtilisateurRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Reponse;
 use App\Entity\NotifReponse;
 use App\Form\ReponseOffreType;
@@ -11,6 +15,7 @@ use App\Service\NotificationsManager;
 use function PHPUnit\Framework\isEmpty;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +24,7 @@ class TrajetController extends AbstractController
 {
     #[Route('/trajet/{id}', name: 'app_trajet')]
     public function detailsTrajet(Trajet $trajet, Request $request, EntityManagerInterface $entityManager, NotificationsManager $notifs, ReponseRepository $reponses): Response
+
     {
         if($trajet != null){
 
@@ -52,13 +58,26 @@ class TrajetController extends AbstractController
 
             }
 
+            $lieuArrive = $trajet->getLieuArrive();
+            $date = $trajet->getDateHeureDepart();
+            
+            $utilisateur = null;
+            $mail = $this->getUser()->getUserIdentifier();
+            if($mail != null && $mail != ""){
+                $utilisateur = $utilisateurs->findOneBy(['adresseMail' => $mail]);
+                if($utilisateur == null) return new Response('Erreur Lors de la récupération de l\'utilisateur actuel', 501);
+            }
+            
             $reponse = $reponses->verifierEnvoiReponse($this->getUser(), $trajet);
 
             return $this->render('trajet/index.html.twig', [
                 'trajet' => $trajet,
+                'utilisateurActuel' => $utilisateur,
+                'today' => (new \DateTime('today'))->format('d-m-Y H:i'),
                 'reponse' => $reponse,
                 'form' => $form->createView(),
             ]);
+                  
         }
         else return new Response('Veuillez spécifier un trajet.', 500);
 
