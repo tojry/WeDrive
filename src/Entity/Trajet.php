@@ -351,7 +351,7 @@ class Trajet
             $this->notes->add($note);
             $note->setIdTrajet($this);
         }
-
+    }
     public function getPlacesDispo(): ?int
     {
         return $this->placesDispo;
