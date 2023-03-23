@@ -2,17 +2,19 @@
 
 {% block body %}
 
-<div class="hero is-fullheight">
+    <div class="hero is-fullheight">
     <div class="hero-head">
-       
+
     </div>
     <div class="hero-body is-centered">
         <div class="column is-4 m-auto">
 
             <ul>
-                {% if user.id == user_co.id %}
+                {% if (user.id == user_co.id) or (is_granted('ROLE_ADMIN')) %}
                     <h1 class="title">Vos informations</h1>
-
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li>Identifiant : {{ user.id}}</li>
+                    {% endif %}
                     <li>Adresse mail : {{ user.adresseMail }}</li>
                     <li>Nom : {{ user.nom }}</li>
                     <li>Prénom : {{ user.prenom }}</li>
