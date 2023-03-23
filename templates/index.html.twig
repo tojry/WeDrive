@@ -1,63 +1,118 @@
-<!DOCTYPTE html>
-<html>
-	<head>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-	</head>
+{% extends 'base.html.twig' %}
 
-	<body>
-		<section class="hero is-fullheight is-info">
-			<div class="hero-head">
+{% block javascripts %}
 
-				<nav class="navbar" role="navigation" aria-label="main navigation">
-					<div class="navbar-brand">
-						<a class="navbar-item is-size-2" href="#">
-							🏎️
-						</a>
+<script type="text/javascript" src="suggestion.js"></script>
+<script type="text/javascript" src="recherche.js"></script>
 
-						<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-							<span aria-hidden="true"></span>
-							<span aria-hidden="true"></span>
-							<span aria-hidden="true"></span>
-						</a>
-					</div>
+<script>
+    $(document).ready(function () {
+        const pathSuggestion = '{{ path('rechercherVille') }}';
 
-					<div id="navbarBasicExample" class="navbar-menu">
-						
+        /* Suggestion des villes */
 
-						<div class="navbar-end">
-							<div class="navbar-item">
-								<div class="buttons">
+        $('#recherche_lieuDepart').focusout(function () {
+            $(".autocomplete-items").remove();
+        });
 
-									{% if not is_granted("ROLE_USER") %}
-										<a href="{{ path('/inscription') }}" class="button is-primary">
-											<strong>S'inscrire</strong>
-										</a>
+        $('#recherche_lieuArrivee').focusout(function () {
+            $(".autocomplete-items").remove();
+        });
 
-										<a href="{{ path('/login') }}" class="button is-light">
-											Se connecter
-										</a>
-									{% else %}
-										<a href="{{ path('/logout') }}" class="button is-light">
-											Se Deconnecter
-										</a>
-									{% endif %}
+        $('#recherche_lieuDepart').focus(function () {
+            let texte = $(this).val();
+            if (texte != "")
+                suggestionVille(texte, "lieuDepart", pathSuggestion);
+        });
 
-								</div>
-							</div>
-						</div>
-					</div>
-				</nav>
+        $('#recherche_lieuArrivee').focus(function () {
+            let texte = $(this).val();
+            if (texte != "")
+                suggestionVille(texte, "lieuArrive", pathSuggestion);
+        });
+
+        $('#recherche_lieuDepart').keyup(function () {
+            let texte = $(this).val();
+            if (texte != "")
+                suggestionVille(texte, "lieuDepart", pathSuggestion);
+            else
+                $(".autocomplete-items").remove();
+        });
+
+
+        $('#recherche_lieuArrivee').keyup(function () {
+            let texte = $(this).val();
+            if (texte != "")
+                suggestionVille(texte, "lieuArrive", pathSuggestion);
+            else
+                $(".autocomplete-items").remove();
+        });
+
+        $(document).on('mousedown', '.autocomplete-items', function () {
+            switch ($(this).parent().attr('id')) {
+                case "autocomplete_lieuDepart":
+                    $('#recherche_lieuDepart').prop('value', $(this).text());
+                    ($('#recherche_lieuDepart')[0]).setCustomValidity("");
+                    break;
+                case "autocomplete_lieuArrive":
+                    $('#recherche_lieuArrivee').prop('value', $(this).text());
+                    ($('#recherche_lieuArrivee')[0]).setCustomValidity("");
+                    break;
+                default: break;
+            }
+        });
+    });
+</script>
+
+{% endblock %}
+
+
+{% block body %}
+		
+		<section class="hero is-fullheight">
+			<div class="hero-head is-primary">
+				
+				
 			</div>
 
 			<div class="hero-body">
-                <div class="container has-text-centered">
-                    <p class="title">
-                        WeDRIVE
-                    </p>
-                    <p class="subtitle">
-                        Vroom vroom
-                    </p>
-                </div>
+				<div class="container has-text-centered">
+					<p class="title">
+						WeDRIVE
+					</p>
+					<p class="subtitle">
+						Vroom vroom
+					</p>
+
+					<form class="is-inline-block" action="/recherche" method="post" autocomplete="off">
+						<div class="field is-grouped has-background-primary box">
+							<div class="control">
+								<input id="recherche_lieuDepart" class="input" type="text" placeholder="Départ" name="recherche[lieuDepart]">
+							</div>
+
+							<div class="control">
+								<input id="recherche_lieuArrivee" class="input" type="text" placeholder="Arrivée" name="recherche[lieuArrivee]">
+							</div>
+
+							<div class="control">
+								<input class="input" type="date" placeholder="Date" name="recherche[dateDepart]">
+							</div>
+
+							<div class="control">
+								<button class="button" type="submit" name="recherche[rechercher]">Rechercher !</button>
+							</div>
+
+						</div>
+					</form>
+
+					<div class="p-4">
+					<div id="autocomplete_lieuDepart">
+            		</div>
+
+					<div id="autocomplete_lieuArrive">
+					</div>
+            </div>
+				</div>
 			</div>
 		</section>
 
