@@ -56,22 +56,13 @@ class TrajetController extends AbstractController
                 $notifs->envoyerNotifReponse($notif);
 
             }
-
-            $lieuArrive = $trajet->getLieuArrive();
-            $date = $trajet->getDateHeureDepart();
-            
-            $utilisateur = null;
-            $mail = $this->getUser()->getUserIdentifier();
-            if($mail != null && $mail != ""){
-                $utilisateur = $utilisateurs->findOneBy(['adresseMail' => $mail]);
-                if($utilisateur == null) return new Response('Erreur Lors de la récupération de l\'utilisateur actuel', 501);
-            }
+          
             
             $reponse = $reponses->verifierEnvoiReponse($this->getUser(), $trajet);
 
             return $this->render('trajet/index.html.twig', [
                 'trajet' => $trajet,
-                'utilisateurActuel' => $utilisateur,
+                'utilisateurActuel' => $this->getUser(),
                 'today' => (new \DateTime('today'))->format('d-m-Y H:i'),
                 'reponse' => $reponse,
                 'form' => $form->createView(),
