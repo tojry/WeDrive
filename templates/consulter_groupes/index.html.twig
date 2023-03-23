@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des groupes d'amis</title>
+    <style>
+        /* styles pour centrer la boîte */
+        #box {
+            width: 60%;
+            margin: 0 auto;
+            border: 2px solid black;
+            padding: 10px;
+        }
+
+        /* styles pour les boîtes de groupes */
+        .group-box {
+            border: 1px solid black;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <h1>Liste des groupes d'amis</h1>
+        <hr>
+        {% if groupes is empty %}
+        <p>Aucun groupe d'amis disponible.</p>
+        {% else %}
+        {% for groupe in groupes %}
+        <div class="group-box">
+            <h2>{{ groupe.getNomGroupe }}</h2>
+            <p>Nombre de membres : {{ groupe.utilisateurs|length }}</p>
+            <ul>
+                {% for membre in groupe.utilisateurs %}
+                <li>{{ membre.getNom }} {{ membre.getPrenom }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>
