@@ -12,6 +12,7 @@
             <ul>
                 {% if (user.id == user_co.id) or (is_granted('ROLE_ADMIN')) %}
                     <h1 class="title">Vos informations</h1>
+                    <li>Note : {% if user.getMoyenneNote() > 0 %} {{user.getMoyenneNote()}} <img src="/etoile_pleine.png" width="15" height="15" alt="Note" class="etoile"> {%else%} Pas encore de notes {%endif%} </li>
                     {% if is_granted('ROLE_ADMIN') %}
                         <li>Identifiant : {{ user.id}}</li>
                     {% endif %}
@@ -29,6 +30,7 @@
                     <h1 class="title">Informations de {{ user.prenom }}</h1>
                     <li>Prénom : {{ user.prenom }}</li>
                     <li>Sexe : {{ user.sexe }}</li>
+                    <li>Note : {% if user.getMoyenneNote() > 0 %} {{user.getMoyenneNote()}} <img src="/etoile_pleine.png" width="15" height="15" alt="Note" class="etoile"> {%else%} Pas encore de notes {%endif%} </li>
 
                 {% endif %}
 

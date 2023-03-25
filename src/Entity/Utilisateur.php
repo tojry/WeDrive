@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[UniqueEntity('adresseMail')]
@@ -574,6 +575,21 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         return $this;
     }
 
+    public function getMoyenneNote() : float{
+        $noteTotal = 0.0;
+        $notes = $this->getNotesRecus();
+        $i = 0;
+        foreach($notes as $n){
+            $noteTotal += $n->getNote();
+            $i++;
+        }
+
+        if($i == 0)
+            return 0;
+        else 
+            return number_format($noteTotal/$i,1);
+    }
+
     public function removeNoteRecus(Evaluation $notesrecus): self
     {
         if ($this->notes->removeElement($notesrecus)) {
@@ -584,6 +600,16 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         }
 
         return $this;
+    }
+
+    public function __toString() : string
+    {
+        $str = '<a href="/consultercompte/'.$this->id.'">'.ucfirst($this->prenom).'</a>';
+        $note = $this->getMoyenneNote();
+
+        if($note > 0)
+            $str .= ' ('.$note.'<img src="/etoile_pleine.png" width="15" height="15" alt="Note" class="etoile">)';
+        return $str;
     }
 
 }

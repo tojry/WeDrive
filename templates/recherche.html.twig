@@ -88,14 +88,7 @@
 
 {% if res|length > 0 %}
 {% for trajet in res %}
-<div>
-    <p>Offre de {{ trajet.covoitureur.prenom|capitalize }}</p>
-    <p>{{ trajet.lieuDepart.ville|capitalize }} - {{ trajet.lieuArrive.ville|capitalize }}</p>
-    <p>{{ trajet.dateHeureDepart|date("d/m/Y - H:i") }}</p>
-    <p>{{ trajet.prix }}€</p>
-
-    <a href="{{ path('app_trajet', {id: trajet.id}) }}">Voir les détails</a>
-</div>
+    {{ include('_trajet_element_liste.html.twig', {trajet: trajet}) }}
 {% endfor %}
 {% endif %}
         </div>
