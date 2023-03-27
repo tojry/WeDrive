@@ -7,6 +7,7 @@
         "php": ">=8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "amphp/http-client": "^4.2.1",
         "components/jquery": "^3.6",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.8",
@@ -96,6 +97,7 @@
         }
     },
     "require-dev": {
+        "deployer/deployer": "^7.3",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "5.4.*",
         "symfony/css-selector": "5.4.*",
