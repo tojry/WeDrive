@@ -29,6 +29,9 @@ class Notification
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $UtilisateurConcerne = null;
 
+    #[ORM\Column]
+    private ?bool $ouverte = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,6 +81,18 @@ class Notification
     public function setUtilisateurConcerne(?Utilisateur $UtilisateurConcerne): self
     {
         $this->UtilisateurConcerne = $UtilisateurConcerne;
+
+        return $this;
+    }
+
+    public function isOuverte(): ?bool
+    {
+        return $this->ouverte;
+    }
+
+    public function setOuverte(bool $ouverte): self
+    {
+        $this->ouverte = $ouverte;
 
         return $this;
     }

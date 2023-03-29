@@ -1,7 +1,16 @@
-<div>
-<p>{{ notif.dateHeureNotif|date("d/m/Y - H:i") }}</p>
-<p>{{ notif.titreNotif }}</p>
-
-<a href="{{ path('notification', {id: notif.id}) }}">Consulter</a>
-
+<div class="card" {% if not notif.ouverte %}style="border-left: 1rem solid hsl(171, 100%, 41%);"{% endif %}>
+    <div class="card-content">
+        <p class="title is-4">{{ notif.titreNotif }}</p>
+        <p class="subtitle">{{ notif.dateHeureNotif|date("d/m/Y - H:i") }}</p>
+    </div>
+    <footer class="card-footer">
+        <p class="card-footer-item">
+            <span>
+                <a class="button is-primary" href="{{ path('notification', {id: notif.id}) }}">Consulter</a>
+            </span>
+            <span>
+                <a class="button is-danger" href="{{ path('supprimer_notification', {id: notif.id}) }}">Supprimer</a>
+            </span>
+        </p>
+    </footer>
 </div>
