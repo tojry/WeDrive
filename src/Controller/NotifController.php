@@ -19,9 +19,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class NotifController extends AbstractController {
  
     #[Route('/notification/{id}', name: 'notification')]
-    public function afficher(Notification $notif, Request $request, NotificationsManager $notifs) : Response {
+    public function afficher(Notification $notif, Request $request, NotificationsManager $notifs, EntityManagerInterface $entityManager) : Response {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if(!$notif->isOuverte()){
+            $notif->setOuverte(true);
+            $entityManager->persist($notif);
+            $entityManager->flush();
+        }
+
 
         return $this->render('notif.html.twig', [
             'notif' => $notif,
@@ -96,6 +103,16 @@ class NotifController extends AbstractController {
         $notifRefuser->setDateHeureNotif(new \DateTime('now'));
 
         $notifs->envoyerNotif($notifRefuser);
+    }
+
+    #[Route('/notification/supprimer/{id}', name: 'supprimer_notification')]
+    public function supprimer(Notification $notif, Request $request, EntityManagerInterface $entityManager) : Response {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $entityManager->remove($notif);
+        $entityManager->flush();
+        return $this->redirectToRoute("notifications");
     }
 }
 ?>
