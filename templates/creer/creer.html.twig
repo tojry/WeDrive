@@ -111,10 +111,11 @@
                     }
                     else{
                         $('#creer_form_ptIntermediaire').focus();
-                        ($('#creer_form_ptIntermediaire')[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
                         texte = $('#creer_form_ptIntermediaire').val();
-                        if(texte != "")
+                        if(texte != ""){
+                            ($('#creer_form_ptIntermediaire')[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
                             suggestionVille(texte, "pointIntermediaire", pathSuggestion);
+                        }
                     }
                 });
 
