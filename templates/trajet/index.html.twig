@@ -55,10 +55,13 @@
 
         function setEtoile(number, id){
             $(document).find("#"+id).children().each(function() {
-                if($(this).attr('class')[7] <= number)
-                    $(this).attr('src','../etoile_pleine.png');
-                else
-                    $(this).attr('src','../etoile_vide.png');
+                attr = $(this).attr('class');
+                if (typeof attr !== 'undefined' && attr !== false && attr.length == 8) {
+                    if(attr[7] <= number)
+                        $(this).attr('src','../etoile_pleine.png');
+                    else
+                        $(this).attr('src','../etoile_vide.png');
+                }
             });
         }
 

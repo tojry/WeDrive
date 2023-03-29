@@ -1,5 +1,6 @@
-{{ utilisateur.nom|upper }} {{ utilisateur.prenom|capitalize }}
+{{ utilisateur|raw }}
 {% if date|date('Y-m-d H:i') < today|date('Y-m-d H:i') and utilisateurActuel.id != utilisateur.id %}
+        | Notez l'utilisateur : 
         <img src="../etoile_vide.png" width="25" height="25" alt="Note " class="etoile_1">
         <img src="../etoile_vide.png" width="25" height="25" alt="Note " class="etoile_2">
         <img src="../etoile_vide.png" width="25" height="25" alt="Note " class="etoile_3">

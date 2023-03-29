@@ -1,5 +1,5 @@
 <div>
-<p>Offre de {{ trajet.covoitureur.prenom|capitalize }}</p>
+<p>Offre de {{ trajet.covoitureur|raw }}</p>
 <p>{{ trajet.lieuDepart.ville|capitalize }} - {{ trajet.lieuArrive.ville|capitalize }}</p>
 <p>{{ trajet.dateHeureDepart|date("d/m/Y - H:i") }}</p>
 <p>{{ trajet.prix }}€</p>
