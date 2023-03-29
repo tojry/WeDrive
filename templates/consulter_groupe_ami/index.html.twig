@@ -31,12 +31,15 @@
     <h3 class="title is-6" style="width:max-content;margin-top:1%"> {{ groupeAmi.getCreateur().getNom() }} {{ groupeAmi.getCreateur().getPrenom() }} (Créateur) </h3>
  <div class="control" style="margin-top:2%">
   <div class="select">
-    <select>
-        <option>Select dropdown</option>
-        <option>With options</option>
+    <select  id="dropwdown-add"{{ groupeAmi.getCreateur().getId() == currentuser.getId() ? "" : "disabled" }}>
+    {% for utilisateur in utilisateurs %}
+        <option id="{{ utilisateur.getId() }}" > {{ utilisateur.getAdresseMail() }} </option>
+    {%endfor%}
     </select>
   </div>
-  <button class="button is-info">Ajouter ami</button>
+  <button 
+  onclick="window.location.href = '/app_ajouter_ami_groupe/'+ document.getElementById('dropwdown-add').options[document.getElementById('dropwdown-add').selectedIndex].id +'/{{ groupeAmi.getId() }}'"
+  class="button is-info"  {{ groupeAmi.getCreateur().getId() == currentuser.getId() ? "" : "disabled" }}>Ajouter ami</button>
  </div>
  <div style="margin-top:2%">
     <table class="table" >
