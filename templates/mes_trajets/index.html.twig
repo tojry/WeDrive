@@ -1,7 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Vos trajets</h1>
+
+
+
+<div class="hero is-fullheight">
+    <div class="hero-body is-centered">
+        <div class="column is-4 m-auto box content">
+            <h1>Vos trajets</h1>
 
     {% if (trajetsPasses|length > 0) or (trajetsFuturs|length > 0) %}
 
@@ -31,4 +37,11 @@
         <h3>Vous n'avez pas encore de trajet</h3>
 
     {% endif %}
+        </div>
+
+        
+    </div>
+</div>
+
+    
 {% endblock %}

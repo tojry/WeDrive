@@ -2,7 +2,10 @@
 
 {% block body %}
 
-    <button class="button" onclick="window.location.href='{{ path('notifications') }}'" >Retour</button>
+<div class="hero is-fullheight">
+    <div class="hero-body is-centered">
+        <div class="column is-4 m-auto box content">
+            <button class="button" onclick="window.location.href='{{ path('notifications') }}'" >Retour</button>
     <div>
         <p>{{ notif.dateHeureNotif|date("d/m/Y - H:i") }}</p>
         <p>{{ notif.titreNotif }}</p>
@@ -29,4 +32,12 @@
 
     </div>
 
+        </div>
+
+        
+    </div>
+</div>
+
+    
 {% endblock %}
+

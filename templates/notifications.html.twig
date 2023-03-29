@@ -2,26 +2,20 @@
 
 {% block body %}
 
-
-
-<section class="hero is-fullheight">
-    <div class="hero-head is-primary">
-
-
-    </div>
-
-    <div class="hero-body">
-        <div class="container has-text-centered">
-
+<div class="hero is-fullheight">
+    <div class="hero-body is-centered">
+        <div class="column is-4 m-auto box content">
             <h1>Notifications</h1>
             {% if notifs|length > 0 %}
             {% for n in notifs %}
             {{ include('_notif_element_liste.html.twig', {notif: n}) }}
             {% endfor %}
-            {% endif %}
-
+            {% endif %} 
         </div>
+
+        
     </div>
-</section>
+</div>
+
 
 {% endblock %}

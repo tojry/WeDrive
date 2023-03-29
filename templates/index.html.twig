@@ -83,6 +83,7 @@
 					<p class="subtitle">
 						Vroom vroom
 					</p>
+                    {% if is_granted("IS_AUTHENTICATED_FULLY") %}
 
 					<form class="is-inline-block" action="/recherche" method="post" autocomplete="off">
 						<div class="field is-grouped has-background-primary box">
@@ -111,6 +112,7 @@
 
 					<div id="autocomplete_lieuArrive">
 					</div>
+                    {% endif %}
             </div>
 				</div>
 			</div>
