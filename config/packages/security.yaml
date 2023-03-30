@@ -47,15 +47,15 @@ security:
     # Note: Only the *first* access control that matches will be used
   access_control:
     #veillez de meme pour vos url
-    - { path: '^/creer', roles: [ ROLE_USER,IS_AUTHENTICATED_FULLY ] }
-    - { path: '^/consulercompte', roles: [ ROLE_ADMIN, ROLE_USER, IS_AUTHENTICATED_FULLY ] }
-    - { path: '^/modifierSonCompte', roles: [ ROLE_ADMIN, ROLE_USER, IS_AUTHENTICATED_FULL ] }
-    - { path: '^/mestrajets', roles: [ ROLE_ADMIN, ROLE_USER, IS_AUTHENTICATED_FULL ] }
-    - { path: '^/trajet', roles: [ ROLE_ADMIN, ROLE_USER, IS_AUTHENTICATED_FULL ] }
-    - { path: '^/afficherlistecomptesuperuser', roles: [ ROLE_ADMIN, IS_AUTHENTICATED_FULL ] }
-    - { path: '^/supprimeruncomptesuperuser', roles: [ ROLE_ADMIN, IS_AUTHENTICATED_FULL ] }
-    - { path: '^/note', roles: [ ROLE_ADMIN, IS_AUTHENTICATED_FULL ] }
-    - { path: '^/supprimersoncompte', roles: [ ROLE_ADMIN, IS_AUTHENTICATED_FULL ] }
+    - { path: '^/creer', roles: [ IS_AUTHENTICATED_FULLY ] }
+    - { path: '^/consultercompte', roles: [ IS_AUTHENTICATED_FULLY ] }
+    - { path: '^/modifierSonCompte', roles: [ IS_AUTHENTICATED_FULLY ] }
+    - { path: '^/mestrajets', roles: [ IS_AUTHENTICATED_FULLY ] }
+    - { path: '^/trajet', roles: [ IS_AUTHENTICATED_FULLY ] }
+    - { path: '^/afficherlistecomptesuperuser', roles: [ ROLE_ADMIN ] }
+    - { path: '^/supprimeruncomptesuperuser', roles: [ ROLE_ADMIN ] }
+    - { path: '^/note', roles: [ IS_AUTHENTICATED_FULLY ] }
+    - { path: '^/supprimersoncompte', roles: [ IS_AUTHENTICATED_FULLY ] }
 
 
 
