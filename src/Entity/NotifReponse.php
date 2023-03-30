@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: NotifReponseRepository::class)]
 class NotifReponse extends Notification
 {
-    #[ORM\OneToOne(inversedBy: 'notifreponses', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'notifReponse', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Reponse $Reponse = null;
 
