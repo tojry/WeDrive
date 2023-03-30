@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 #[ORM\InheritanceType("JOINED")]
 #[ORM\DiscriminatorColumn(name:"discr", type:"string")]
-#[ORM\DiscriminatorMap(["notification" => Notification::class, "notifAnnulation" => NotifAnnulation::class, "notifreponses" => NotifReponse::class, "notifTrajetPrive" => NotifTrajetPrive::class])]
+#[ORM\DiscriminatorMap(["notification" => Notification::class, "notifAnnulation" => NotifAnnulation::class, "notifReponse" => NotifReponse::class, "notifTrajetPrive" => NotifTrajetPrive::class])]
 class Notification
 {
     #[ORM\Id]
