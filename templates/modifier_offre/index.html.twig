@@ -53,6 +53,7 @@
                 let texte = $(this).val();
                 ($(this)[0]).setCustomValidity("Sélectionnez une ville dans la liste des propositions.");
                 if(texte != "")
+
                     suggestionVille(texte, "lieuDepart", pathSuggestion);
                 else
                     $(".autocomplete-items").remove();
