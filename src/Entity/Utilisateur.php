@@ -42,7 +42,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\Column(length: 64)]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z\- ]+$/',
-        message: 'adresse email incorrect  ',
+        message: 'Nom incorrect  ',
     )]
     private ?string $nom = null;
 
