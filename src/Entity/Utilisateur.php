@@ -40,6 +40,10 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     private ?string $mdp = null;
 
     #[ORM\Column(length: 64)]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z\- ]+$/',
+        message: 'adresse email incorrect  ',
+    )]
     private ?string $nom = null;
 
     #[ORM\Column(length: 64)]
