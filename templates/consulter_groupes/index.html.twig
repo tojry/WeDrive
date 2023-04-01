@@ -1,43 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Liste des groupes d'amis</title>
-    <style>
-        /* styles pour centrer la boîte */
-        #box {
-            width: 60%;
-            margin: 0 auto;
-            border: 2px solid black;
-            padding: 10px;
-        }
+{% extends 'base.html.twig' %}
 
-        /* styles pour les boîtes de groupes */
-        .group-box {
-            border: 1px solid black;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div id="box">
-        <h1>Liste des groupes d'amis</h1>
+{% block title %}Liste des groupes d'amis{% endblock %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"> 
+{% endblock %}
+
+{% block body %}
+    <div id="box" style="width:60%;margin: 0 auto;border: 2px solid #00d1b2;padding: 10px;margin-top:5%;">
+        <h1 class="title is-3" style="text-align-last:center">Liste des groupes d'amis</h1>
         <hr>
         {% if groupes is empty %}
         <p>Aucun groupe d'amis disponible.</p>
         {% else %}
         {% for groupe in groupes %}
-        <div class="group-box">
-            <h2>{{ groupe.getNomGroupe }}</h2>
+        <div class="group-box" style="border: 1px solid black;padding: 10px;margin-bottom: 10px;">
+            <h2 class="title is-5">{{ groupe.getNomGroupe }}</h2>
             <p>Nombre de membres : {{ groupe.utilisateurs|length }}</p>
-            <ul>
+            <ul style="display:inline-flex">
                 {% for membre in groupe.utilisateurs %}
-                <li>{{ membre.getNom }} {{ membre.getPrenom }}</li>
+                <li> {{ membre.getNom }} {{ membre.getPrenom }} , &nbsp; </li>
                 {% endfor %}
             </ul>
+            <button style="display:list-item" class="button is-primary" onclick="window.location.href='{{ path('app_consulter_groupe_ami', {id: groupe.getId()}) }}' "> Consulter </button>
         </div>
         {% endfor %}
         {% endif %}
     </div>
-</body>
-</html>
+{% endblock %}
