@@ -11,6 +11,18 @@
 </style>
 <div style="text-align:-webkit-center">
     <h3 class="title is-4"> Cette page est reservée aux super-utilisateurs de Wedrive </h3>
+
+    <div class="field has-addons" style="place-content: center">
+    <div class="control">
+        <input class="input" type="text" placeholder="Trouver une personne">
+    </div>
+    <div class="control">
+        <a class="button is-primary" disabled>
+        Rechercher
+        </a>
+    </div>
+    </div>
+
     <table class="table">
         <tr>
             <th> Identifiant </th>
@@ -21,14 +33,14 @@
             <th> Action </th>
         </tr>
         {% for utilisateur in utilisateurs %}
-        <tr>
+        <tr {{ utilisateur.getId() == currentuser.getId() ? "style='display:none'" : "" }} {{ utilisateur.getRoles()[0] != "ROLE_USER" ? "style='display:none'" : ""}}>
                 <th> {{ utilisateur.getId() }} </th>
                 <th> {{ utilisateur.getNom() }} </th>
                 <th> {{ utilisateur.getPrenom() }} </th>
                 <th> {{ utilisateur.getAdresseMail() }} </th>
-                <th> {{ utilisateur.getTrajets().isEmpty() ? "NON" : "OUI" }} </th>
+                <th> {{ utilisateur.getNombreAncienTrajet() == utilisateur.getTrajets().count() ? "NON" : "OUI" }} </th>
                 <th>
-                    <button {{ utilisateur.getTrajets().isEmpty() ? "" : "disabled" }} title={{ utilisateur.getTrajets().isEmpty() ? "Supprimer compte utilisateur" : "Cet utilisateur participe à un trajet"|raw }} class="button is-danger" onclick="window.location.href='{{ path('utilisateur.supprimerCompte', {id:utilisateur.getId()}) }}' ">
+                    <button {{ utilisateur.getNombreAncienTrajet() == utilisateur.getTrajets().count() ? "" : "disabled" }} title={{ utilisateur.getTrajets().isEmpty() ? "Supprimer compte utilisateur" : "Cet utilisateur participe à un trajet"|raw }} class="button is-danger" onclick="window.location.href='{{ path('utilisateur.supprimerCompte', {id:utilisateur.getId()}) }}' ">
                         Supprimer compte 
                     </button>
                 </th>

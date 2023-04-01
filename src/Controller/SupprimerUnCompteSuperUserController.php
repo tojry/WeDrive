@@ -24,10 +24,13 @@ class SupprimerUnCompteSuperUserController extends AbstractController
             ]);
         }
         $repository = $doctrine->getRepository(Utilisateur::class);
-        $utilisateurs = $repository->findAll();
+        $utilisateurs = $repository->findBy(array(), array('adresseMail'=>'asc'));
+        $mail =  $this->getUser()->getUserIdentifier();
+        $utilisateur = $utilisateurRepository->rechercher($mail);
         return $this->render('supprimer_un_compte_super_user/index.html.twig', [
             'controller_name' => 'SupprimerUnCompteSuperUserController',
-            'utilisateurs' => $utilisateurs
+            'utilisateurs' => $utilisateurs,
+            'currentuser' => $utilisateur
         ]);
     }
 
