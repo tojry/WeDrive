@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[UniqueEntity('adresseMail')]
@@ -74,7 +75,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\JoinTable(name: 'amitie')]
     private Collection $Amis;
 
-    #[ORM\OneToMany(mappedBy: 'Covoitureur', targetEntity: Trajet::class, cascade:['persist'])]
+    #[ORM\OneToMany(mappedBy: 'Covoitureur', targetEntity: Trajet::class, cascade:['persist','remove'])]
     private Collection $trajetProposes;
 
     #[ORM\OneToMany(mappedBy: 'utilisateurConcerne', targetEntity: Reponse::class)]
@@ -614,6 +615,16 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
         if($note > 0)
             $str .= ' ('.$note.'<img src="/etoile_pleine.png" width="15" height="15" alt="Note" class="etoile">)';
         return $str;
+    }
+
+    public function getNombreAncienTrajet() : int 
+    {
+        $nb = 0;
+        $trajets = $this->getTrajets();
+        foreach($trajets as $trajet){
+            if($trajet->getDateHeureDepart() < new \DateTime('@'.strtotime('now'))) { $nb = $nb + 1; }           
+        }
+        return $nb;
     }
 
 }
