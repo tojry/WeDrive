@@ -18,41 +18,50 @@ use Symfony\Component\Routing\Annotation\Route;
 class ModifierOffreController extends AbstractController
 {
     #[Route('/modifierOffre/{id}', name: 'app_modifier_offre')]
-    public function modifier(Request $request, Trajet $trajet, EntityManagerInterface $entityManager, VilleRepository $villes): Response
+    public function modifier(Request $request, PointIntermediaire $pointIntermediaire, Trajet $trajet, EntityManagerInterface $entityManager, VilleRepository $villes): Response
     {
 
         $form = $this->createForm(CreerFormType::class, $trajet);
         $form->handleRequest($request);
+        $session = $request->getSession();
+        if ($form->isSubmitted() && $form->isValid() ) {
+            if ($session != null) {
+                // Vérifier si les informations sont différentes
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Vérifier si les informations sont différentes
-            $formValues = $form->getData();
-            $valdep = $form['lieuDepart']->getData();
-            $valArr= $form['lieuArrive']->getData();
-            $villeArr = $villes->rechercher($valArr);
+                $valdep = $form['lieuDepart']->getData();
+                $valArr = $form['lieuArrive']->getData();
+                $pointIntermediaireList = $session->get('pointIntermediaireList');
 
-            $villeDep = $villes->rechercher($valdep);
-            $villeArr = $villes->rechercher($valArr);
-            //echo $valdep;
-            if($villeDep != null){
-                echo $villeDep[0];
+                $villeDep = $villes->rechercher($valdep);
+                $villeArr = $villes->rechercher($valArr);
 
-                $trajet->setLieuDepart($villeDep[0]);
+                if ($villeDep != null) {
+                    $trajet->setLieuDepart($villeDep[0]);
+                }
+                if ($villeArr != null) {
+
+                    $trajet->setLieuArrive($villeArr[0]);
+                }
+
+                if (isset($pointIntermediaireList)) {
+                    foreach ($pointIntermediaireList as $idVille) {
+                        $ville = $villes->findOneBy(['id' => $idVille]);
+                        if ($ville != null) {
+                            $pt = new PointIntermediaire();
+                            $pt->setVille($ville);
+                            $pt->setTrajet($trajet);
+                            $trajet->addPointIntermediaire($pt);
+                        } else return new Response("Ville non trouvée (pointIntermediaire)", 500);
+                    }
+                }
+
+                // Enregistrer les modifications
+                $entityManager->persist($trajet);
+                $entityManager->flush();
+                $this->addFlash('success', 'L\'offre a bien été modifiée.');
+            } else {
+                $this->addFlash('warning', 'Aucune modification n\'a été enregistrée.');
             }
-            if($villeArr != null){
-                echo $villeArr[0];
-
-                $trajet->setLieuArrive($villeArr[0]);
-            }
-
-
-            echo"ici";
-            // Enregistrer les modifications
-            $entityManager->persist($trajet);
-            $entityManager->flush();
-            $this->addFlash('success', 'L\'offre a bien été modifiée.');
-        } else {
-            $this->addFlash('warning', 'Aucune modification n\'a été enregistrée.');
         }
 
 
