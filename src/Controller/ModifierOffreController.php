@@ -53,7 +53,7 @@ class ModifierOffreController extends AbstractController
             $this->addFlash('success', 'L\'offre a bien été modifiée.');
         } else {
             $this->addFlash('warning', 'Aucune modification n\'a été enregistrée.');
-            }
+        }
 
 
         return $this->render('modifier_offre/index.html.twig', [
