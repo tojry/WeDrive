@@ -75,7 +75,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\JoinTable(name: 'amitie')]
     private Collection $Amis;
 
-    #[ORM\OneToMany(mappedBy: 'Covoitureur', targetEntity: Trajet::class, cascade:['persist'])]
+    #[ORM\OneToMany(mappedBy: 'Covoitureur', targetEntity: Trajet::class, cascade:['persist','remove'])]
     private Collection $trajetProposes;
 
     #[ORM\OneToMany(mappedBy: 'utilisateurConcerne', targetEntity: Reponse::class)]
