@@ -26,6 +26,8 @@
                     <a class="button is-light" href="\modifierSonCompte">
                         Modifier mon compte
                     </a>
+                    <button style="display:list-item" class="button is-danger" onclick="window.location.href='/supprimersoncompte' "> Clôturer mon compte </button>
+
                 {% else %}
                     <h1 class="title">Informations de {{ user.prenom }}</h1>
                     <li>Prénom : {{ user.prenom }}</li>
