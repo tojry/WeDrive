@@ -24,7 +24,7 @@
     <h3 class="title is-6" style="width:max-content;margin-top:1%"> {{ groupeAmi.getCreateur().getNom() }} {{ groupeAmi.getCreateur().getPrenom() }} (Créateur) </h3>
  <div class="control" style="margin-top:2%">
   <div class="select">
-    <select  id="dropwdown-add"{{ groupeAmi.getCreateur().getId() == currentuser.getId() ? "" : "disabled" }}>
+    <select  id="dropwdown-add"{{ groupeAmi.getCreateur().getId() == currentuser.getId() ? "" : "" }}>
     {% for utilisateur in utilisateurs %}
         <option id="{{ utilisateur.getId() }}" > {{ utilisateur.getAdresseMail() }} </option>
     {%endfor%}
@@ -32,7 +32,9 @@
   </div>
   <button 
   onclick="window.location.href = '/app_ajouter_ami_groupe/'+ document.getElementById('dropwdown-add').options[document.getElementById('dropwdown-add').selectedIndex].id +'/{{ groupeAmi.getId() }}'"
-  class="button is-info"  {{ groupeAmi.getCreateur().getId() == currentuser.getId() ? "" : "disabled" }}>Ajouter ami</button>
+  class="button is-info"  {{ groupeAmi.getCreateur().getId() == currentuser.getId() ? "" : "" }}>Ajouter ami</button>
+  <button 
+  onclick="window.location.href='#'" class="button is-danger"  {{ groupeAmi.getCreateur().getId() == currentuser.getId() ? "" : "style='display:none'" }}>Supprimer ce groupe</button>
  </div>
  <div style="margin-top:2%">
     <table class="table" >
@@ -44,7 +46,7 @@
             <th> Nom </th>
             <th> Prenom </th>
             <th> Adresse email </th>
-            <th> Action </th>
+            <th> Actions </th>
             {{ groupeAmi.getCreateur().getId() == currentuser.getId() ? "<th></th>" : "" }}
         </tr>
         {% for utilisateur in groupeAmi.getUtilisateurs() %}
@@ -68,4 +70,5 @@
         {%endfor%}
     </table>
 </div>
+<hr>
 {% endblock %}
