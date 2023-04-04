@@ -12,13 +12,15 @@ use App\Repository\GroupeAmisRepository;
 class SupprimerUnGroupController extends AbstractController
 {
     /*
+    
     #[Route('/supprimer/un/group', name: 'app_supprimer_un_group')]
     public function index(): Response
     {
         return $this->render('supprimer_un_group/index.html.twig', [
             'controller_name' => 'SupprimerUnGroupController',
         ]);
-    }*/
+    }
+    */
 
     #[Route('/supprimer-groupe/{id}', name: 'app_supprimer_groupe')]
     public function supprimer(int $id, EntityManagerInterface $entityManager, UtilisateurRepository $utilisateurRepository, GroupeAmisRepository $groupeAmisRepository, OffreRepository $offreRepository): Response
