@@ -52,8 +52,8 @@ security:
     - { path: '^/modifierSonCompte', roles: [ IS_AUTHENTICATED_FULLY ] }
     - { path: '^/mestrajets', roles: [ IS_AUTHENTICATED_FULLY ] }
     - { path: '^/trajet', roles: [ IS_AUTHENTICATED_FULLY ] }
-    - { path: '^/afficherlistecomptesuperuser', roles: [ ROLE_ADMIN ] }
-    - { path: '^/supprimeruncomptesuperuser', roles: [ ROLE_ADMIN ] }
+    #- { path: '^/afficherlistecomptesuperuser', roles: [ ROLE_ADMIN ] }
+    #- { path: '^/supprimeruncomptesuperuser', roles: [ ROLE_ADMIN ] }
     - { path: '^/note', roles: [ IS_AUTHENTICATED_FULLY ] }
     - { path: '^/supprimersoncompte', roles: [ IS_AUTHENTICATED_FULLY ] }
 

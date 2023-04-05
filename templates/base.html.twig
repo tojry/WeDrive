@@ -40,7 +40,11 @@
 					</a>
 
 					<a class="navbar-item" href="{{ path('creation_amis') }}">
-						Groupe d'amis 
+						Créer un groupe 
+					</a>
+
+					<a class="navbar-item" href="{{ path('app_consulter_groupes') }}">
+						Mes groupes d'amis 
 					</a>
 
 					<a class="navbar-item" href="{{ path('app_mes_trajets') }}">
@@ -79,6 +83,17 @@
 						<div class="navbar-dropdown">
 							<a class="navbar-item" href="{{ path('app_consultercompte', {id: app.user.id}) }}">
 							Voir mon profil
+							</a>
+
+							<hr class="navbar-divider">
+							<a class="navbar-item" href="{{ path('app_afficher_liste_compte_super_user') }}"  style="white-space: pre-line;margin-top: -12%;">
+							Afficher la liste des comptes 
+							</a>
+							
+
+							<hr class="navbar-divider">
+							<a class="navbar-item" href="{{ path('app_supprimer_un_compte_super_user') }}"  style="white-space: pre-line;margin-top: -12%;">
+							Supprimer un compte utilisateur
 							</a>
 	
 							<hr class="navbar-divider">

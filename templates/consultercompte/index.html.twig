@@ -23,10 +23,8 @@
                     <li>Numéro de téléphone : 0{{ user.noTel }}</li>
                     <li>J'ai un véhicule à ma disposition : {{ voiture }}</li>
                     <li>J'accepte de recevoir des notifications par mail de la part de WeDrive : {{ notif }}</li>
-                    <a class="button is-light" href="\modifierSonCompte">
-                        Modifier mon compte
-                    </a>
-                    <button style="display:list-item" class="button is-danger" onclick="window.location.href='/supprimersoncompte' "> Clôturer mon compte </button>
+                    <a {{ user.id == user_co.id ? "" : "style='display:none'" }} class="button is-light" href="\modifierSonCompte"> Modifier mon compte </a>
+                    <button  {{ user.id == user_co.id ? "" : "style='display:none'" }}  style="display:list-item" class="button is-danger" onclick="window.location.href='/supprimersoncompte' "> Clôturer mon compte </button>
 
                 {% else %}
                     <h1 class="title">Informations de {{ user.prenom }}</h1>
@@ -39,5 +37,6 @@
             </ul>
         </div>
     </div>
+    
 
 {% endblock %}

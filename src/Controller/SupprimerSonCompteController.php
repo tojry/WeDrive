@@ -46,7 +46,7 @@ class SupprimerSonCompteController extends AbstractController
                         return $this->redirectToRoute("app_logout");
                     }
                     else{
-                        $this->addFlash('error',"mot de passe incorrecte");
+                        $this->addFlash('error',"Mot de passe incorrecte");
                     }         
                 }
             }

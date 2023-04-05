@@ -93,7 +93,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\OneToMany(mappedBy: 'UtilisateurConcerne', targetEntity: NotifAnnulation::class)]
     private Collection $notifAnnulations;
 
-    #[ORM\OneToMany(mappedBy: 'createur', targetEntity: GroupeAmis::class)]
+    #[ORM\OneToMany(mappedBy: 'createur', targetEntity: GroupeAmis::class, cascade:['persist','remove'])]
     private Collection $groupeCree;
 
     #[ORM\OneToMany(mappedBy: 'idEvalue', targetEntity: Evaluation::class, orphanRemoval: true)]
