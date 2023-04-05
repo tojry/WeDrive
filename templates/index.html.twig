@@ -69,70 +69,93 @@
 
 {% block body %}
 		
-		<section class="hero is-fullheight">
-			<div class="hero-head is-primary">
-				
-				
-			</div>
+    <section class="hero is-center">
+        <div class="hero-head is-primary">
+            
+            
+        </div>
 
-			<div class="hero-body">
-				<div class="container has-text-centered">
-					<p class="title">
-						WeDRIVE
-					</p>
-					<p class="subtitle">
-						Vroom vroom
-					</p>
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <p class="title">
+                    WeDRIVE
+                </p>
+                <p class="subtitle">
+                    Vroom vroom
+                </p>
+                {% if is_granted("IS_AUTHENTICATED_FULLY") %}
 
+                <form class="is-inline-block" action="/recherche" method="post" autocomplete="off">
+                    <div class="field is-grouped has-background-primary box">
+                        <div class="control">
+                            <input id="recherche_lieuDepart" class="input" type="text" placeholder="Départ" name="recherche[lieuDepart]">
+                        </div>
 
-                    </br>
+                        <div class="control">
+                            <input id="recherche_lieuArrivee" class="input" type="text" placeholder="Arrivée" name="recherche[lieuArrivee]">
+                        </div>
 
-                    <div class="hero-body is-centered">
-                    <p> Bienvenue sur WeDrive, la plateforme de covoiturage la plus simple et efficace pour partager vos trajets en voiture. Que vous cherchiez à économiser de l'argent, à réduire votre empreinte carbone ou à rencontrer de nouvelles personnes, WeDrive vous permet de trouver facilement des conducteurs et des passagers partageant les mêmes trajets. <br> <br> Avec notre système de réservation en ligne sécurisé, vous pouvez organiser vos voyages en toute confiance et profiter d'une expérience de covoiturage agréable et conviviale. Rejoignez la communauté WeDrive dès maintenant et commencez à partager vos trajets en toute simplicité ! </p>
+                        <div class="control">
+                            <input class="input" type="date" placeholder="Date" name="recherche[dateDepart]">
+                        </div>
+
+                        <div class="control">
+                            <button class="button" type="submit" name="recherche[rechercher]">Rechercher !</button>
+                        </div>
+
                     </div>
+                </form>
 
-                    {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                <div class="p-4">
+                <div id="autocomplete_lieuDepart">
+                </div>
 
-					<form class="is-inline-block" action="/recherche" method="post" autocomplete="off">
-						<div class="field is-grouped has-background-primary box">
-							<div class="control">
-								<input id="recherche_lieuDepart" class="input" type="text" placeholder="Départ" name="recherche[lieuDepart]">
-							</div>
-
-							<div class="control">
-								<input id="recherche_lieuArrivee" class="input" type="text" placeholder="Arrivée" name="recherche[lieuArrivee]">
-							</div>
-
-							<div class="control">
-								<input class="input" type="date" placeholder="Date" name="recherche[dateDepart]">
-							</div>
-
-							<div class="control">
-								<button class="button" type="submit" name="recherche[rechercher]">Rechercher !</button>
-							</div>
-
-						</div>
-					</form>
-
-                    </br>
-                    </br>
-                    </br>
-
-                    <div class="container has-text-centered">
-                        <p>es</p>
-                    </div>
-
-					<div class="p-4">
-					<div id="autocomplete_lieuDepart">
-            		</div>
-
-					<div id="autocomplete_lieuArrive">
-					</div>
-                    {% endif %}
+                <div id="autocomplete_lieuArrive">
+                </div>
+                {% endif %}
+        </div>
             </div>
-				</div>
-			</div>
-		</section>
+        </div>
+
+        <div class="columns mx-3">
+            <div class="column">
+                <div class="box has-background-primary">
+                 <p class="content is-medium has-text-light">
+                Bienvenue sur notre plateforme de covoiturage ! Nous avons créé cet espace pour vous permettre de trouver facilement et rapidement des compagnons de voyage pour vos trajets réguliers ou occasionnels.
+                Que vous soyez conducteur ou passager, vous pourrez profiter de notre service pour économiser de l'argent, réduire votre empreinte carbone et rencontrer de nouvelles personnes.
+                </p>
+                </div>
+                <div class="columns is-mobile">
+                    <div class="column">
+                        <div class="box">
+                            <div class="hero is-center">
+                            <p class="content is-medium">
+                            Notre plateforme est conviviale, sécurisée et facile à utiliser. Il vous suffit de créer un compte, de publier ou de rechercher une annonce, de contacter les utilisateurs qui vous intéressent et de voyager ensemble en toute tranquillité.
+                            </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="box">
+                        <p class="content is-medium">
+                            Nous espérons que vous trouverez ici tout ce dont vous avez besoin pour rendre vos déplacements plus agréables et plus écologiques.
+                        </p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="box">
+                        <p class="content is-medium">
+                            N'hésitez pas à nous contacter si vous avez des questions ou des suggestions. Bon voyage avec notre communauté de covoiturage !
+                        </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    
 
 
 {% endblock %}
