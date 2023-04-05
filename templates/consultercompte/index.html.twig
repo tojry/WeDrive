@@ -30,11 +30,12 @@
                     <button  {{ user.id == user_co.id ? "" : "style='display:none'" }}  class="button is-danger" onclick="window.location.href='/supprimersoncompte' "> Clôturer mon compte </button>
 
                 {% else %}
-                    <h1 class="title">Informations de {{ user.prenom }}</h1>
+                    <h1 class="title has-text-centered">Informations de {{ user.prenom }}</h1>
+                    <ul>
                     <li>Prénom : {{ user.prenom }}</li>
                     <li>Sexe : {{ user.sexe }}</li>
                     <li>Note : {% if user.getMoyenneNote() > 0 %} {{user.getMoyenneNote()}} <img src="/etoile_pleine.png" width="15" height="15" alt="Note" class="etoile"> {%else%} Pas encore de notes {%endif%} </li>
-
+                    </ul>
                 {% endif %}
 
            
