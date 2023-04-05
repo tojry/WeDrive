@@ -9,12 +9,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 
     {% block stylesheets %}
-
+	<style>
+		body {
+			position: relative;
+			min-height: 100vh;
+		}
+	</style>
     {% endblock %}
 
     {% block javascripts %}
     <script>
-
+		
     </script>
     {% endblock %}
 
@@ -114,6 +119,21 @@
             </p>
         </div>
     </footer>
+
+	<script>
+		let footer = document.querySelector("footer");
+		let footerPosition = footer.offsetTop + footer.offsetHeight;
+		let windowHeight = window.innerHeight;
+		if (footerPosition < windowHeight) {
+			footer.style.position = "absolute";
+			
+			footer.style.bottom = "0";
+			footer.style.width = "100%";
+		}
+		
+
+		console.log(footerPosition, );
+	</script>
 </body>
 
 </html>

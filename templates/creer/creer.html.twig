@@ -206,7 +206,7 @@
 
 
                         <div class="field is-grouped">
-                            {{ form_widget(creer_form.addPtIntermediaire) }}
+                            {{ form_widget(creer_form.addPtIntermediaire, {'attr': {'class': 'mr-1'}}) }}
                             {{ form_widget(creer_form.rmPtIntermediaire) }}
                         </div>
 
@@ -221,7 +221,7 @@
                         {{ form_row(creer_form.capaciteMax) }} 
 
                         <div class="field is-grouped">
-                            {{ form_row(creer_form.annuler) }}  
+                            {{ form_row(creer_form.annuler, {'attr': {'class': 'mr-1'}}) }}  
                             {{ form_row(creer_form.creer) }}  
                         </div> 
                     {{ form_end(creer_form) }}

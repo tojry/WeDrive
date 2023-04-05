@@ -8,7 +8,8 @@
 {% endblock %}
 
 {% block body %}
-    <div id="box" class="hero-body is-centered">
+    <div id="box" class="hero-body is-centered column is-4 m-auto">
+
         <h1 class="title is-3" style="text-align-last:center">Liste des groupes d'amis</h1>
         <a class="button is-primary" href="{{ path('creation_amis') }}">Créer un groupe</a>
         <hr>
@@ -16,15 +17,15 @@
         <p>Aucun groupe d'amis disponible.</p>
         {% else %}
         {% for groupe in groupes %}
-        <div class="group-box" style="border: 1px solid black;padding: 10px;margin-bottom: 10px;">
+        <div class="group-box box content">
             <h2 class="title is-5">{{ groupe.getNomGroupe }}</h2>
             <p>Nombre de membres : {{ groupe.utilisateurs|length }}</p>
-            <ul style="display:inline-flex">
+            <ul>
                 {% for membre in groupe.utilisateurs %}
                 <li> {{ membre.getNom }} {{ membre.getPrenom }} , &nbsp; </li>
                 {% endfor %}
             </ul>
-            <button style="display:list-item" class="button is-primary" onclick="window.location.href='{{ path('app_consulter_groupe_ami', {id: groupe.getId()}) }}' ">Consulter </button>
+            <button class="button is-primary" onclick="window.location.href='{{ path('app_consulter_groupe_ami', {id: groupe.getId()}) }}' ">Consulter </button>
         </div>
         {% endfor %}
         {% endif %}

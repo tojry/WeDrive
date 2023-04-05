@@ -7,11 +7,12 @@
 
     </div>
     <div class="hero-body is-centered">
-        <div class="column is-4 m-auto">
+        <div class="box content column is-4 m-auto">
 
-            <ul>
+          
                 {% if (user.id == user_co.id) or (is_granted('ROLE_ADMIN')) %}
-                    <h1 class="title">Vos informations</h1>
+                    <h1 class="title has-text-centered">Vos informations</h1>
+                    <ul>
                     <li>Note : {% if user.getMoyenneNote() > 0 %} {{user.getMoyenneNote()}} <img src="/etoile_pleine.png" width="15" height="15" alt="Note" class="etoile"> {%else%} Pas encore de notes {%endif%} </li>
                     {% if is_granted('ROLE_ADMIN') %}
                         <li>Identifiant : {{ user.id}}</li>
@@ -23,18 +24,21 @@
                     <li>Numéro de téléphone : 0{{ user.noTel }}</li>
                     <li>J'ai un véhicule à ma disposition : {{ voiture }}</li>
                     <li>J'accepte de recevoir des notifications par mail de la part de WeDrive : {{ notif }}</li>
+                    </ul>
+
                     <a {{ user.id == user_co.id ? "" : "style='display:none'" }} class="button is-light" href="\modifierSonCompte"> Modifier mon compte </a>
-                    <button  {{ user.id == user_co.id ? "" : "style='display:none'" }}  style="display:list-item" class="button is-danger" onclick="window.location.href='/supprimersoncompte' "> Clôturer mon compte </button>
+                    <button  {{ user.id == user_co.id ? "" : "style='display:none'" }}  class="button is-danger" onclick="window.location.href='/supprimersoncompte' "> Clôturer mon compte </button>
 
                 {% else %}
-                    <h1 class="title">Informations de {{ user.prenom }}</h1>
+                    <h1 class="title has-text-centered">Informations de {{ user.prenom }}</h1>
+                    <ul>
                     <li>Prénom : {{ user.prenom }}</li>
                     <li>Sexe : {{ user.sexe }}</li>
                     <li>Note : {% if user.getMoyenneNote() > 0 %} {{user.getMoyenneNote()}} <img src="/etoile_pleine.png" width="15" height="15" alt="Note" class="etoile"> {%else%} Pas encore de notes {%endif%} </li>
-
+                    </ul>
                 {% endif %}
 
-            </ul>
+           
         </div>
     </div>
     
