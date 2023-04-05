@@ -48,6 +48,7 @@ class CreerController extends AbstractController {
                                 $trajet->setLieuDepart($lieuDepartVille);
                                 $trajet->setLieuArrive($lieuArriveVille);
                                 $trajet->newArrayPointIntermediaires();
+                                $trajet->setAnnulee(false);
                                 
                                 if(isset($pointIntermediaireList)) {
                                     foreach($pointIntermediaireList as $idVille){    
