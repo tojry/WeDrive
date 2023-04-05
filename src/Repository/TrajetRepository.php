@@ -44,7 +44,8 @@ class TrajetRepository extends ServiceEntityRepository
     {
         $currentDate = new DateTime("now");
         return $qb = $this->createQueryBuilder('t')
-                ->where('t.Covoitureur = :id')
+                ->innerJoin('t.utilisateurs', 'p')
+                ->where('p.id = :id')
                 ->setParameter('id', $id)
                 ->andWhere('t.dateHeureDepart < :date')
                 ->setParameter('date', $currentDate)
@@ -57,7 +58,8 @@ class TrajetRepository extends ServiceEntityRepository
     {
         $currentDate = new DateTime("now");
         return $qb = $this->createQueryBuilder('t')
-                ->where('t.Covoitureur = :id')
+                ->innerJoin('t.utilisateurs', 'p')
+                ->where('p.id = :id')
                 ->setParameter('id', $id)
                 ->andWhere('t.dateHeureDepart >= :date')
                 ->setParameter('date', $currentDate)
