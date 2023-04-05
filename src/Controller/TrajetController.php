@@ -40,6 +40,7 @@ class TrajetController extends AbstractController
                 $reponse->setEtatReponse("En attente");
                 $reponse->setTrajetConcerne($trajet);
                 $reponse->setUtilisateurConcerne($this->getUser());
+                $reponse->setAnnulee(false);
                 $reponse->setNotifReponse($notif);
 
                 $notif->setReponse($reponse);
