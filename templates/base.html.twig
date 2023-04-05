@@ -31,9 +31,11 @@
 			<div class="navbar-menu">
 				<div class="navbar-start">
 					{% if is_granted("IS_AUTHENTICATED_FULLY") %}
-					<a class="navbar-item" href="{{ path('creer') }}">
-						Créer une offre
-					</a>
+					{% if app.user.voiture %}
+						<a class="navbar-item" href="{{ path('creer') }}">
+							Créer une offre
+						</a>
+					{% endif %}
 	
 					<a class="navbar-item" href="{{ path('recherche') }}">
 						Rechercher une offre
