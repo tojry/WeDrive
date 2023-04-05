@@ -161,7 +161,8 @@
             <p>Vous n'avez accepté aucun passager pour l'instant.</p>
         {% endif %}
 
-        {% if not trajet.annulee %}
+        {% if not trajet.annulee and ('now'|date("d/m/Y - H:i") < trajet.dateHeureDepart|date_modify("-1 day")|date("d/m/Y - H:i")) %}
+            <a class="button is-light" href="{{ path('app_modifier_offre', {id: trajet.id}) }}">Modifier le trajet</a>
             <a class="button is-danger" href="{{ path('annuler_trajet', {id: trajet.id}) }}">Annuler le trajet</a>
         {% endif %}
     {% endif %}

@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ModifierOffreController extends AbstractController
 {
     #[Route('/modifierOffre/{id}', name: 'app_modifier_offre')]
-    public function modifier(Request $request, PointIntermediaire $pointIntermediaire, Trajet $trajet, EntityManagerInterface $entityManager, VilleRepository $villes): Response
+    public function modifier(Request $request, Trajet $trajet, EntityManagerInterface $entityManager, VilleRepository $villes): Response
     {
 
         $form = $this->createForm(CreerFormType::class, $trajet);
@@ -58,9 +58,9 @@ class ModifierOffreController extends AbstractController
                 // Enregistrer les modifications
                 $entityManager->persist($trajet);
                 $entityManager->flush();
-                $this->addFlash('success', 'L\'offre a bien été modifiée.');
+                return $this->redirectToRoute("app_trajet", ['id' => $trajet->getId()]);
             } else {
-                $this->addFlash('warning', 'Aucune modification n\'a été enregistrée.');
+                return $this->redirectToRoute("app_trajet", ['id' => $trajet->getId()]);
             }
         }
 

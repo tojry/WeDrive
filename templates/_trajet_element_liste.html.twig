@@ -1,4 +1,4 @@
-<div>
+<div class="box mt-2">
 <p>Offre de {{ trajet.covoitureur|raw }}{% if trajet.annulee %} - Annulé {% endif %}</p>
 <p>{{ trajet.lieuDepart.ville|capitalize }} - {{ trajet.lieuArrive.ville|capitalize }}</p>
 <p>{{ trajet.dateHeureDepart|date("d/m/Y - H:i") }}</p>
