@@ -2,25 +2,25 @@
 
 namespace App\Controller;
 
+use App\Entity\GroupeAmis;
 use App\Form\ModifierGroupeType;
 use App\Repository\GroupeAmisRepository;
-use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ModifierGroupeController extends AbstractController
 {
     #[Route('/modifier/groupe/{id}', name: 'app_modifier_groupe')]
-    public function index(Request $request, UtilisateurRepository $utilisateurs, EntityManagerInterface $entityManager, GroupeAmisRepository $groupes, $id): Response
+    public function index(Request $request, GroupeAmis $groupe, UtilisateurRepository $utilisateurs, EntityManagerInterface $entityManager, GroupeAmisRepository $groupes): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $mail = $this->getUser()->getUserIdentifier();
         $utilisateur = $utilisateurs->rechercher($mail);
         if ($utilisateur!=null){
-            $groupe = $groupes->find($id);
             if (!$groupe){
                 return new Response("Groupe d'amis non trouvé", 501);
             }
@@ -40,7 +40,7 @@ class ModifierGroupeController extends AbstractController
                 } else {
                     $entityManager->persist($groupe);
                     $entityManager->flush();
-                    return $this->redirectToRoute('app_home');
+                    return $this->redirectToRoute("app_consulter_groupe_ami", ['id' => $groupe->getId()]);
                 }
             }
 
