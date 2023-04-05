@@ -14,17 +14,21 @@
         {% if notif.getReponse() is defined %}
             {{ notif.reponse.texteReponse }}
             <br/>
-            {% if notif.reponse.etatReponse is same as("En attente") %}
-                <a href="{{ path('accepter_notification', {id: notif.id}) }}">Accepter</a>
-                <a href="{{ path('refuser_notification', {id: notif.id}) }}">Refuser</a>
-            {% elseif notif.reponse.etatReponse is same as("Acceptée") %}
-                <p>Vous avez accepté cette réponse.</p>
-            {% else %}
-                {% if notif.reponse.trajetConcerne.placesDispo <= 0 %}
-                    <p>La nombre maximal de passagers pour ce trajet est atteint.</p>
+            {% if not notif.reponse.annulee %}
+                {% if notif.reponse.etatReponse is same as("En attente") %}
+                    <a class="button is-primary" href="{{ path('accepter_notification', {id: notif.id}) }}">Accepter</a>
+                    <a class="button is-danger" href="{{ path('refuser_notification', {id: notif.id}) }}">Refuser</a>
+                {% elseif notif.reponse.etatReponse is same as("Acceptée") %}
+                    <p>Vous avez accepté cette réponse.</p>
                 {% else %}
-                    <p>Vous avez refusé cette réponse.</p>
+                    {% if notif.reponse.trajetConcerne.placesDispo <= 0 %}
+                        <p>La nombre maximal de passagers pour ce trajet est atteint.</p>
+                    {% else %}
+                        <p>Vous avez refusé cette réponse.</p>
+                    {% endif %}
                 {% endif %}
+            {% else %}
+                 <p>L'utilisateur a annulé sa réponse.</p>
             {% endif %}
         {% endif %}
 

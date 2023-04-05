@@ -43,8 +43,7 @@ class GroupeAmisController extends AbstractController
                     $utilisateur->addGroupeCree($groupeAmis);
                     $entityManager->persist($groupeAmis);
                     $entityManager->flush();
-                    $this->addFlash('success', 'Le groupe a été créé.');
-                    $this->redirectToRoute('app_home');
+                    return $this->redirectToRoute("app_consulter_groupe_ami", ['id' => $groupeAmis->getId()]);
                 }
             }
 

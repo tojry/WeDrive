@@ -129,7 +129,12 @@
             <p>Votre réponse :</p>
             {{ reponse.texteReponse }}
             {% if reponse.etatReponse is same as("En attente") %}
-                <p>Votre réponse n'a pas encore été traitée par le conducteur.</p>
+                {% if not reponse.annulee %}
+                    <p>Votre réponse n'a pas encore été traitée par le conducteur.</p>
+                    <a class="button is-danger" href="{{ path('annuler_reponse', {id: reponse.id}) }}">Annuler la réponse</a>
+                {% else %}
+                    <p>Vous avez annulé votre réponse.</p>
+                {% endif %}
             {% elseif reponse.etatReponse is same as("Acceptée") %}
                 <p>Vous réponse a été acceptée, veuillez consulter vos notifications pour savoir comment contacter directement le conducteur.</p>
             {% else %}

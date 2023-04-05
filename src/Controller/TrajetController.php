@@ -95,4 +95,25 @@ class TrajetController extends AbstractController
             return new Response("Ce trajet n'existe pas.");
         }
     }
+
+    #[Route('/trajet/annuler_reponse/{id}', name: 'annuler_reponse')]
+    public function annuler_reponse(Reponse $reponse, EntityManagerInterface $manager, NotificationsManager $notifs) : Response
+    {
+        if($reponse){
+            $user = $this->getUser();
+
+            if($user == $reponse->getUtilisateurConcerne()){
+                $reponse->setAnnulee(true);
+                $manager->persist($reponse);
+                $manager->flush();
+
+                return $this->redirectToRoute("app_trajet", ['id' => $reponse->getTrajetConcerne()->getId()]);
+                
+            }else{
+                return new Response("Vous n'êtes pas à l'origine de cette réponse.");
+            }
+        }else{
+            return new Response("Cette réponse n'existe pas.");
+        }
+    }
 }

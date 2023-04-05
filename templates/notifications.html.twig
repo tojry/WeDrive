@@ -7,9 +7,13 @@
         <div class="column is-4 m-auto box content">
             <h1>Notifications</h1>
             {% if notifs|length > 0 %}
-            {% for n in notifs %}
-            {{ include('_notif_element_liste.html.twig', {notif: n}) }}
-            {% endfor %}
+                {% for n in notifs %}
+                {{ include('_notif_element_liste.html.twig', {notif: n}) }}
+                {% endfor %}
+            {% else %}
+
+                <h3>Aucune notification à afficher</h3>
+
             {% endif %} 
         </div>
 

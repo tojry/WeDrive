@@ -34,6 +34,9 @@ class Reponse
     #[ORM\OneToOne(mappedBy: 'Reponse', cascade: ['persist', 'remove'])]
     private ?NotifReponse $notifReponse = null;
 
+    #[ORM\Column]
+    private ?bool $annulee = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -117,6 +120,18 @@ class Reponse
         }
 
         $this->notifReponse = $notifReponse;
+
+        return $this;
+    }
+
+    public function isAnnulee(): ?bool
+    {
+        return $this->annulee;
+    }
+
+    public function setAnnulee(bool $annulee): self
+    {
+        $this->annulee = $annulee;
 
         return $this;
     }
