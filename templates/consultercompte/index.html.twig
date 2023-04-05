@@ -26,7 +26,7 @@
                     <li>J'accepte de recevoir des notifications par mail de la part de WeDrive : {{ notif }}</li>
                     </ul>
 
-                    <a {{ user.id == user_co.id ? "" : "style='display:none'" }} class="button is-light" href="\modifierSonCompte"> Modifier mon compte </a>
+                    <a {{ user.id == user_co.id ? "" : "style='display:none'" }} class="button is-light" href="{{ path('app_modifier_son_compte', {id: user.id}) }}"> Modifier mon compte </a>
                     <button  {{ user.id == user_co.id ? "" : "style='display:none'" }}  class="button is-danger" onclick="window.location.href='/supprimersoncompte' "> Clôturer mon compte </button>
 
                 {% else %}
