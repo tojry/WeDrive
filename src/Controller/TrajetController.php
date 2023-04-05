@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\NotifAnnulation;
 use App\Entity\Trajet;
 
 use App\Repository\TrajetRepository;
@@ -72,5 +73,26 @@ class TrajetController extends AbstractController
         }
         else return new Response('Veuillez spécifier un trajet.', 500);
 
+    }
+
+    #[Route('/annulation/{id}', name: 'annuler_trajet')]
+    public function supprimer(Trajet $trajet, EntityManagerInterface $manager, NotificationsManager $notifs) : Response
+    {
+        if($trajet){
+            $user = $this->getUser();
+
+            if($user == $trajet->getCovoitureur()){
+                $trajet->setAnnulee(true);
+                $manager->persist($trajet);
+                $manager->flush();
+
+                return $this->redirectToRoute("app_trajet", ['id' => $trajet->getId()]);
+                
+            }else{
+                return new Response("Vous n'êtes pas à l'origine de ce trajet.");
+            }
+        }else{
+            return new Response("Ce trajet n'existe pas.");
+        }
     }
 }

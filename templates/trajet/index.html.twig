@@ -93,6 +93,10 @@
             <div class="example-wrapper">
     <h1> Détails du trajet </h1>
 
+    {% if trajet.annulee %}
+        <h1> Ce trajet a été annulé par son conducteur </h1>
+    {% endif %}
+
     <p id="{{trajet.Covoitureur.id}}">Covoitureur : {{ include('_utilisateur_trajet_element.html.twig', {date: trajet.dateHeureDepart|date('d-m-Y H:i'), today: today, utilisateur: trajet.Covoitureur, utilisateurActuel: utilisateurActuel}) }}</p>
 
     <p id="lieuDepart">Lieu de départ : {{ trajet.lieuDepart }}</p>
@@ -120,7 +124,7 @@
 
     <p id="capaciteMax">Places disponibles : {{ trajet.placesDispo }} / {{ trajet.capaciteMax }} </p>
 
-    {% if app.user.id != trajet.covoitureur.id %}
+    {% if app.user.id != trajet.covoitureur.id and not trajet.annulee %}
         {% if reponse %}
             <p>Votre réponse :</p>
             {{ reponse.texteReponse }}
@@ -151,7 +155,10 @@
         {% else %}
             <p>Vous n'avez accepté aucun passager pour l'instant.</p>
         {% endif %}
-        
+
+        {% if not trajet.annulee %}
+            <a class="button is-danger" href="{{ path('annuler_trajet', {id: trajet.id}) }}">Annuler le trajet</a>
+        {% endif %}
     {% endif %}
 
 </div>

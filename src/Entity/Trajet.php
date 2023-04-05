@@ -76,6 +76,9 @@ class Trajet
     #[Assert\Positive]
     private $placesDispo;
 
+    #[ORM\Column]
+    private ?bool $annulee = null;
+
 
     public function __construct()
     {
@@ -383,6 +386,18 @@ class Trajet
     public function augmenterPlacesDispo(): self
     {
         $this->placesDispo++;
+
+        return $this;
+    }
+
+    public function isAnnulee(): ?bool
+    {
+        return $this->annulee;
+    }
+
+    public function setAnnulee(bool $annulee): self
+    {
+        $this->annulee = $annulee;
 
         return $this;
     }

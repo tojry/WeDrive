@@ -94,6 +94,7 @@ class TrajetRepository extends ServiceEntityRepository
         $now = (new \DateTime('now'))->format("Y-m-d H:i:s");
         $qb->andWhere('t.dateHeureDepart > :now')
             ->setParameter('now', $now)
+            ->andWhere('t.annulee = FALSE')
             ->orderBy('t.dateHeureDepart', 'ASC');
         
         $query  = $qb->getQuery();

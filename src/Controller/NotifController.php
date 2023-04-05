@@ -48,6 +48,7 @@ class NotifController extends AbstractController {
                                 $trajet->getLieuArrive()->getVille()." du ".$trajet->getDateHeureDepart()->format("d/m/Y - H:i")." a été acceptée.\n
                                 Vous pouvez prendre contact avec le conducteur au ".$trajet->getCovoitureur()->getNoTel().".\n Bon voyage !");
         $notifAccepter->setDateHeureNotif(new \DateTime('now'));
+        $notifAccepter->setOuverte(false);
 
         $notifs->envoyerNotif($notifAccepter);
 
@@ -101,6 +102,7 @@ class NotifController extends AbstractController {
         $notifRefuser->setTexteNotif("Vous demande pour le trajet ".$trajet->getLieuDepart()->getVille()." - ". 
                                 $trajet->getLieuArrive()->getVille()." du ".$trajet->getDateHeureDepart()->format("d/m/Y - H:i")." a été refusée.\n");
         $notifRefuser->setDateHeureNotif(new \DateTime('now'));
+        $notifRefuser->setOuverte(false);
 
         $notifs->envoyerNotif($notifRefuser);
     }
