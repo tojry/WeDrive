@@ -36,18 +36,22 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[ORM\Column(length: 128)]
     #[Assert\Regex(
         pattern: ' /^[a-zA-Z0-9àâáçéèèêëìîíïôòóùûüÂÊÎÔúÛÄËÏÖÜÀÆæÇÉÈŒœÙñÿý \-\_!#$\*%{}\^&?\. ]{8,}$/i ',
-        message: 'mot de passe tres faible :8 caractères minimum composé de lettres, chiffres, tirets, accents, points et caractères  ',
+        message: 'Mot de passe très faible : 8 caractères minimum composé de lettres, chiffres, tirets, accents, points et caractères spéciaux',
     )]
     private ?string $mdp = null;
 
     #[ORM\Column(length: 64)]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z\- ]+$/',
-        message: 'Nom incorrect  ',
+        message: 'Nom incorrect',
     )]
     private ?string $nom = null;
 
     #[ORM\Column(length: 64)]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z\- ]+$/',
+        message: 'Prénom incorrect',
+    )]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 64)]
